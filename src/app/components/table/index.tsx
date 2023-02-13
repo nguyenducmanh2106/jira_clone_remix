@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState, Fragment } from "react";
 import cx from "classix";
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
@@ -12,19 +12,61 @@ import {
   IServerSideDatasource,
   RowModelType,
 } from 'ag-grid-community';
-import { User } from "@domain/user";
+import { HeaderTableView } from "./header";
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 export const TableView = ({
   show = true,
 }: TooltipProps): JSX.Element => {
-  const getServerSideDatasource: (server: any) => IServerSideDatasource = (
+
+  const gridRef = useRef<AgGridReact<IOlympicData>>(null);
+  const containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
+  const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
+
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
+    // { field: 'id', maxWidth: 75, sortable: true },
+    // { field: 'title', minWidth: 190, sortable: true },
+    // { field: 'price' },
+    // { field: 'description' },
+  ]);
+
+  const colDefsMedalsExcluded: ColDef[] = [
+    {
+      field: 'id',
+      maxWidth: 75,
+      sortable: true,
+      headerComponentParams: { menuIcon: 'fa-external-link-alt' },
+    },
+    { field: 'title', minWidth: 190, sortable: true },
+    { field: 'price' },
+    { field: 'description' },
+  ];
+  const defaultColDef = useMemo<ColDef>(() => {
+    return {
+      flex: 1,
+      minWidth: 90,
+      resizable: true,
+    };
+  }, []);
+
+  const components = useMemo<{
+    [p: string]: any;
+  }>(() => {
+    return {
+      agColumnHeader: HeaderTableView,
+    };
+  }, []);
+
+
+  const getServerSideDatasource: (server: (skip: number, limit: number) => Promise<any>) => IServerSideDatasource = (
     server: any
   ) => {
     return {
       getRows: async (params) => {
         console.log('[Datasource] - rows requested by grid: ', params.request);
         const response = await server(params.request.startRow, params.request.endRow);
-        console.log(response);
+        // console.log(response);
         // adding delay to simulate real server call
         setTimeout(function () {
           // if (response.success) {
@@ -44,23 +86,12 @@ export const TableView = ({
     };
   };
 
-  const containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
-  const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
-
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    { field: 'id', maxWidth: 75, sortable: true },
-    { field: 'title', minWidth: 190, sortable: true },
-    { field: 'price' },
-    { field: 'description' },
-  ]);
-  const defaultColDef = useMemo<ColDef>(() => {
-    return {
-      flex: 1,
-      minWidth: 90,
-      resizable: true,
-    };
-  }, []);
-
+  /**
+   * get data from api
+   * @param skip 
+   * @param limit 
+   * @returns 
+   */
   const getData = async (skip: number, limit: number) => {
     // const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}&select=title,price`)
     const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`)
@@ -68,28 +99,27 @@ export const TableView = ({
     return data;
   }
 
+  /**
+   * function run when ag-grid run
+   */
   const onGridReady = useCallback(async (params: GridReadyEvent) => {
-    // fetch('https://dummyjson.com/products?limit=10&skip=10&select=title,price')
-    //   .then((resp) => resp.json())
-    //   .then((data: ResponseData<IOlympicData[]>) => {
-    //     // add id to data
-    //     console.log(data)
 
-    //     // // setup the fake server with entire dataset
-    //     // const fakeServer = new FakeServer(data);
-    //     // // create datasource with a reference to the fake server
-    //     const datasource = getServerSideDatasource(data);
-    //     // // register the datasource with the grid
-    //     params.api!.setServerSideDatasource(datasource);
-    //   });
+    //chồ này gọi api để lấy danh sách cột
+    setTimeout(() => {
+      // setColumnDefs(colDefsMedalsExcluded)
+      gridRef.current!.api.setColumnDefs(colDefsMedalsExcluded);
+    }, 2000)
+
+    //chỗ này tiến hành lấy dự liệu về fill vào table
     const datasource = getServerSideDatasource(getData);
     params.api!.setServerSideDatasource(datasource);
   }, []);
-
+  function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(' ')
+  }
 
   return (
     <div className="relative">
-
       <div
         className={cx(
           "block"
@@ -102,7 +132,9 @@ export const TableView = ({
           <div style={containerStyle}>
             <div style={gridStyle} className="ag-theme-alpine">
               <AgGridReact<IOlympicData>
+                ref={gridRef}
                 columnDefs={columnDefs}
+                components={components}
                 defaultColDef={defaultColDef}
                 rowModelType={'serverSide'}
                 pagination={true}

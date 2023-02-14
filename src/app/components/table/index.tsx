@@ -1,8 +1,7 @@
-import { useCallback, useMemo, useRef, useState, Fragment } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import cx from "classix";
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
-import { getUsers } from "@infrastructure/db/user";
 import {
   ColDef,
   ColGroupDef,
@@ -13,8 +12,8 @@ import {
   RowModelType,
 } from 'ag-grid-community';
 import { HeaderTableView } from "./header";
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { NoRowsOverlay } from "./no-rows-overlay";
+
 
 export const TableView = ({
   show = true,
@@ -34,19 +33,38 @@ export const TableView = ({
   const colDefsMedalsExcluded: ColDef[] = [
     {
       field: 'id',
-      maxWidth: 75,
-      sortable: true,
-      headerComponentParams: { menuIcon: 'fa-external-link-alt' },
+      headerName: 'Id1',
+      maxWidth: 175,
+      checkboxSelection: true,
+      headerComponentParams: {
+        checkboxSelection: true,
+      },
     },
-    { field: 'title', minWidth: 190, sortable: true },
-    { field: 'price' },
-    { field: 'description' },
+    {
+      field: 'id',
+      headerName: 'Id',
+      maxWidth: 175,
+    },
+    {
+      field: 'title',
+      minWidth: 190,
+      headerName: 'Tiêu đề',
+    },
+    {
+      field: 'price',
+      headerName: 'Giá',
+    },
+    {
+      field: 'description',
+      headerName: 'Mô tả',
+    },
   ];
   const defaultColDef = useMemo<ColDef>(() => {
     return {
       flex: 1,
       minWidth: 90,
       resizable: true,
+      sortable: true,
     };
   }, []);
 
@@ -55,6 +73,16 @@ export const TableView = ({
   }>(() => {
     return {
       agColumnHeader: HeaderTableView,
+    };
+  }, []);
+
+  const noRowsOverlayComponent = useMemo(() => {
+    return NoRowsOverlay;
+  }, []);
+
+  const noRowsOverlayComponentParams = useMemo(() => {
+    return {
+      noRowsMessageFunc: () => 'Sorry - no rows! at: ' + new Date(),
     };
   }, []);
 
@@ -76,6 +104,8 @@ export const TableView = ({
             params.success({
               rowData: response.products,
               rowCount: response.total,
+              // rowData: [],
+              // rowCount: 0
             });
           } else {
             // inform the grid request failed
@@ -114,9 +144,7 @@ export const TableView = ({
     const datasource = getServerSideDatasource(getData);
     params.api!.setServerSideDatasource(datasource);
   }, []);
-  function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-  }
+
 
   return (
     <div className="relative">
@@ -125,15 +153,16 @@ export const TableView = ({
           "block"
         )}
       >
-        <div className="whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
+        {/* <div className="whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
           table
-        </div>
+        </div> */}
         <div className="tableViewContainer">
           <div style={containerStyle}>
-            <div style={gridStyle} className="ag-theme-alpine">
+            <div style={gridStyle} className="ag-theme-balham">
               <AgGridReact<IOlympicData>
                 ref={gridRef}
                 columnDefs={columnDefs}
+                // gridOptions={gridOptions}
                 components={components}
                 defaultColDef={defaultColDef}
                 rowModelType={'serverSide'}
@@ -141,6 +170,9 @@ export const TableView = ({
                 paginationPageSize={10}
                 cacheBlockSize={10}
                 animateRows={true}
+                overlayNoRowsTemplate="noRowsTemplate"
+                // noRowsOverlayComponent={noRowsOverlayComponent}
+                // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
               ></AgGridReact>
             </div>

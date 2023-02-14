@@ -20,14 +20,15 @@ import { Error500 } from "./components/error-500";
 import styles from "./styles/app-compiled.css";
 import fonts from "./styles/fonts.css";
 import AgGridStyles from "ag-grid-community/styles/ag-grid.css";
-import AgThemeAlpineStyles from "ag-grid-community/styles/ag-theme-alpine.css";
+import AgThemeAlpineStyles from "ag-grid-community/styles/ag-theme-alpine.min.css";
+import AgThemeBalhamStyles from "ag-grid-community/styles/ag-theme-balham.min.css";
 
 export const links = () => {
   return [
     { rel: "stylesheet", href: fonts },
     { rel: "stylesheet", href: styles },
     { rel: "stylesheet", href: AgGridStyles },
-    { rel: "stylesheet", href: AgThemeAlpineStyles },
+    { rel: "stylesheet", href: AgThemeBalhamStyles },
     { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
   ];
 };

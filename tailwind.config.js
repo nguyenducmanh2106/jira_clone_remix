@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('tailwindcss').Config} */
-const plugin = require('tailwindcss/plugin')
-
+const plugin = require("tailwindcss/plugin");
+const { blackA, mauve, violet } = require("@radix-ui/colors");
 module.exports = {
-  content: [
-    "./src/app/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/app/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     colors: {
@@ -29,8 +27,8 @@ module.exports = {
       "error-dark-dark": "red",
       "error-hover": "#fdd8d8",
       "error-hover-dark": "#fe6f6f",
-      "white": "#fff",
-      "black": "#000",
+      white: "#fff",
+      black: "#000",
       "grey-100": "#fafbfc",
       "grey-200": "#f4f5f7",
       "grey-300": "#ebecf0",
@@ -50,32 +48,37 @@ module.exports = {
       "font-success-main": "#006644",
       "font-success-main-dark": "#00c382",
       "font-success-light": "#E3FCEF",
-      "icon": "#344563",
-      "focus": "#4c9aff",
-      "transparent": "transparent",
+      icon: "#344563",
+      focus: "#4c9aff",
+      transparent: "transparent",
     },
     fontFamily: {
       "primary-light": ["CircularStdLight", "sans-serif"],
-      "primary": ["CircularStdMedium", "sans-serif"],
+      primary: ["CircularStdMedium", "sans-serif"],
       "primary-bold": ["CircularStdBold", "sans-serif"],
       "primary-black": ["CircularStdBlack", "sans-serif"],
     },
     boxShadow: {
-      "xs": "rgba(0,0,0, 0.2) 0px 1px 1px, rgba(0,0,0, 0.2) 0px 0px 1px",
-      "sm": "rgba(9, 30, 66, 0.25) 0px 1px 1px 0px, rgba(9, 30, 66, 0.31) 0px 0px 1px 0px",
-      "md": "0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)",
+      xs: "rgba(0,0,0, 0.2) 0px 1px 1px, rgba(0,0,0, 0.2) 0px 0px 1px",
+      sm: "rgba(9, 30, 66, 0.25) 0px 1px 1px 0px, rgba(9, 30, 66, 0.31) 0px 0px 1px 0px",
+      md: "0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)",
       "md-dark": "0 0 2px 1px rgba(0, 0, 0, 0.5)",
-      "lg": "rgba(14, 18, 22, 0.35) 0px 10px 38px -10px, rgba(14, 18, 22, 0.2) 0px 10px 20px -15px",
-      "blue": "5px 5px 20px 1px rgba(0, 82, 204, 0.2)",
+      lg: "rgba(14, 18, 22, 0.35) 0px 10px 38px -10px, rgba(14, 18, 22, 0.2) 0px 10px 20px -15px",
+      blue: "5px 5px 20px 1px rgba(0, 82, 204, 0.2)",
       "dialog-overlay": "rgba(0,0,0,0.45)",
     },
     extend: {
+      colors: {
+        ...blackA,
+        ...mauve,
+        ...violet,
+      },
       fontSize: {
         "2xs": ["0.75rem", "1rem"],
-        "xs": ["0.8125rem", "1rem"],
+        xs: ["0.8125rem", "1rem"],
       },
       gridTemplateColumns: {
-        'auto-400': 'repeat(auto-fit, 400px)',
+        "auto-400": "repeat(auto-fit, 400px)",
       },
       keyframes: {
         // Dropdown menu
@@ -135,16 +138,13 @@ module.exports = {
         "slide-up": "slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
         // Tooltip
         "slide-up-fade": "slide-up-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-        "slide-right-fade":
-          "slide-right-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        "slide-right-fade": "slide-right-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         "slide-down-fade": "slide-down-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         "slide-left-fade": "slide-left-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         // Toast
         "toast-hide": "toast-hide 100ms ease-in forwards",
-        "toast-slide-in-right":
-          "toast-slide-in-right 150ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "toast-slide-in-bottom":
-          "toast-slide-in-bottom 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "toast-slide-in-right": "toast-slide-in-right 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "toast-slide-in-bottom": "toast-slide-in-bottom 150ms cubic-bezier(0.16, 1, 0.3, 1)",
         "toast-swipe-out": "toast-swipe-out 100ms ease-out forwards",
       },
     },
@@ -152,23 +152,25 @@ module.exports = {
   plugins: [
     require("@tailwindcss/line-clamp"),
     require("tailwindcss-radix")(),
-    plugin(({ addUtilities }) => addUtilities({
-      ".flex-center": {
-        "justify-content": "center",
-        "align-items": "center",
-      },
-      ".scrollbar-hide": {
-        /* IE and Edge */
-        "-ms-overflow-style": "none",
+    plugin(({ addUtilities }) =>
+      addUtilities({
+        ".flex-center": {
+          "justify-content": "center",
+          "align-items": "center",
+        },
+        ".scrollbar-hide": {
+          /* IE and Edge */
+          "-ms-overflow-style": "none",
 
-        /* Firefox */
-        "scrollbar-width": "none",
+          /* Firefox */
+          "scrollbar-width": "none",
 
-        /* Safari and Chrome */
-        "&::-webkit-scrollbar": {
-          display: "none"
-        }
-      }
-    })),
+          /* Safari and Chrome */
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        },
+      })
+    ),
   ],
-}
+};

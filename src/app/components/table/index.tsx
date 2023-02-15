@@ -13,6 +13,7 @@ import {
 } from 'ag-grid-community';
 import { HeaderTableView } from "./header";
 import { NoRowsOverlay } from "./no-rows-overlay";
+import { CellComponentTableView } from "./cell-render";
 
 
 export const TableView = ({
@@ -33,12 +34,22 @@ export const TableView = ({
   const colDefsMedalsExcluded: ColDef[] = [
     {
       field: 'id',
-      headerName: 'Id1',
-      maxWidth: 175,
+      // headerName: 'Id1',
+      maxWidth: 50,
       checkboxSelection: true,
+      headerCheckboxSelection: true,
       headerComponentParams: {
         checkboxSelection: true,
       },
+      pinned: true,
+      resizable: false,
+      suppressMovable: true,
+      lockPosition: true,
+      cellRendererParams: {
+        inputType: 'number',
+        checkbox: true,
+      },
+      cellRenderer: CellComponentTableView,
     },
     {
       field: 'id',
@@ -49,14 +60,21 @@ export const TableView = ({
       field: 'title',
       minWidth: 190,
       headerName: 'Tiêu đề',
+      sortable: true,
     },
     {
       field: 'price',
       headerName: 'Giá',
+      sortable: true,
+      cellRendererParams: {
+        inputType: 'number',
+      },
+      cellRenderer: CellComponentTableView,
     },
     {
       field: 'description',
       headerName: 'Mô tả',
+      cellRenderer: CellComponentTableView,
     },
   ];
   const defaultColDef = useMemo<ColDef>(() => {
@@ -64,7 +82,7 @@ export const TableView = ({
       flex: 1,
       minWidth: 90,
       resizable: true,
-      sortable: true,
+      enableCellChangeFlash: true,
     };
   }, []);
 
@@ -168,6 +186,7 @@ export const TableView = ({
                 rowModelType={'serverSide'}
                 pagination={true}
                 paginationPageSize={10}
+                rowSelection={'multiple'}
                 cacheBlockSize={10}
                 animateRows={true}
                 overlayNoRowsTemplate="noRowsTemplate"

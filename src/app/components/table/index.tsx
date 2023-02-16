@@ -14,6 +14,7 @@ import {
 import { HeaderTableView } from "./header";
 import { NoRowsOverlay } from "./no-rows-overlay";
 import { CellComponentTableView } from "./cell-render";
+import { PaginationTable } from "./pagination-table";
 
 
 export const TableView = ({
@@ -184,16 +185,17 @@ export const TableView = ({
                 components={components}
                 defaultColDef={defaultColDef}
                 rowModelType={'serverSide'}
-                pagination={true}
-                paginationPageSize={10}
+                pagination={false}
+                paginationPageSize={20}
                 rowSelection={'multiple'}
-                cacheBlockSize={10}
+                cacheBlockSize={20}
                 animateRows={true}
                 overlayNoRowsTemplate="noRowsTemplate"
                 // noRowsOverlayComponent={noRowsOverlayComponent}
                 // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
               ></AgGridReact>
+              <PaginationTable noRowsMessageFunc={"hi"} />
             </div>
           </div>
         </div>

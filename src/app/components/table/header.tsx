@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IHeaderParams } from 'ag-grid-community';
-import { Dropdown } from "flowbite-react";
+import * as Popover from '@radix-ui/react-popover';
 // import ReactPortal from '../portal';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import {
@@ -14,7 +14,7 @@ import {
   DrawingPinIcon,
   CircleBackslashIcon,
 } from '@radix-ui/react-icons';
-import { RiFilterLine } from "react-icons/ri";
+import { RiFilterLine, RiCloseLine } from "react-icons/ri";
 
 export interface ICustomHeaderParams extends IHeaderParams {
   menuIcon: string;
@@ -65,41 +65,53 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
   if (props.enableMenu) {
     menu = (
       <div className="filter">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
+        <Popover.Root>
+          <Popover.Trigger asChild>
             <button
-              className="rounded-full w-[35px] h-[35px] inline-flex items-center justify-center text-violet11 bg-auto outline-none hover:bg-violet3"
-              aria-label="Customise menu"
+              className="rounded-full w-[35px] h-[35px] inline-flex items-center justify-center text-violet11 bg-transparent shadow-blackA7 hover:bg-grey-600  cursor-default outline-none"
+              aria-label="Update dimensions"
             >
               <RiFilterLine />
             </button>
-          </DropdownMenu.Trigger>
-
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content onClick={event => event.stopPropagation()}
-              className="min-w-[220px] z-50 bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
+          </Popover.Trigger>
+          <Popover.Portal>
+            <Popover.Content
+              className="rounded z-10 p-5 w-[260px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade"
               sideOffset={5}
             >
-
-              <DropdownMenu.Item
-                className="group text-[13px] leading-none text-violet11 rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1">
-                <ArrowUpIcon />
-                <div className="ml-[4px] pr-[4px] text-mauve11 group-data-[highlighted]:text-white group-data-[disabled]:text-mauve8">
-                  Sort ascending
-                </div>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item
-                className="group text-[13px] leading-none text-violet11 rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1">
-                <ArrowDownIcon />
-                <div className="ml-[4px] pr-[4px] text-mauve11 group-data-[highlighted]:text-white group-data-[disabled]:text-mauve8">
-                  Sort descending
-                </div>
-              </DropdownMenu.Item>
-
-              <DropdownMenu.Arrow className="fill-white" />
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+              <div className="flex flex-col gap-2.5">
+                <p className="text-mauve12 text-[15px] leading-[19px] font-medium mb-2.5">Dimensions</p>
+                <fieldset className="flex gap-5 items-center">
+                  <label className="text-[13px] text-violet11 w-[75px]" htmlFor="width">
+                    Width
+                  </label>
+                  <input
+                    className="w-full inline-flex items-center justify-center flex-1 rounded px-2.5 text-[13px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[25px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
+                    id="width"
+                    defaultValue="100%"
+                  />
+                </fieldset>
+                <fieldset className="flex gap-5 items-center">
+                  <label className="text-[13px] text-violet11 w-[75px]" htmlFor="maxWidth">
+                    Max. width
+                  </label>
+                  <input
+                    className="w-full inline-flex items-center justify-center flex-1 rounded px-2.5 text-[13px] leading-none text-violet11 shadow-[0_0_0_1px] shadow-violet7 h-[25px] focus:shadow-[0_0_0_2px] focus:shadow-violet8 outline-none"
+                    id="maxWidth"
+                    defaultValue="300px"
+                  />
+                </fieldset>
+              </div>
+              <Popover.Close
+                className="rounded-full h-[25px] w-[25px] inline-flex items-center justify-center text-violet11 absolute top-[5px] right-[5px] hover:bg-violet4 focus:shadow-[0_0_0_2px] focus:shadow-violet7 outline-none cursor-default"
+                aria-label="Close"
+              >
+                <RiCloseLine />
+              </Popover.Close>
+              <Popover.Arrow className="fill-white" />
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover.Root>
       </div>
     );
   }

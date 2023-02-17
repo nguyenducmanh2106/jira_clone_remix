@@ -17,18 +17,20 @@ import {
   SelectItemIndicator,
 } from "@app/components/select";
 import { AgGridReact } from 'ag-grid-react';
+import { RiArrowLeftSLine, RiArrowRightSLine, RiSkipBackLine, RiSkipForwardLine } from 'react-icons/ri';
 // import { SelectContent, SelectItemIndicator, SelectTrigger } from '@radix-ui/react-select';
 
 export interface INoRowsOverlay {
   noRowsMessageFunc: string;
+  defaultPageSize: number;
   gridRef: React.RefObject<AgGridReact<any>>
 }
 export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
-  const [totalCount, setTotalCount] = useState<number>(0)
-  // const totalCount = useMemo(() => {
-  //   return props.gridRef.current?.api.paginationGetRowCount() ?? 0;
-  // }, [props.gridRef]);
-  useEffect
+  console.log(props.gridRef.current?.api.paginationGetRowCount())
+  const totalCount = useMemo(() => {
+    return props.gridRef.current?.api.paginationGetRowCount() ?? 0;
+  }, [props.gridRef.current?.api.paginationGetRowCount()]);
+
   const onValueChange = (value: string) => {
     // console.log('onValueChange', value);
     console.log(props.gridRef.current?.api.paginationGetRowCount())
@@ -36,10 +38,26 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
     // props.gridRef.current!.api.setCacheBlockSize(+value);paginationGetRowCount
     // props.gridRef.current!.api.paginationGoToPage(4);
   }
+  const onChangePageSize = (value: "first-page" | "prev-page" | "next-page" | "last-page") => {
+    switch (value) {
+      case "first-page":
+        props.gridRef.current!.api.paginationGoToFirstPage()
+        break;
+      case "prev-page":
+        props.gridRef.current!.api.paginationGoToPreviousPage()
+        break;
+      case "next-page":
+        props.gridRef.current!.api.paginationGoToNextPage()
+        break;
+      case "last-page":
+        props.gridRef.current!.api.paginationGoToLastPage()
+        break;
+    }
+  }
   const SelectDemo = () => (
     <Select.Root
       name="asignee"
-      defaultValue={"10"}
+      defaultValue={props.defaultPageSize.toString()}
       onValueChange={onValueChange}
     >
       <SelectTrigger aria-label="Open asignee select">
@@ -77,7 +95,7 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
   );
   return (
     <div className="whitespace-nowrap border-solid border-x border-y border-t-0 border-indigo-600 dark:border-white bg-white py-[12px] px-[16px] text-2xs text-bla dark:bg-dark-500 dark:text-white">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between h-[32px]">
         <div className="left-pagination hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
@@ -91,13 +109,46 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
             </nav>
           </div>
         </div>
-        <div className="right-pagination hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-          <div>
+        <div className="right-pagination hidden sm:flex sm:flex-1 sm:items-center sm:justify-end">
+          <div className='change-pageSize flex h-[32px]'>
             <SelectDemo />
           </div>
-          <div>
-            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+          <div className='change-page flex h-[32px] ml-[12px]'>
+            <nav className="isolate inline-flex -space-x-px rounded-md" aria-label="Pagination">
+              <div className="pager self-center flex flex-row btn-group-link">
+                <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
+                  <button onClick={() => onChangePageSize("first-page")}
+                    className="flex wrap-misa-active wrap-misa-active-circle-small link previous-start-page previous-page icon-start-page disable-next-prev" data-current-page="1" title="Trang đầu">
+                    <RiSkipBackLine size={"24px"} />
+                  </button>
+                </div>
 
+                <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
+                  <button onClick={() => onChangePageSize("prev-page")}
+                    className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
+                    <RiArrowLeftSLine size={"24px"} />
+                  </button>
+                </div>
+
+                <div className="current-page self-center flex mx-[4px]">
+                  <b className="count-to">1</b>
+                  <span className="px-[8px]">đến</span>
+                  <b className="count-from"> 20</b>
+                  <input type="hidden" className="input-data" defaultValue={20} />
+                </div>
+                <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
+                  <button onClick={() => onChangePageSize("next-page")}
+                    className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
+                    <RiArrowRightSLine size={"24px"} />
+                  </button>
+                </div>
+                <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
+                  <button onClick={() => onChangePageSize("last-page")}
+                    className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
+                    <RiSkipForwardLine size={"24px"} />
+                  </button>
+                </div>
+              </div>
             </nav>
           </div>
         </div>

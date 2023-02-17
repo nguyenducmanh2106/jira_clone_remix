@@ -25,6 +25,8 @@ export const TableView = ({
   const containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
+  const defaultPageSize = 20
+
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     // { field: 'id', maxWidth: 75, sortable: true },
     // { field: 'title', minWidth: 190, sortable: true },
@@ -118,7 +120,7 @@ export const TableView = ({
         setTimeout(function () {
           // if (response.success) {
           // eslint-disable-next-line no-constant-condition
-          if (true) {
+          if (response && response.total) {
             // call the success callback
             params.success({
               rowData: response.products,
@@ -130,7 +132,7 @@ export const TableView = ({
             // inform the grid request failed
             params.fail();
           }
-        }, 200);
+        }, 0);
       },
     };
   };
@@ -187,16 +189,16 @@ export const TableView = ({
                 rowModelType={'serverSide'}
                 pagination={true}
                 suppressPaginationPanel={true}
-                paginationPageSize={20}
+                paginationPageSize={defaultPageSize}
                 rowSelection={'multiple'}
-                cacheBlockSize={20}
+                cacheBlockSize={defaultPageSize}
                 animateRows={true}
                 overlayNoRowsTemplate="noRowsTemplate"
                 // noRowsOverlayComponent={noRowsOverlayComponent}
                 // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
               ></AgGridReact>
-              <PaginationTable gridRef={gridRef} noRowsMessageFunc={"hi"} />
+              <PaginationTable gridRef={gridRef} defaultPageSize={defaultPageSize} noRowsMessageFunc={"hi"} />
             </div>
           </div>
         </div>

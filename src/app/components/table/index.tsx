@@ -185,7 +185,8 @@ export const TableView = ({
                 components={components}
                 defaultColDef={defaultColDef}
                 rowModelType={'serverSide'}
-                pagination={false}
+                pagination={true}
+                suppressPaginationPanel={true}
                 paginationPageSize={20}
                 rowSelection={'multiple'}
                 cacheBlockSize={20}
@@ -195,7 +196,7 @@ export const TableView = ({
                 // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
               ></AgGridReact>
-              <PaginationTable noRowsMessageFunc={"hi"} />
+              <PaginationTable gridRef={gridRef} noRowsMessageFunc={"hi"} />
             </div>
           </div>
         </div>

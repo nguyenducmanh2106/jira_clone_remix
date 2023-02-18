@@ -29,7 +29,7 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
   console.log(props.gridRef.current?.api.paginationGetRowCount())
   const totalCount = useMemo(() => {
     return props.gridRef.current?.api.paginationGetRowCount() ?? 0;
-  }, [props.gridRef.current?.api.paginationGetRowCount()]);
+  }, [props.gridRef, props.gridRef.current, props.gridRef.current?.api, props.gridRef.current?.api.paginationGetRowCount()]);
 
   const onValueChange = (value: string) => {
     // console.log('onValueChange', value);
@@ -56,11 +56,11 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
   }
   const SelectDemo = () => (
     <Select.Root
-      name="asignee"
+      name="Changepage"
       defaultValue={props.defaultPageSize.toString()}
       onValueChange={onValueChange}
     >
-      <SelectTrigger aria-label="Open asignee select">
+      <SelectTrigger className={classnames('bg-[#fff]', '!border-solid','border-[1px]', 'border-[#d3d7de]')} aria-label="Open change page size select">
 
         <Select.Value />
         {/* <div className="ml-2">
@@ -94,7 +94,7 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
     </Select.Root>
   );
   return (
-    <div className="whitespace-nowrap border-solid border-x border-y border-t-0 border-indigo-600 dark:border-white bg-white py-[12px] px-[16px] text-2xs text-bla dark:bg-dark-500 dark:text-white">
+    <div className="whitespace-nowrap border-solid border-x border-y border-t-0 border-[#bdc3c7] dark:border-white bg-white py-[12px] px-[16px] text-2xs text-bla dark:bg-dark-500 dark:text-white">
       <div className="flex items-center justify-between h-[32px]">
         <div className="left-pagination hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
           <div>
@@ -119,14 +119,14 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
                   <button onClick={() => onChangePageSize("first-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-start-page previous-page icon-start-page disable-next-prev" data-current-page="1" title="Trang đầu">
-                    <RiSkipBackLine size={"24px"} />
+                    <RiSkipBackLine color="#bdc3c7" size={"24px"} />
                   </button>
                 </div>
 
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
                   <button onClick={() => onChangePageSize("prev-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiArrowLeftSLine size={"24px"} />
+                    <RiArrowLeftSLine color="#bdc3c7" size={"24px"} />
                   </button>
                 </div>
 
@@ -139,13 +139,13 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
                   <button onClick={() => onChangePageSize("next-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiArrowRightSLine size={"24px"} />
+                    <RiArrowRightSLine color="#586074" size={"24px"} />
                   </button>
                 </div>
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
                   <button onClick={() => onChangePageSize("last-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiSkipForwardLine size={"24px"} />
+                    <RiSkipForwardLine color="#586074" size={"24px"} />
                   </button>
                 </div>
               </div>

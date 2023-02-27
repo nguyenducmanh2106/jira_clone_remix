@@ -15,6 +15,7 @@ import {
   CircleBackslashIcon,
 } from '@radix-ui/react-icons';
 import { RiFilterLine, RiCloseLine } from "react-icons/ri";
+import { CheckedState } from '@radix-ui/react-checkbox';
 
 export interface ICustomHeaderParams extends IHeaderParams {
   menuIcon: string;
@@ -22,12 +23,12 @@ export interface ICustomHeaderParams extends IHeaderParams {
 }
 
 export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
-  const [bookmarksChecked, setBookmarksChecked] = useState<boolean>(false);
+  const [bookmarksChecked, setBookmarksChecked] = useState<CheckedState>(false);
   console.log(props)
   const [ascSort, setAscSort] = useState('inactive');
   const [descSort, setDescSort] = useState('inactive');
   const [noSort, setNoSort] = useState('inactive');
-  const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc' | null | string>('no-sort');
+  const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc' | undefined | string>('no-sort');
   const refButton = useRef(null);
 
   // const onMenuClicked = () => {
@@ -35,6 +36,7 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
   // };
 
   const onSortChanged = () => {
+    console.log('onSortChanged')
     setAscSort(props.column.isSortAscending() ? 'active' : 'inactive');
     setDescSort(props.column.isSortDescending() ? 'active' : 'inactive');
     setNoSort(
@@ -53,7 +55,7 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
 
   useEffect(() => {
     props.column.addEventListener('sortChanged', onSortChanged);
-    // onSortChanged();
+    onSortChanged();
 
     // 👇️ remove the event listener when the component unmounts
     return () => {

@@ -70,7 +70,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (!(_action === "upsert" || _action === "delete")) {
     throw new Error(
-      `Invalid action: '${_action}'. Values must be 'upsert' or 'delete'`
+      `Invalid action: '${_action}'. Values must be 'upsert' or 'delete'.`
     );
   }
 

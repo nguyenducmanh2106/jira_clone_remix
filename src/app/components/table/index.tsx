@@ -26,6 +26,9 @@ export const TableView = ({
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
   const defaultPageSize = 20
+  const [totalRecords, setTotalRecords] = useState<number>(0);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
+  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
 
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     // { field: 'id', maxWidth: 75, sortable: true },
@@ -114,13 +117,17 @@ export const TableView = ({
     return {
       getRows: async (params) => {
         console.log('[Datasource] - rows requested by grid: ', params.request);
-        const response = await server(params.request.startRow, params.request.endRow);
+        const skip = params.request.startRow ?? 0;
+        const take = (params.request.endRow ?? 0) - (params.request.startRow ?? 0);
+        const response = await server(skip, take);
         // console.log(response);
         // adding delay to simulate real server call
         setTimeout(function () {
           // if (response.success) {
           // eslint-disable-next-line no-constant-condition
           if (response && response.total) {
+            setTotalRecords(response.total)
+            
             // call the success callback
             params.success({
               rowData: response.products,
@@ -198,7 +205,9 @@ export const TableView = ({
                 // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
               ></AgGridReact>
-              <PaginationTable gridRef={gridRef} defaultPageSize={defaultPageSize} noRowsMessageFunc={"hi"} />
+              <PaginationTable totalRecord={totalRecords} hasNextPage={hasNextPage}
+                hasPrevPage={hasPrevPage}
+                gridRef={gridRef} defaultPageSize={defaultPageSize} noRowsMessageFunc={"hi"} />
             </div>
           </div>
         </div>

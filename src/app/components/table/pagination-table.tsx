@@ -23,22 +23,29 @@ import { RiArrowLeftSLine, RiArrowRightSLine, RiSkipBackLine, RiSkipForwardLine 
 export interface INoRowsOverlay {
   noRowsMessageFunc: string;
   defaultPageSize: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  totalRecord: number;
   gridRef: React.RefObject<AgGridReact<any>>
 }
 export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
   console.log(props.gridRef.current?.api.paginationGetRowCount())
   const totalCount = useMemo(() => {
-    return props.gridRef.current?.api.paginationGetRowCount() ?? 0;
-  }, [props.gridRef, props.gridRef.current, props.gridRef.current?.api, props.gridRef.current?.api.paginationGetRowCount()]);
+    return props.totalRecord ?? 0;
+  }, [props.totalRecord]);
+
 
   const onValueChange = (value: string) => {
     // console.log('onValueChange', value);
     console.log(props.gridRef.current?.api.paginationGetRowCount())
+
     props.gridRef.current!.api.paginationSetPageSize(+value);
-    // props.gridRef.current!.api.setCacheBlockSize(+value);paginationGetRowCount
+    // props.gridRef.current!.api.setCacheBlockSize(+value);
     // props.gridRef.current!.api.paginationGoToPage(4);
   }
   const onChangePageSize = (value: "first-page" | "prev-page" | "next-page" | "last-page") => {
+    console.log(props.gridRef?.current?.api?.paginationGetCurrentPage())
+
     switch (value) {
       case "first-page":
         props.gridRef.current!.api.paginationGoToFirstPage()
@@ -60,7 +67,7 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
       defaultValue={props.defaultPageSize.toString()}
       onValueChange={onValueChange}
     >
-      <SelectTrigger className={classnames('bg-[#fff]', '!border-solid','border-[1px]', 'border-[#d3d7de]')} aria-label="Open change page size select">
+      <SelectTrigger className={classnames('bg-[#fff]', '!border-solid', 'border-[1px]', 'border-[#d3d7de]')} aria-label="Open change page size select">
 
         <Select.Value />
         {/* <div className="ml-2">
@@ -117,16 +124,16 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
             <nav className="isolate inline-flex -space-x-px rounded-md" aria-label="Pagination">
               <div className="pager self-center flex flex-row btn-group-link">
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button onClick={() => onChangePageSize("first-page")}
+                  <button disabled onClick={() => onChangePageSize("first-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-start-page previous-page icon-start-page disable-next-prev" data-current-page="1" title="Trang đầu">
-                    <RiSkipBackLine color="#bdc3c7" size={"24px"} />
+                    <RiSkipBackLine color={props.hasPrevPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
 
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
                   <button onClick={() => onChangePageSize("prev-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiArrowLeftSLine color="#bdc3c7" size={"24px"} />
+                    <RiArrowLeftSLine color={props.hasPrevPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
 
@@ -139,13 +146,13 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
                   <button onClick={() => onChangePageSize("next-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiArrowRightSLine color="#586074" size={"24px"} />
+                    <RiArrowRightSLine color={props.hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
                   <button onClick={() => onChangePageSize("last-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiSkipForwardLine color="#586074" size={"24px"} />
+                    <RiSkipForwardLine color={props.hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
               </div>

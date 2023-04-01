@@ -18,6 +18,7 @@ import {
 } from "@app/components/select";
 import { AgGridReact } from 'ag-grid-react';
 import { RiArrowLeftSLine, RiArrowRightSLine, RiSkipBackLine, RiSkipForwardLine } from 'react-icons/ri';
+import { GridApi } from 'ag-grid-enterprise';
 // import { SelectContent, SelectItemIndicator, SelectTrigger } from '@radix-ui/react-select';
 
 export interface INoRowsOverlay {
@@ -29,22 +30,24 @@ export interface INoRowsOverlay {
   gridRef: React.RefObject<AgGridReact<any>>
 }
 export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
-  console.log(props.gridRef.current?.api.paginationGetRowCount())
+  // console.log(props.gridRef.current?.api.paginationGetRowCount())
   const totalCount = useMemo(() => {
     return props.totalRecord ?? 0;
   }, [props.totalRecord]);
+  useEffect(() => {
+    checkNextOrPreviousPage(props.gridRef.current!.api)
+  }, [])
 
-
-  const onValueChange = (value: string) => {
-    // console.log('onValueChange', value);
-    console.log(props.gridRef.current?.api.paginationGetRowCount())
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false)
+  const [hasPreviousPage, setHasPreviousPage] = useState<boolean>(false)
+  const onChangePageSize = (value: string) => {
+    // console.log(props.gridRef.current?.api.paginationGetRowCount())
 
     props.gridRef.current!.api.paginationSetPageSize(+value);
     // props.gridRef.current!.api.setCacheBlockSize(+value);
     // props.gridRef.current!.api.paginationGoToPage(4);
   }
-  const onChangePageSize = (value: "first-page" | "prev-page" | "next-page" | "last-page") => {
-    console.log(props.gridRef?.current?.api?.paginationGetCurrentPage())
+  const onChangePageIndex = (value: "first-page" | "prev-page" | "next-page" | "last-page") => {
 
     switch (value) {
       case "first-page":
@@ -60,12 +63,25 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
         props.gridRef.current!.api.paginationGoToLastPage()
         break;
     }
+    console.log(props.gridRef?.current?.api?.paginationGetCurrentPage())
+    checkNextOrPreviousPage(props.gridRef?.current?.api)
+
   }
+
+  const checkNextOrPreviousPage = (gridApi: GridApi<any> | undefined) => {
+    const currentPage = gridApi?.paginationGetCurrentPage() ?? 0
+
+    const totalPages = gridApi?.paginationGetTotalPages() ?? 0;
+    setHasPreviousPage(currentPage > 0);
+    console.log(currentPage,totalPages,currentPage < totalPages - 1)
+    setHasNextPage(currentPage < totalPages - 1)
+  }
+
   const SelectDemo = () => (
     <Select.Root
       name="Changepage"
       defaultValue={props.defaultPageSize.toString()}
-      onValueChange={onValueChange}
+      onValueChange={onChangePageSize}
     >
       <SelectTrigger className={classnames('bg-[#fff]', '!border-solid', 'border-[1px]', 'border-[#d3d7de]')} aria-label="Open change page size select">
 
@@ -124,16 +140,16 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
             <nav className="isolate inline-flex -space-x-px rounded-md" aria-label="Pagination">
               <div className="pager self-center flex flex-row btn-group-link">
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button disabled onClick={() => onChangePageSize("first-page")}
+                  <button disabled onClick={() => onChangePageIndex("first-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-start-page previous-page icon-start-page disable-next-prev" data-current-page="1" title="Trang đầu">
-                    <RiSkipBackLine color={props.hasPrevPage ? "#586074" : "#bdc3c7"} size={"24px"} />
+                    <RiSkipBackLine color={hasPreviousPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
 
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button onClick={() => onChangePageSize("prev-page")}
+                  <button onClick={() => onChangePageIndex("prev-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiArrowLeftSLine color={props.hasPrevPage ? "#586074" : "#bdc3c7"} size={"24px"} />
+                    <RiArrowLeftSLine color={hasPreviousPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
 
@@ -144,15 +160,15 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
                   <input type="hidden" className="input-data" defaultValue={20} />
                 </div>
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button onClick={() => onChangePageSize("next-page")}
+                  <button onClick={() => onChangePageIndex("next-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiArrowRightSLine color={props.hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
+                    <RiArrowRightSLine color={hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button onClick={() => onChangePageSize("last-page")}
+                  <button onClick={() => onChangePageIndex("last-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
-                    <RiSkipForwardLine color={props.hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
+                    <RiSkipForwardLine color={hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
               </div>

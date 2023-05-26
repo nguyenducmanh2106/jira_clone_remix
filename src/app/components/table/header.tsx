@@ -24,7 +24,7 @@ export interface ICustomHeaderParams extends IHeaderParams {
 
 export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
   const [bookmarksChecked, setBookmarksChecked] = useState<CheckedState>(false);
-  // console.log(props)
+
   const [ascSort, setAscSort] = useState('inactive');
   const [descSort, setDescSort] = useState('inactive');
   const [noSort, setNoSort] = useState('inactive');
@@ -37,6 +37,7 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
 
   const onSortChanged = () => {
     // console.log('onSortChanged')
+    console.log(props.api.getSelectedRows())
     setAscSort(props.column.isSortAscending() ? 'active' : 'inactive');
     setDescSort(props.column.isSortDescending() ? 'active' : 'inactive');
     setNoSort(

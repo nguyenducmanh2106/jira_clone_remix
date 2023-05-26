@@ -5,6 +5,7 @@ import 'ag-grid-enterprise';
 import {
   ColDef,
   ColGroupDef,
+  FirstDataRenderedEvent,
   Grid,
   GridOptions,
   GridReadyEvent,
@@ -37,6 +38,38 @@ export const TableView = ({
     // { field: 'description' },
   ]);
 
+
+  const onSelectionChanged = useCallback(() => {
+    const selectedRows = gridRef.current!.api.getSelectedRows();
+    console.log(selectedRows)
+    // let selectedRowsString = '';
+    // const maxToShow = 5;
+    // selectedRows.forEach(function (selectedRow, index) {
+    //   if (index >= maxToShow) {
+    //     return;
+    //   }
+    //   if (index > 0) {
+    //     selectedRowsString += ', ';
+    //   }
+    //   selectedRowsString += selectedRow.athlete;
+    // });
+    // if (selectedRows.length > maxToShow) {
+    //   const othersCount = selectedRows.length - maxToShow;
+    //   selectedRowsString +=
+    //     ' and ' + othersCount + ' other' + (othersCount !== 1 ? 's' : '');
+    // }
+
+  }, []);
+
+  const onFirstDataRendered = useCallback(
+    (params: FirstDataRenderedEvent<IOlympicData>) => {
+      const selectedRows: IOlympicData | any = gridRef.current!.api.getSelectedRows();
+      gridRef.current!.api.forEachNode((node) =>
+        node.setSelected(!!node.data && node.data.year === 2012)
+      );
+    },
+    []
+  );
   const colDefsMedalsExcluded: ColDef[] = [
     {
       field: 'id',
@@ -51,17 +84,17 @@ export const TableView = ({
       resizable: false,
       suppressMovable: true,
       lockPosition: true,
-      cellRendererParams: {
-        inputType: 'number',
-        checkbox: true,
-      },
-      cellRenderer: CellComponentTableView,
+      // cellRendererParams: {
+      //   inputType: 'number',
+      //   checkbox: true,
+      // },
+      // cellRenderer: CellComponentTableView,
     },
-    {
-      field: 'id',
-      headerName: 'Id',
-      maxWidth: 175,
-    },
+    // {
+    //   field: 'id',
+    //   headerName: 'Id',
+    //   maxWidth: 175,
+    // },
     {
       field: 'title',
       minWidth: 190,
@@ -80,6 +113,9 @@ export const TableView = ({
     {
       field: 'description',
       headerName: 'Mô tả',
+      cellRendererParams: {
+        inputType: 'text',
+      },
       cellRenderer: CellComponentTableView,
     },
   ];
@@ -96,7 +132,7 @@ export const TableView = ({
     [p: string]: any;
   }>(() => {
     return {
-      agColumnHeader: HeaderTableView,
+      // agColumnHeader: HeaderTableView,
     };
   }, []);
 
@@ -127,7 +163,7 @@ export const TableView = ({
           // eslint-disable-next-line no-constant-condition
           if (response && response.total) {
             setTotalRecords(response.total)
-            
+
             // call the success callback
             params.success({
               rowData: response.products,
@@ -201,6 +237,9 @@ export const TableView = ({
                 cacheBlockSize={defaultPageSize}
                 animateRows={true}
                 overlayNoRowsTemplate="noRowsTemplate"
+                suppressRowClickSelection={true}
+                onSelectionChanged={onSelectionChanged}
+                onFirstDataRendered={onFirstDataRendered}
                 // noRowsOverlayComponent={noRowsOverlayComponent}
                 // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}

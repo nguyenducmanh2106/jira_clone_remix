@@ -23,7 +23,10 @@ export const TableView = ({
 }: TooltipProps): JSX.Element => {
 
   const gridRef = useRef<AgGridReact<IOlympicData>>(null);
-  const containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
+
+  const gridContainerRef = useRef(null);
+  // let containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
+  let [containerStyle, setContainerStyle] = useState({ width: '100%', height: '500px' });
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
   const defaultPageSize = 20
@@ -41,7 +44,7 @@ export const TableView = ({
 
   const onSelectionChanged = useCallback(() => {
     const selectedRows = gridRef.current!.api.getSelectedRows();
-    console.log(selectedRows)
+    // console.log(selectedRows)
     // let selectedRowsString = '';
     // const maxToShow = 5;
     // selectedRows.forEach(function (selectedRow, index) {
@@ -99,6 +102,7 @@ export const TableView = ({
       field: 'title',
       minWidth: 190,
       headerName: 'Tiêu đề',
+      headerComponent: HeaderTableView,
       sortable: true,
     },
     {
@@ -113,6 +117,8 @@ export const TableView = ({
     {
       field: 'description',
       headerName: 'Mô tả',
+      hide:true,
+      headerComponent: HeaderTableView,
       cellRendererParams: {
         inputType: 'text',
       },
@@ -187,6 +193,7 @@ export const TableView = ({
    * @returns 
    */
   const getData = async (skip: number, limit: number) => {
+
     // const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}&select=title,price`)
     const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`)
     const data = await response.json()
@@ -207,6 +214,12 @@ export const TableView = ({
     //chỗ này tiến hành lấy dự liệu về fill vào table
     const datasource = getServerSideDatasource(getData);
     params.api!.setServerSideDatasource(datasource);
+
+    // console.log(gridContainerRef?.current?.getBoundingClientRect())
+    // const boundingClientRect = gridContainerRef?.current?.getBoundingClientRect();
+    // // setContainerStyle({ ...containerStyle, height: `calc(100vh - ${boundingClientRect.top})` })
+    // const heightTable = window.innerHeight - boundingClientRect.top
+    // setContainerStyle({ ...containerStyle, height: `${heightTable}px` })
   }, []);
 
 
@@ -220,7 +233,7 @@ export const TableView = ({
         {/* <div className="whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
           table
         </div> */}
-        <div className="tableViewContainer">
+        <div className="tableViewContainer" ref={gridContainerRef}>
           <div style={containerStyle}>
             <div style={gridStyle} className="ag-theme-balham">
               <AgGridReact<IOlympicData>

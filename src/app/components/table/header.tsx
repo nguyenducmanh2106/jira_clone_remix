@@ -16,6 +16,7 @@ import {
 } from '@radix-ui/react-icons';
 import { RiFilterLine, RiCloseLine } from "react-icons/ri";
 import { CheckedState } from '@radix-ui/react-checkbox';
+import { Button } from '../Button/button';
 
 export interface ICustomHeaderParams extends IHeaderParams {
   menuIcon: string;
@@ -80,7 +81,7 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Content
-              className="rounded z-10 px-[16px] py-[16px] w-[230px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade"
+              className="rounded z-10 px-[16px] py-[16px] w-[230px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade"
               sideOffset={5}
             >
               <div className="flex flex-col gap-2.5">
@@ -100,18 +101,12 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
                   />
                 </fieldset>
                 <div className='flex justify-between'>
-                  <button
-                    type="submit"
-                    className="flex text-[13px] mx-[2px] justify-center flex-auto min-w-[64px] cursor-pointer rounded border-none bg-[#e2e4e9] py-2 px-[16px] text-black  disabled:cursor-not-allowed disabled:opacity-60"
-                    aria-label="Accept changes">
+                  <Button variant="outline" className='flex text-[13px] mx-[2px] justify-center flex-auto min-w-[64px] cursor-pointer rounded py-2 px-[16px] text-black disabled:cursor-not-allowed disabled:opacity-60'>
                     Bỏ lọc
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex text-[13px] mx-[2px] justify-center flex-auto min-w-[64px] cursor-pointer rounded border-none bg-primary-main py-2 px-[16px] text-white enabled:hover:bg-primary-main-hover disabled:cursor-not-allowed disabled:opacity-60"
-                    aria-label="Accept changes">
+                  </Button>
+                  <Button variant="secondary" className='flex text-[13px] mx-[2px] justify-center flex-auto min-w-[64px] cursor-pointer rounded bg-primary-main py-2 px-[16px] text-white enabled:hover:bg-primary-main-hover disabled:cursor-not-allowed disabled:opacity-60'>
                     Áp dụng
-                  </button>
+                  </Button>
                 </div>
               </div>
               <Popover.Close

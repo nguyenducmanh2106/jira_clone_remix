@@ -11,13 +11,20 @@ import {
   GridReadyEvent,
   IServerSideDatasource,
   RowModelType,
+  SideBarDef,
 } from 'ag-grid-community';
 import { HeaderTableView } from "./header";
 import { NoRowsOverlay } from "./no-rows-overlay";
 import { CellComponentTableView } from "./cell-render";
 import { PaginationTable } from "./pagination-table";
-
-
+import {
+  GearIcon, DragHandleDots2Icon
+} from '@radix-ui/react-icons';
+import { SettingColumn } from "./setting-column";
+import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
+// declare const AG_GRID_LOCALE: {
+//   [key: string]: string;
+// };
 export const TableView = ({
   show = true,
 }: TooltipProps): JSX.Element => {
@@ -25,8 +32,8 @@ export const TableView = ({
   const gridRef = useRef<AgGridReact<IOlympicData>>(null);
 
   const gridContainerRef = useRef(null);
-  // let containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
-  let [containerStyle, setContainerStyle] = useState({ width: '100%', height: '500px' });
+  const containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
+  // let [containerStyle, setContainerStyle] = useState({ width: '100%', height: '500px' });
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
   const defaultPageSize = 20
@@ -41,7 +48,11 @@ export const TableView = ({
     // { field: 'description' },
   ]);
 
-
+  const localeText = useMemo<{
+    [key: string]: string;
+  }>(() => {
+    return AG_GRID_LOCALE;
+  }, []);
   const onSelectionChanged = useCallback(() => {
     const selectedRows = gridRef.current!.api.getSelectedRows();
     // console.log(selectedRows)
@@ -73,20 +84,23 @@ export const TableView = ({
     },
     []
   );
-  const colDefsMedalsExcluded: ColDef[] = [
+  const colDefsMedalsExcluded: (ColDef | ColGroupDef)[] = [
     {
       field: 'id',
       // headerName: 'Id1',
-      maxWidth: 50,
+      maxWidth: 40,
       checkboxSelection: true,
+      // defaultToolPanel: 'none',
       headerCheckboxSelection: true,
       headerComponentParams: {
         checkboxSelection: true,
+        isColumnDefault: true,
       },
       pinned: true,
       resizable: false,
       suppressMovable: true,
       lockPosition: true,
+      sortIndex: 0
       // cellRendererParams: {
       //   inputType: 'number',
       //   checkbox: true,
@@ -99,31 +113,49 @@ export const TableView = ({
     //   maxWidth: 175,
     // },
     {
-      field: 'title',
-      minWidth: 190,
-      headerName: 'Tiêu đề',
-      headerComponent: HeaderTableView,
-      sortable: true,
-    },
-    {
-      field: 'price',
-      headerName: 'Giá',
-      sortable: true,
-      cellRendererParams: {
-        inputType: 'number',
-      },
-      cellRenderer: CellComponentTableView,
+      headerName: 'Athlete Details',
+      sortIndex: 1,
+      children: [
+        {
+          field: 'title',
+          minWidth: 190,
+          headerName: 'Tiêu đề',
+          headerComponent: HeaderTableView,
+          sortable: true,
+        },
+        {
+          field: 'price',
+          headerName: 'Giá',
+          sortable: true,
+          cellRendererParams: {
+            inputType: 'number',
+          },
+          cellRenderer: CellComponentTableView,
+        },
+      ]
     },
     {
       field: 'description',
       headerName: 'Mô tả',
-      hide:true,
+      hide: true,
       headerComponent: HeaderTableView,
       cellRendererParams: {
         inputType: 'text',
       },
       cellRenderer: CellComponentTableView,
     },
+    // {
+    //   field: 'actions',
+    //   headerComponent: SettingColumn,
+    //   headerComponentParams: {
+    //     isColumnDefault: true,
+    //   },
+    //   maxWidth: 40,
+    //   pinned: "right",
+    //   resizable: false,
+    //   suppressMovable: true,
+    //   lockPosition: true,
+    // },
   ];
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -222,6 +254,32 @@ export const TableView = ({
     // setContainerStyle({ ...containerStyle, height: `${heightTable}px` })
   }, []);
 
+  const sideBar = useMemo<
+    SideBarDef | string | string[] | boolean | null
+  >(() => {
+    return {
+      toolPanels: [
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+          toolPanelParams: {
+            // prevents custom layout changing when columns are reordered in the grid
+            suppressSyncLayoutWithGrid: true,
+            // // prevents columns being reordered from the columns tool panel
+            // suppressColumnMove: true,
+            suppressRowGroups: true,
+            suppressValues: true,
+            suppressPivotMode: true
+          },
+        },
+      ],
+      position: 'right',
+      // defaultToolPanel: 'columns',
+    };
+  }, []);
 
   return (
     <div className="relative">
@@ -230,8 +288,8 @@ export const TableView = ({
           "block"
         )}
       >
-        {/* <div className="whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
-          table
+        {/* <div className="panel-table whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
+          <GearIcon />
         </div> */}
         <div className="tableViewContainer" ref={gridContainerRef}>
           <div style={containerStyle}>
@@ -244,6 +302,8 @@ export const TableView = ({
                 defaultColDef={defaultColDef}
                 rowModelType={'serverSide'}
                 pagination={true}
+                sideBar={sideBar}
+                localeText={localeText}
                 suppressPaginationPanel={true}
                 paginationPageSize={defaultPageSize}
                 rowSelection={'multiple'}

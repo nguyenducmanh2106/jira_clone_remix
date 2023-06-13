@@ -7,21 +7,22 @@ import {
   ColGroupDef,
   FirstDataRenderedEvent,
   Grid,
-  GridOptions,
   GridReadyEvent,
   IServerSideDatasource,
   RowModelType,
   SideBarDef,
+  StatusPanelDef,
 } from 'ag-grid-community';
 import { HeaderTableView } from "./header";
 import { NoRowsOverlay } from "./no-rows-overlay";
 import { CellComponentTableView } from "./cell-render";
-import { PaginationTable } from "./pagination-table";
+import { PaginationTableRight } from "./pagination-table-right";
 import {
   GearIcon, DragHandleDots2Icon
 } from '@radix-ui/react-icons';
 import { SettingColumn } from "./setting-column";
 import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
+import { PaginationTableLeft } from "./pagination-table-left";
 // declare const AG_GRID_LOCALE: {
 //   [key: string]: string;
 // };
@@ -36,7 +37,7 @@ export const TableView = ({
   // let [containerStyle, setContainerStyle] = useState({ width: '100%', height: '500px' });
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
-  const defaultPageSize = 20
+  const defaultPageSize = 20 as number;
   const [totalRecords, setTotalRecords] = useState<number>(0);
   const [hasNextPage, setHasNextPage] = useState<boolean>(false);
   const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
@@ -78,9 +79,9 @@ export const TableView = ({
   const onFirstDataRendered = useCallback(
     (params: FirstDataRenderedEvent<IOlympicData>) => {
       const selectedRows: IOlympicData | any = gridRef.current!.api.getSelectedRows();
-      gridRef.current!.api.forEachNode((node) =>
-        node.setSelected(!!node.data && node.data.year === 2012)
-      );
+      // gridRef.current!.api.forEachNode((node) =>
+      //   node.setSelected(!!node.data && node.data.year === 2012)
+      // );
     },
     []
   );
@@ -265,9 +266,12 @@ export const TableView = ({
           labelKey: 'columns',
           iconKey: 'columns',
           toolPanel: 'agColumnsToolPanel',
+          maxWidth: 400,
+          minWidth: 260,
+          width: 260,
           toolPanelParams: {
             // prevents custom layout changing when columns are reordered in the grid
-            suppressSyncLayoutWithGrid: true,
+            // suppressSyncLayoutWithGrid: true,
             // // prevents columns being reordered from the columns tool panel
             // suppressColumnMove: true,
             suppressRowGroups: true,
@@ -276,8 +280,28 @@ export const TableView = ({
           },
         },
       ],
-      position: 'right',
+      position: 'left',
       // defaultToolPanel: 'columns',
+    };
+  }, []);
+  const statusBar = useMemo<{
+    statusPanels: StatusPanelDef[];
+  }>(() => {
+    return {
+      statusPanels: [
+        {
+          statusPanel: PaginationTableLeft,
+          align: 'left',
+        },
+        {
+          statusPanel: PaginationTableRight,
+          align: 'right',
+          // statusPanelParams: {
+          //   // possible values are: 'count', 'sum', 'min', 'max', 'avg'
+          //   defaultPageSize: defaultPageSize
+          // }
+        },
+      ],
     };
   }, []);
 
@@ -297,12 +321,12 @@ export const TableView = ({
               <AgGridReact<IOlympicData>
                 ref={gridRef}
                 columnDefs={columnDefs}
-                // gridOptions={gridOptions}
                 components={components}
                 defaultColDef={defaultColDef}
                 rowModelType={'serverSide'}
                 pagination={true}
                 sideBar={sideBar}
+                statusBar={statusBar}
                 localeText={localeText}
                 suppressPaginationPanel={true}
                 paginationPageSize={defaultPageSize}
@@ -317,9 +341,9 @@ export const TableView = ({
                 // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
               ></AgGridReact>
-              <PaginationTable totalRecord={totalRecords} hasNextPage={hasNextPage}
+              {/* <PaginationTable totalRecord={totalRecords} hasNextPage={hasNextPage}
                 hasPrevPage={hasPrevPage}
-                gridRef={gridRef} defaultPageSize={defaultPageSize} noRowsMessageFunc={"hi"} />
+                gridRef={gridRef} defaultPageSize={defaultPageSize} noRowsMessageFunc={"hi"} /> */}
             </div>
           </div>
         </div>

@@ -15,6 +15,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SortableColumn } from './SettingColumn/SortTableColumn';
 import cx from "classix";
 import { Input } from '../Input';
+import { ListColumnDrag } from './SettingColumns/ListColumDrag';
 
 export interface ICustomHeaderParams extends IHeaderParams {
   menuIcon: string;
@@ -47,9 +48,10 @@ export const SettingColumn = (props: ICustomHeaderParams): JSX.Element => {
           "grid gap-4 py-4 overflow-y-auto flex setting-column my-[8px]",
 
         )} >
-          <DndProvider backend={HTML5Backend}>
+          {/* <DndProvider backend={HTML5Backend}>
             <SortableColumn />
-          </DndProvider>
+          </DndProvider> */}
+          <ListColumnDrag />
         </div>
         <SheetFooter>
           <SheetClose asChild>

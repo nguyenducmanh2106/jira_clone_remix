@@ -16,10 +16,14 @@ export interface INoRowsOverlay {
   gridRef: React.RefObject<AgGridReact<any>>
 }
 export const PaginationTableLeft = (props: IStatusPanelParams): JSX.Element => {
+
+  const [totalRecord, setTotalRecord] = useState<number>(0);
   useEffect(() => {
-    console.log(props)
-    console.log(props.api.paginationGetRowCount)
-  });
+    setTimeout(() => {
+      // console.log(props.api.paginationGetRowCount())
+      setTotalRecord(props.api.paginationGetRowCount())
+    }, 300)
+  }, []);
 
   return (
     <div className="whitespace-nowrap dark:border-white bg-white py-[12px] px-[16px] text-2xs text-bla dark:bg-dark-500 dark:text-white">
@@ -28,7 +32,7 @@ export const PaginationTableLeft = (props: IStatusPanelParams): JSX.Element => {
           <div>
             <p className="text-sm text-gray-700">
               Tổng số:
-              <span className="font-medium pl-[4px]">{props.api.paginationGetRowCount()}</span>
+              <span className="font-medium pl-[4px]">{totalRecord}</span>
             </p>
           </div>
           <div>

@@ -23,6 +23,7 @@ import {
 import { SettingColumn } from "./setting-column";
 import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
 import { PaginationTableLeft } from "./pagination-table-left";
+import { ListColumnDrag } from "./SettingColumns/ListColumDrag";
 // declare const AG_GRID_LOCALE: {
 //   [key: string]: string;
 // };
@@ -145,18 +146,18 @@ export const TableView = ({
       },
       cellRenderer: CellComponentTableView,
     },
-    // {
-    //   field: 'actions',
-    //   headerComponent: SettingColumn,
-    //   headerComponentParams: {
-    //     isColumnDefault: true,
-    //   },
-    //   maxWidth: 40,
-    //   pinned: "right",
-    //   resizable: false,
-    //   suppressMovable: true,
-    //   lockPosition: true,
-    // },
+    {
+      field: 'actions',
+      headerComponent: SettingColumn,
+      headerComponentParams: {
+        isColumnDefault: true,
+      },
+      maxWidth: 40,
+      pinned: "right",
+      resizable: false,
+      suppressMovable: true,
+      lockPosition: true,
+    },
   ];
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -280,7 +281,7 @@ export const TableView = ({
           },
         },
       ],
-      position: 'left',
+      position: 'right',
       // defaultToolPanel: 'columns',
     };
   }, []);
@@ -312,7 +313,7 @@ export const TableView = ({
           "block"
         )}
       >
-        {/* <div className="panel-table whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
+        {/* <div ref={"eMenu"} className="panel-table whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
           <GearIcon />
         </div> */}
         <div className="tableViewContainer" ref={gridContainerRef}>
@@ -340,6 +341,8 @@ export const TableView = ({
                 // noRowsOverlayComponent={noRowsOverlayComponent}
                 // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
+                onDragStarted={(e) => console.log(e)}
+                onDragStopped={(e) => console.log(e)}
               ></AgGridReact>
               {/* <PaginationTable totalRecord={totalRecords} hasNextPage={hasNextPage}
                 hasPrevPage={hasPrevPage}

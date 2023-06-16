@@ -131,14 +131,14 @@ export const PaginationTableRight = (props: IStatusPanelParams): JSX.Element => 
             <nav className="isolate inline-flex -space-x-px rounded-md" aria-label="Pagination">
               <div className="pager self-center flex flex-row btn-group-link">
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button disabled onClick={() => onChangePageIndex("first-page")}
+                  <button disabled={!hasPreviousPage} onClick={() => onChangePageIndex("first-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-start-page previous-page icon-start-page disable-next-prev" data-current-page="1" title="Trang đầu">
                     <RiSkipBackLine color={hasPreviousPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
 
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button onClick={() => onChangePageIndex("prev-page")}
+                  <button disabled={!hasPreviousPage} onClick={() => onChangePageIndex("prev-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
                     <RiArrowLeftSLine color={hasPreviousPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
@@ -150,13 +150,13 @@ export const PaginationTableRight = (props: IStatusPanelParams): JSX.Element => 
                   <b className="count-from">{lastRecord}</b>
                 </div>
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button onClick={() => onChangePageIndex("next-page")}
+                  <button disabled={!hasNextPage} onClick={() => onChangePageIndex("next-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
                     <RiArrowRightSLine color={hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>
                 </div>
                 <div className="self-center hover:rounded-[50%] hover:bg-grey-600">
-                  <button onClick={() => onChangePageIndex("last-page")}
+                  <button disabled={!hasNextPage} onClick={() => onChangePageIndex("last-page")}
                     className="flex wrap-misa-active wrap-misa-active-circle-small link previous-page previous-one-page icon-previous-page disable-next-prev" data-current-page="1" title="Trang trước">
                     <RiSkipForwardLine color={hasNextPage ? "#586074" : "#bdc3c7"} size={"24px"} />
                   </button>

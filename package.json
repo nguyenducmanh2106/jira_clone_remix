@@ -21,6 +21,9 @@
     "seed": "ts-node -r tsconfig-paths/register --compiler-options {\"module\":\"CommonJS\"} src/infrastructure/db/seed.ts"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@prisma/client": "^4.8.0",
     "@radix-ui/colors": "^0.1.8",
@@ -61,7 +64,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
-    "react-virtualized": "^9.22.5",
+    "react-window": "^1.8.9",
     "remix-utils": "^5.2.1",
     "tailwind-merge": "^1.13.0",
     "tailwindcss-animate": "^1.0.5",
@@ -80,6 +83,7 @@
     "@testing-library/dom": "^8.19.1",
     "@types/node": "^18.11.9",
     "@types/react-beautiful-dnd": "^13.1.4",
+    "@types/react-virtualized": "^9.21.22",
     "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.13",
     "concurrently": "^7.5.0",

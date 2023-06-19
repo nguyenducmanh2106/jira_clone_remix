@@ -10,6 +10,33 @@
 .setting-column {
   max-height: calc(100vh - 170px);
 }
+.dragable-icon {
+  width: 16px;
+  height: 16px;
+  cursor: grab;
+}
+
+.dragable-icon:before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -384px -16px;
+}
+
+.dragable-icon-hover {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.dragable-icon-hover:before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -368px -16px;
+}
 
 @layer base {
   :root {

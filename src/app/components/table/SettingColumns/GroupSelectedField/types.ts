@@ -19,7 +19,7 @@ export type Author = {
 export type Quote = {
     id: Id,
     content: string,
-    author: Author,
+    author?: Author,
 };
 
 // export type Dragging = {

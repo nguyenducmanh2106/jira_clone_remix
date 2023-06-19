@@ -20,10 +20,9 @@ import { PaginationTableRight } from "./pagination-table-right";
 import {
   GearIcon, DragHandleDots2Icon
 } from '@radix-ui/react-icons';
-import { SettingColumn } from "./setting-column";
+import { SettingColumn } from "./SettingColumns/setting-column";
 import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
 import { PaginationTableLeft } from "./pagination-table-left";
-import { ListColumnDrag } from "./SettingColumns/ListColumDrag";
 // declare const AG_GRID_LOCALE: {
 //   [key: string]: string;
 // };
@@ -115,26 +114,70 @@ export const TableView = ({
     //   maxWidth: 175,
     // },
     {
-      headerName: 'Athlete Details',
-      sortIndex: 1,
-      children: [
-        {
-          field: 'title',
-          minWidth: 190,
-          headerName: 'Tiêu đề',
-          headerComponent: HeaderTableView,
-          sortable: true,
-        },
-        {
-          field: 'price',
-          headerName: 'Giá',
-          sortable: true,
-          cellRendererParams: {
-            inputType: 'number',
-          },
-          cellRenderer: CellComponentTableView,
-        },
-      ]
+      field: 'title',
+      minWidth: 190,
+      headerName: 'Tiêu đề',
+      headerComponent: HeaderTableView,
+      sortable: true,
+    },
+    {
+      field: 'price',
+      headerName: 'Giá',
+      sortable: true,
+      cellRendererParams: {
+        inputType: 'number',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      field: 'brand',
+      headerName: 'Hãng',
+      hide: false,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      field: 'category',
+      headerName: 'Danh mục',
+      hide: false,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      field: 'discountPercentage',
+      headerName: 'Giảm giá',
+      hide: false,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      field: 'rating',
+      headerName: 'Đánh giá',
+      hide: false,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      field: 'stock',
+      headerName: 'Tồn kho',
+      hide: false,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
     },
     {
       field: 'description',
@@ -326,7 +369,7 @@ export const TableView = ({
                 defaultColDef={defaultColDef}
                 rowModelType={'serverSide'}
                 pagination={true}
-                sideBar={sideBar}
+                // sideBar={sideBar}
                 statusBar={statusBar}
                 localeText={localeText}
                 suppressPaginationPanel={true}

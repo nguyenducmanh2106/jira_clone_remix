@@ -2,11 +2,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { borderRadius, grid } from './constants';
-import type { Quote, AuthorColors } from './types';
+import type { AuthorColors } from './types';
 import type { DraggableProvided } from 'react-beautiful-dnd';
+import { ColDef } from 'ag-grid-community';
 
 type Props = {
-  quote: Quote,
+  quote: ColDef,
   isDragging: boolean,
   provided: DraggableProvided,
   isClone?: boolean,
@@ -40,8 +41,11 @@ const getBackgroundColor = (
   return colors.N0;
 };
 
-const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) =>
-  isDragging ? authorColors.hard : 'transparent';
+const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) => {
+  return isDragging ? 'red' : 'grey';
+  // return isDragging ? authorColors.hard : 'grey';
+
+}
 
 const imageSize = 40 as number;
 
@@ -65,7 +69,7 @@ const CloneBadge = styled.div`
   align-items: center;
 `;
 
-const Container = styled.a`
+const Container = styled.div`
   border-radius: ${borderRadius}px;
   border: 2px solid transparent;
   border-color: ${(props) => getBorderColor(props.isDragging, props.colors)};
@@ -90,21 +94,12 @@ const Container = styled.a`
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.colors.hard};
+    border-color: ${(props) => props?.colors?.hard ?? 'red'};
     box-shadow: none;
   }
 
   /* flexbox */
   display: flex;
-`;
-
-const Avatar = styled.img`
-  width: ${imageSize}px;
-  height: ${imageSize}px;
-  border-radius: 50%;
-  margin-right: ${grid}px;
-  flex-shrink: 0;
-  flex-grow: 0;
 `;
 
 const Content = styled.div`
@@ -132,31 +127,6 @@ const BlockQuote = styled.div`
   }
 `;
 
-const Footer = styled.div`
-  display: flex;
-  margin-top: ${grid}px;
-  align-items: center;
-`;
-
-const Author = styled.small`
-  color: ${(props) => props.colors.hard};
-  flex-grow: 0;
-  margin: 0;
-  background-color: ${(props) => props.colors.soft};
-  border-radius: ${borderRadius}px;
-  font-weight: normal;
-  padding: ${grid / 2}px;
-`;
-
-const QuoteId = styled.small`
-  flex-grow: 1;
-  flex-shrink: 1;
-  margin: 0;
-  font-weight: normal;
-  text-overflow: ellipsis;
-  text-align: right;
-`;
-
 function getStyle(provided: DraggableProvided, style: object | null | undefined) {
   if (!style) {
     return provided.draggableProps.style;
@@ -165,6 +135,9 @@ function getStyle(provided: DraggableProvided, style: object | null | undefined)
   return {
     ...provided.draggableProps.style,
     ...style,
+    border: '1px solid grey',
+    backgroundColor: '#f0f2f4',
+    padding: '0 8px',
   };
 }
 
@@ -188,28 +161,28 @@ function QuoteItem(props: Props) {
 
   return (
     <Container
-      href={quote.author.url}
-      isDragging={isDragging}
-      isGroupedOver={isGroupedOver}
-      isClone={isClone}
-      colors={quote.author.colors}
+      // isDragging={isDragging}
+      // isGroupedOver={isGroupedOver}
+      // isClone={isClone}
+      // colors={'red'}
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       style={getStyle(provided, style)}
       data-is-dragging={isDragging}
-      data-testid={quote.id}
+      data-testid={quote.colId}
       data-index={index}
-      aria-label={`${quote.author.name} quote ${quote.content}`}
+      className='mb-[8px]'
+    // aria-label={`${quote.author?.name ?? 'author'} quote ${quote.content}`}
     >
-      <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
       {isClone ? <CloneBadge>Clone</CloneBadge> : null}
       <Content>
-        <BlockQuote>{quote.content}</BlockQuote>
-        <Footer>
-          <Author colors={quote.author.colors}>{quote.author.name}</Author>
-          <QuoteId>id:{quote.id}</QuoteId>
-        </Footer>
+        <div className='flex'>
+          <div className='cursor-move mx-[4px]'>
+            <div className='dragable-icon'></div>
+          </div>
+          <BlockQuote>{quote?.headerName ?? 'N/A'}</BlockQuote>
+        </div>
       </Content>
     </Container>
   );

@@ -117,6 +117,9 @@ const App = (): JSX.Element => {
       <head>
         <Meta />
         <Links />
+        {typeof document === "undefined"
+          ? "__STYLES__"
+          : null}
       </head>
       <body className="h-full font-primary text-font-main dark:bg-dark-300 dark:text-font-main-dark">
         <Outlet />

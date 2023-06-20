@@ -19,12 +19,48 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { ListColumnDrag } from './GroupSelectedField/ListColumDrag';
 export interface ICustomHeaderParams extends IHeaderParams {
   menuIcon: string;
-  checkboxSelection: boolean
+  checkboxSelection: boolean,
+  columnGrids: ColDef[]
 }
 
 export const SettingColumn = (props: ICustomHeaderParams): JSX.Element => {
+  // console.log(props)
   // const columns = props.columnApi.getColumnState();
-  const columns = props.api.getColumnDefs()?.filter((column: ColDef) => (column.headerName as string)) as ColDef[];
+  // const allColumns = props.api.getColumnDefs()?.filter((column: ColDef) => (column.headerName as string)) as ColDef[];
+  // const columnDisplayings = props.api.getColumnDefs()?.filter((column: ColDef) => (column.headerName as string) && (!column.hide)) as ColDef[];
+  const [isChange, setIsChange] = useState<boolean>(false)
+  const [allColumns, setAllColumns] = useState<ColDef[]>(props.columnGrids)
+  const [columnDisplayings, setColumnDisplayings] = useState<ColDef[]>(() => {
+    return props.api.getColumnDefs()?.filter((column: ColDef) => (column.headerName as string) && (!column.hide)) as ColDef[];
+  })
+  const toggleDisplayColumns = (column: ColDef) => {
+    // props.columnApi.applyColumnState({
+    //   state: [
+    //     { colId: 'title', hide: true },
+    //   ],
+    // })
+    const indexColumn = columnDisplayings.findIndex(columnItem => columnItem.colId === column.colId);
+    const endIndex = columnDisplayings.length;
+    const result = Array.from(columnDisplayings);
+    const resultAllColumns = Array.from(allColumns);
+
+    if (!column.hide) {
+      result.splice(endIndex, 0, column);
+      console.log("hiển thị")
+    }
+    else {
+      const [removed] = result.splice(indexColumn, 1);
+
+      // result.splice(endIndex, 0, removed);
+      console.log("bị ẩn")
+      setIsChange(true)
+    }
+    const indexColumnInAllColumn = resultAllColumns.findIndex(columnItem => columnItem.colId === column.colId);
+    resultAllColumns.splice(indexColumnInAllColumn, 1, column);
+    setAllColumns(resultAllColumns)
+    setColumnDisplayings(result);
+  }
+
 
   return (
     // <Dialog>
@@ -54,25 +90,24 @@ export const SettingColumn = (props: ICustomHeaderParams): JSX.Element => {
     //     </DialogFooter>
     //   </DialogContent>
     // </Dialog>
-
     <Sheet>
       <SheetTrigger asChild>
         <div className='cursor-pointer'>
           <GearIcon />
         </div>
       </SheetTrigger>
-      <SheetContent position="right" size="lg">
-        <SheetHeader>
+      <SheetContent position="right" className='p-0 w-[600px]'>
+        <SheetHeader className='p-[8px]'>
           <SheetTitle>Tùy chỉnh cột</SheetTitle>
         </SheetHeader>
         <div className={cx(
-          "grid grid-cols-2 gap-4 py-4 overflow-y-auto setting-column my-[8px]",
+          "grid grid-cols-2 gap-4 border-b overflow-y-auto setting-column my-[8px]",
 
         )} >
-          <GroupAllField columns={columns} />
-          <ListColumnDrag columns={columns} />
+          <GroupAllField columns={allColumns} toggleDisplayColumns={toggleDisplayColumns} isChange={isChange} />
+          <ListColumnDrag columns={columnDisplayings} toggleDisplayColumns={toggleDisplayColumns} />
         </div>
-        <SheetFooter>
+        <SheetFooter className='pr-[16px]'>
           <SheetClose asChild>
             <Button variant="outline">Hủy</Button>
           </SheetClose>

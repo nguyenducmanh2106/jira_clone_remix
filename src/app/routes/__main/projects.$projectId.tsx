@@ -10,7 +10,7 @@ import { ProjectView } from "@app/ui/main/project";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const { projectSummary } = data as LoaderData;
-  const title = `Jira clone - ${projectSummary.name || "Project"}`;
+  const title = `Project - ${projectSummary.name || "Project"}`;
   const description =
     "See all your projects in one place. Create new ones and assigne team members.";
   const image = "https://jira-clone.fly.dev/static/images/readme/project.png";

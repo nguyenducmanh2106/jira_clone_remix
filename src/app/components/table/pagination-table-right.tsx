@@ -48,6 +48,7 @@ export const PaginationTableRight = (props: IStatusPanelParams): JSX.Element => 
     // console.log(props.gridRef.current?.api.paginationGetRowCount())
 
     props.api.paginationSetPageSize(+value);
+    checkNextOrPreviousPage(props.api)
     // props.gridRef.current!.api.setCacheBlockSize(+value);
     // props.gridRef.current!.api.paginationGoToPage(4);
   }

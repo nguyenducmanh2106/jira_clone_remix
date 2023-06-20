@@ -23,9 +23,7 @@ import {
 import { SettingColumn } from "./SettingColumns/setting-column";
 import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
 import { PaginationTableLeft } from "./pagination-table-left";
-// declare const AG_GRID_LOCALE: {
-//   [key: string]: string;
-// };
+
 export const TableView = ({
   show = true,
 }: TooltipProps): JSX.Element => {
@@ -86,34 +84,9 @@ export const TableView = ({
     []
   );
   const colDefsMedalsExcluded: (ColDef | ColGroupDef)[] = [
+
     {
-      field: 'id',
-      // headerName: 'Id1',
-      maxWidth: 40,
-      checkboxSelection: true,
-      // defaultToolPanel: 'none',
-      headerCheckboxSelection: true,
-      headerComponentParams: {
-        checkboxSelection: true,
-        isColumnDefault: true,
-      },
-      pinned: true,
-      resizable: false,
-      suppressMovable: true,
-      lockPosition: true,
-      sortIndex: 0
-      // cellRendererParams: {
-      //   inputType: 'number',
-      //   checkbox: true,
-      // },
-      // cellRenderer: CellComponentTableView,
-    },
-    // {
-    //   field: 'id',
-    //   headerName: 'Id',
-    //   maxWidth: 175,
-    // },
-    {
+      colId: 'title',
       field: 'title',
       minWidth: 190,
       headerName: 'Tiêu đề',
@@ -121,6 +94,7 @@ export const TableView = ({
       sortable: true,
     },
     {
+      colId: 'price',
       field: 'price',
       headerName: 'Giá',
       sortable: true,
@@ -130,6 +104,7 @@ export const TableView = ({
       cellRenderer: CellComponentTableView,
     },
     {
+      colId: 'brand',
       field: 'brand',
       headerName: 'Hãng',
       hide: false,
@@ -140,6 +115,7 @@ export const TableView = ({
       cellRenderer: CellComponentTableView,
     },
     {
+      colId: 'category',
       field: 'category',
       headerName: 'Danh mục',
       hide: false,
@@ -150,6 +126,7 @@ export const TableView = ({
       cellRenderer: CellComponentTableView,
     },
     {
+      colId: 'discountPercentage',
       field: 'discountPercentage',
       headerName: 'Giảm giá',
       hide: false,
@@ -160,6 +137,7 @@ export const TableView = ({
       cellRenderer: CellComponentTableView,
     },
     {
+      colId: 'rating',
       field: 'rating',
       headerName: 'Đánh giá',
       hide: false,
@@ -170,6 +148,7 @@ export const TableView = ({
       cellRenderer: CellComponentTableView,
     },
     {
+      colId: 'stock',
       field: 'stock',
       headerName: 'Tồn kho',
       hide: false,
@@ -180,6 +159,7 @@ export const TableView = ({
       cellRenderer: CellComponentTableView,
     },
     {
+      colId: 'description',
       field: 'description',
       headerName: 'Mô tả',
       hide: true,
@@ -189,19 +169,45 @@ export const TableView = ({
       },
       cellRenderer: CellComponentTableView,
     },
-    {
-      field: 'actions',
-      headerComponent: SettingColumn,
-      headerComponentParams: {
-        isColumnDefault: true,
-      },
-      maxWidth: 40,
-      pinned: "right",
-      resizable: false,
-      suppressMovable: true,
-      lockPosition: true,
-    },
+
   ];
+
+  const columnAction: ColDef = {
+    field: 'actions',
+    headerComponent: SettingColumn,
+    headerComponentParams: {
+      isColumnDefault: true,
+      columnGrids: colDefsMedalsExcluded
+    },
+    maxWidth: 40,
+    pinned: "right",
+    resizable: false,
+    suppressMovable: true,
+    lockPosition: true,
+  }
+  const columnCheckbox: ColDef = {
+    field: 'id',
+    // headerName: 'Id1',
+    maxWidth: 40,
+    checkboxSelection: true,
+    // defaultToolPanel: 'none',
+    headerCheckboxSelection: true,
+    headerComponentParams: {
+      checkboxSelection: true,
+      isColumnDefault: true,
+    },
+    pinned: true,
+    resizable: false,
+    suppressMovable: true,
+    lockPosition: true,
+    sortIndex: 0
+    // cellRendererParams: {
+    //   inputType: 'number',
+    //   checkbox: true,
+    // },
+    // cellRenderer: CellComponentTableView,
+  }
+
   const defaultColDef = useMemo<ColDef>(() => {
     return {
       flex: 1,
@@ -285,7 +291,8 @@ export const TableView = ({
     //chồ này gọi api để lấy danh sách cột
     setTimeout(() => {
       // setColumnDefs(colDefsMedalsExcluded)
-      gridRef.current!.api.setColumnDefs(colDefsMedalsExcluded);
+      const columnDisplay = [...[columnCheckbox], ...colDefsMedalsExcluded, ...[columnAction]]
+      gridRef.current!.api.setColumnDefs(columnDisplay);
     }, 2000)
 
     //chỗ này tiến hành lấy dự liệu về fill vào table

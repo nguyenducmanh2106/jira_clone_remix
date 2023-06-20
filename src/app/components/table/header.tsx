@@ -37,9 +37,8 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
   // };
 
   const onSortChanged = () => {
-    // console.log('onSortChanged')
-    console.log(props.api.getColumnDefs())
-    console.log(props.columnApi.getColumnState())
+    // console.log(props.api.getColumnDefs())
+    // console.log(props.columnApi.getColumnState())
     setAscSort(props.column.isSortAscending() ? 'active' : 'inactive');
     setDescSort(props.column.isSortDescending() ? 'active' : 'inactive');
     setNoSort(

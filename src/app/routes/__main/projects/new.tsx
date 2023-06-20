@@ -14,7 +14,7 @@ import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
 import { getRandomProjectImage } from "@utils/random-project-image";
 
 export const meta: MetaFunction = () => {
-  const title = "Jira clone - Create project";
+  const title = "Project - Create project";
   const description = "Create new project and assigne team members.";
   const image =
     "https://jira-clone.fly.dev/static/images/readme/projects-new.png";

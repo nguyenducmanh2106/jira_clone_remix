@@ -4,7 +4,7 @@ import { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction<any> = ({ data }) => {
   // const { project } = data as LoaderData;
-  const title = "Jira clone - Component";
+  const title = "Project - Component";
   const description =
     "Manage your project. Create, edit, delete new issues and assigne them.";
   const image = "https://jira-clone.fly.dev/static/images/readme/project.png";

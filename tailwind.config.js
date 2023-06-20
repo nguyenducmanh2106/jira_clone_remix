@@ -55,7 +55,7 @@ module.exports = {
     },
     fontFamily: {
       "primary-light": ["CircularStdLight", "sans-serif"],
-      primary: ["CircularStdMedium", "sans-serif"],
+      primary: ["Inter", "sans-serif"],
       "primary-bold": ["CircularStdBold", "sans-serif"],
       "primary-black": ["CircularStdBlack", "sans-serif"],
     },

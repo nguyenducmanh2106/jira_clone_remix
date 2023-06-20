@@ -11,7 +11,7 @@ import { getUserSession } from "@app/session-storage";
 import { ProjectsView } from "@app/ui/main/projects";
 
 export const meta: MetaFunction = () => {
-  const title = "Jira clone - Projects";
+  const title = "Projects";
   const description =
     "See all your projects in one place. Create new ones and assigne team members.";
   const image = "https://jira-clone.fly.dev/static/images/readme/projects.png";

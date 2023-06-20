@@ -29,7 +29,7 @@ import { emitter, EVENTS } from "@app/events";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const { issue, projectId } = data as LoaderData;
-  const title = `Jira clone - ${issue.name}`;
+  const title = `Project - ${issue.name}`;
   const description = issue.description;
   const image =
     "https://jira-clone.fly.dev/static/images/readme/issue-panel.png";

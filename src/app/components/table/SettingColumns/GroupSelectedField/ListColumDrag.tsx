@@ -18,9 +18,10 @@ type RowProps = {
     style: any,
 };
 export interface Column {
-    columns: ColDef[]
+    columns: ColDef[];
+    toggleDisplayColumns: (column: ColDef) => void;
 }
-export const ListColumnDrag = ({ columns }: Column): JSX.Element => {
+export const ListColumnDrag = ({ columns, toggleDisplayColumns }: Column): JSX.Element => {
 
     // a little function to help us with reordering the result
     const reorder = (list: ColDef[], startIndex: number, endIndex: number) => {
@@ -30,8 +31,12 @@ export const ListColumnDrag = ({ columns }: Column): JSX.Element => {
 
         return result;
     };
+    const [quotes, setQuotes] = useState<ColDef[]>([])
 
-    const [quotes, setQuotes] = useState<ColDef[]>(columns)
+    useEffect(() => {
+        setQuotes(columns);
+    }, [columns, columns?.length])
+
 
     const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
         console.log('drag')
@@ -57,7 +62,8 @@ export const ListColumnDrag = ({ columns }: Column): JSX.Element => {
     // eslint-disable-next-line react/display-name
     const Row = React.memo(({ data: quotes, index, style }: RowProps) => {
         const quote: ColDef = quotes[index];
-
+        // console.log(quote)
+        // console.log(index, quote)
         return (
             <Draggable draggableId={quote.colId as string} index={index} key={quote.colId}>
                 {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -66,15 +72,28 @@ export const ListColumnDrag = ({ columns }: Column): JSX.Element => {
                         quote={quote}
                         isDragging={snapshot.isDragging}
                         isGroupedOver={Boolean(snapshot.combineTargetFor)}
-                        style={{ margin: 0, ...style }}
+                        style={{ marginBottom: '8px', background: '#f0f2f4', userSelect: 'none', padding: '4px 6px', borderRadius: '4px', ...style }}
                         index={index}
+                        toggleDisplayColumns={toggleDisplayColumns}
                     />
                 )}
             </Draggable>
         );
     }, areEqual);
+    const styles = {
+        borderLeft: '1px solid #c5c9d3',
+        padding: '0 16px',
+    }
     return (
-        <div className='group-selected-field'>
+        <div className='group-selected-field' style={styles}>
+            <div className='group-selected-field__head flex justify-between mb-[16px]'>
+                <div className='group-selected-field__head__title'>
+                    Đã chọn({quotes.length})
+                </div>
+                <div className='group-selected-field__head__action--delete-all text-[#ec4243]'>
+                    {/* Xóa tất cả */}
+                </div>
+            </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable
                     droppableId="droppable"
@@ -88,16 +107,17 @@ export const ListColumnDrag = ({ columns }: Column): JSX.Element => {
                             provided={provided}
                             isDragging={snapshot.isDragging}
                             quote={quotes[rubric.source.index]}
-                            style={{ margin: 0 }}
+                            style={{ marginBottom: '8px', borderRadius: '4px', userSelect: 'none', padding: '4px 6px', background: '#f0f2f4' }}
                             index={rubric.source.index}
+                            toggleDisplayColumns={toggleDisplayColumns}
                         />
                     )}
                 >
                     {(droppableProvided: DroppableProvided) => (
                         <List
                             height={500}
-                            itemCount={columns.length as number}
-                            itemSize={32}
+                            itemCount={quotes.length as number}
+                            itemSize={40}
                             width={'auto'}
                             // you will want to use List.outerRef rather than List.innerRef as it has the correct height when the list is unpopulated
                             outerRef={droppableProvided.innerRef}

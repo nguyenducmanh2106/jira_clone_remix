@@ -4,41 +4,56 @@ import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from './ItemTypes'
 import { Checkbox } from '@app/components/Checkbox'
 import { ColDef, ColGroupDef } from 'ag-grid-community'
+import { Label } from '@app/components/Label'
+import { CheckedState } from '@radix-ui/react-checkbox'
 
 const style: CSSProperties = {
     border: '1px solid transparent',
-    // padding: '0.5rem 1rem',
-    marginBottom: '.5rem',
-    backgroundColor: '#f0f2f4',
+    padding: '0 8px 0 16px',
+    // backgroundColor: '#f0f2f4',
     display: 'flex',
     alignItems: 'center',
-    minHeight: '36px',
-    maxHeight: '36px',
+    minHeight: '32px',
+    maxHeight: '32px',
     opacity: 1,
     cursor: 'pointer',
 }
 
 export interface Column {
-    columns: (ColDef | ColGroupDef)[] | undefined
+    columns: ColDef[];
+    toggleDisplayColumns: (column: ColDef) => void;
+    isChange: boolean;
+    keywordFilter: string
 }
 
-export const Columns: FC<Column> = memo(function Card({ columns }: Column) {
+export const Columns: FC<Column> = memo(function Card({ columns, toggleDisplayColumns, isChange, keywordFilter }: Column) {
     const ref = useRef(null)
-
+    console.log(isChange)
     const containerStyle = useMemo(() => ({ ...style }), [])
+
+    const handleCheck = (status: boolean, column: ColDef) => {
+        const statusState = status;
+        const columnState = {
+            ...column,
+            hide: !statusState
+        }
+        toggleDisplayColumns(columnState)
+    }
+
+    const columnFilter = columns.filter((column: ColDef<any>) => {
+        return (column?.headerName ?? '').toLowerCase().includes(keywordFilter.toLowerCase())
+    })
 
     return (
         <>
-            {columns?.map((column: ColDef | ColGroupDef, index) => {
+            {columnFilter?.map((column: ColDef, index) => {
                 if (column.headerName) {
                     return (
-                        <div key={index} ref={ref} style={containerStyle}
-                        >
-                            <Checkbox />
-                            {/* <div className='cursor-move mx-[4px]'>
-                        <div className='dragable-icon'></div>
-                    </div> */}
-                            <div className='pointer-events-none'>{column.headerName}</div>
+                        <div className='hover:bg-[#f0f2f4]' key={column.colId || index} ref={ref} style={containerStyle}>
+                            <div className="flex items-center space-x-2 h-[32px] w-full">
+                                <Checkbox onCheckedChange={(e: boolean) => handleCheck(e, column)} checked={!column.hide} defaultChecked={!column.hide} id={`column-${column.colId}-${index}`} />
+                                <Label className='flex-auto cursor-pointer' htmlFor={`column-${column.colId}-${index}`}>{column.headerName}</Label>
+                            </div>
                         </div>
                     )
                 }

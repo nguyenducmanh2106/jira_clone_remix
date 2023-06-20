@@ -41,3 +41,14 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Inter";
+  src: 
+    /* url('../../../public/fonts/Inter-Roman-Var.ba4caefcdf5b36b438db92786991c845.woff2') format('woff2'), */
+    url('../../../public/fonts/Inter.woff2') format('woff2'),
+    url('../../../public/fonts/CircularStd-Black.woff') format('woff');
+
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

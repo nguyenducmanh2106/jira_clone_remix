@@ -6,9 +6,13 @@
   background-color: #0052cc;
   color: #0052cc;
 }
+.ag-ltr div.ag-cell {
+  border-right-color: #ececed;
+}
 
 .setting-column {
-  max-height: calc(100vh - 170px);
+  max-height: calc(100vh - 130px);
+  min-height: calc(100vh - 130px);
 }
 .dragable-icon {
   width: 16px;
@@ -36,6 +40,35 @@
   width: 16px;
   height: 16px;
   background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -368px -16px;
+}
+.icon-close16 {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.icon-close16:before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -256px -96px;
+}
+
+.icon-close16-red {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.icon-close16-red:before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -96px -16px;
 }
 
 @layer base {
@@ -70,6 +103,12 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+  }
+
+  div.ag-theme-balham,
+  div.ag-theme-balham-dark {
+    --ag-font-size: 13px;
+    --ag-font-family: "Inter", "sans-serif";
   }
 
   .dark {

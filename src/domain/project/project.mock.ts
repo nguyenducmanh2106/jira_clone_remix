@@ -4,7 +4,7 @@ import { categoriesMock1, categoriesMock2 } from "@domain/category";
 
 export const projectMock1: Project = {
   id: "jira-clone",
-  name: "JIRA Clone",
+  name: "Project",
   description: "Software project",
   users: usersMock,
   categories: categoriesMock1,

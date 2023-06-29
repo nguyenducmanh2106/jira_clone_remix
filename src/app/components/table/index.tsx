@@ -90,6 +90,7 @@ export const TableView = ({
       field: 'title',
       minWidth: 190,
       headerName: 'Tiêu đề',
+      headerTooltip: 'Tiêu đề Tooltip',
       headerComponent: HeaderTableView,
       sortable: true,
     },
@@ -97,6 +98,7 @@ export const TableView = ({
       colId: 'price',
       field: 'price',
       headerName: 'Giá',
+      suppressMenu: true,
       sortable: true,
       cellRendererParams: {
         inputType: 'number',

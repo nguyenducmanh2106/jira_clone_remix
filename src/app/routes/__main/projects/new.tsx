@@ -2,6 +2,7 @@ import type {
   LoaderFunction,
   ActionFunction,
   MetaFunction,
+  V2_MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -13,36 +14,67 @@ import { ProjectPanelView } from "@app/ui/main/projects/project-panel/project-pa
 import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
 import { getRandomProjectImage } from "@utils/random-project-image";
 
-export const meta: MetaFunction = () => {
+export const meta: V2_MetaFunction = () => {
   const title = "Project - Create project";
   const description = "Create new project and assigne team members.";
   const image =
     "https://jira-clone.fly.dev/static/images/readme/projects-new.png";
   const url = "https://jira-clone.fly.dev/projects/new";
 
-  return {
-    charset: "utf-8",
-    viewport: "width=device-width,initial-scale=1",
-    title: title,
-    description: description,
-    "og:url": url,
-    "og:type": "website",
-    "og:site_name": title,
-    "og:title": title,
-    "og:description": description,
-    "og:image": image,
-    "twitter:card": "summary_large_image",
-    "twitter:site": url,
-    "twitter:domain": "jira-clone.fly.dev",
-    "twitter:title": title,
-    "twitter:description": description,
-    "twitter:image": image,
-    "twitter:image:width": "1268",
-    "twitter:image:height": "856",
-    "twitter:image:alt": title,
-    "twitter:creator": "@Jack_DanielSG",
-    "twitter:creator:id": "Jack_DanielSG",
-  };
+  // return {
+  //   charset: "utf-8",
+  //   viewport: "width=device-width,initial-scale=1",
+  //   title: title,
+  //   description: description,
+  //   "og:url": url,
+  //   "og:type": "website",
+  //   "og:site_name": title,
+  //   "og:title": title,
+  //   "og:description": description,
+  //   "og:image": image,
+  //   "twitter:card": "summary_large_image",
+  //   "twitter:site": url,
+  //   "twitter:domain": "jira-clone.fly.dev",
+  //   "twitter:title": title,
+  //   "twitter:description": description,
+  //   "twitter:image": image,
+  //   "twitter:image:width": "1268",
+  //   "twitter:image:height": "856",
+  //   "twitter:image:alt": title,
+  //   "twitter:creator": "@Jack_DanielSG",
+  //   "twitter:creator:id": "Jack_DanielSG",
+  // };
+  return [
+    {
+      charset: "utf-8",
+    },
+    {
+      name: "viewport",
+      content: "width=device-width,initial-scale=1",
+    },
+    { title: title },
+    {
+      name: "description",
+      content: description,
+    },
+    { property: "og:url", content: url },
+    { property: "og:type", content: "website" },
+    { property: "og:site_name", content: title },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:image", content: image },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: url },
+    { name: "twitter:domain", content: "jira-clone.fly.dev" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { name: "twitter:image", content: image },
+    { name: "twitter:image:width", content: "1268" },
+    { name: "twitter:image:height", content: "856" },
+    { name: "twitter:image:alt", content: title },
+    { name: "twitter:creator", content: "@Jack_DanielSG" },
+    { name: "twitter:creator:id", content: "Jack_DanielSG" },
+  ]
 };
 
 type LoaderData = {

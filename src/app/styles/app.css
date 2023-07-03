@@ -73,6 +73,7 @@
 
 @layer base {
   :root {
+    --font-sans: "Inter", "Inter_Fallback";
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;
 
@@ -108,7 +109,8 @@
   div.ag-theme-balham,
   div.ag-theme-balham-dark {
     --ag-font-size: 13px;
-    --ag-font-family: "Inter", "sans-serif";
+    /* --ag-font-family: "Inter", "sans-serif"; */
+    --ag-font-family: "Inter", "Inter_Fallback";
   }
 
   .dark {

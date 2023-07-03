@@ -1,8 +1,7 @@
 @font-face {
   font-family: "CircularStdLight";
-  src: 
-    url('../../../public/fonts/CircularStd-Book.woff2') format('woff2'),
-    url('../../../public/fonts/CircularStd-Book.woff') format('woff');
+  src: url("../../../public/fonts/CircularStd-Book.woff2") format("woff2"),
+    url("../../../public/fonts/CircularStd-Book.woff") format("woff");
 
   font-weight: normal;
   font-style: normal;
@@ -11,9 +10,8 @@
 
 @font-face {
   font-family: "CircularStdMedium";
-  src: 
-    url('../../../public/fonts/CircularStd-Medium.woff2') format('woff2'),
-    url('../../../public/fonts/CircularStd-Medium.woff') format('woff');
+  src: url("../../../public/fonts/CircularStd-Medium.woff2") format("woff2"),
+    url("../../../public/fonts/CircularStd-Medium.woff") format("woff");
 
   font-weight: normal;
   font-style: normal;
@@ -22,9 +20,8 @@
 
 @font-face {
   font-family: "CircularStdBold";
-  src: 
-    url('../../../public/fonts/CircularStd-Bold.woff2') format('woff2'),
-    url('../../../public/fonts/CircularStd-Bold.woff') format('woff');
+  src: url("../../../public/fonts/CircularStd-Bold.woff2") format("woff2"),
+    url("../../../public/fonts/CircularStd-Bold.woff") format("woff");
 
   font-weight: normal;
   font-style: normal;
@@ -33,9 +30,8 @@
 
 @font-face {
   font-family: "CircularStdBlack";
-  src: 
-    url('../../../public/fonts/CircularStd-Black.woff2') format('woff2'),
-    url('../../../public/fonts/CircularStd-Black.woff') format('woff');
+  src: url("../../../public/fonts/CircularStd-Black.woff2") format("woff2"),
+    url("../../../public/fonts/CircularStd-Black.woff") format("woff");
 
   font-weight: normal;
   font-style: normal;
@@ -43,12 +39,17 @@
 }
 @font-face {
   font-family: "Inter";
-  src: 
-    /* url('../../../public/fonts/Inter-Roman-Var.ba4caefcdf5b36b438db92786991c845.woff2') format('woff2'), */
-    url('../../../public/fonts/Inter.woff2') format('woff2'),
-    url('../../../public/fonts/CircularStd-Black.woff') format('woff');
+  src: url("../../../public/fonts/Inter.woff2") format("woff2");
 
-  font-weight: normal;
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
+}
+@font-face {
+  font-family: "Inter_Fallback";
+  src: local("Arial");
+  ascent-override: 90.2%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+  size-adjust: 107.4%;
 }

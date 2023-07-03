@@ -53,12 +53,12 @@ module.exports = {
       focus: "#4c9aff",
       transparent: "transparent",
     },
-    fontFamily: {
-      "primary-light": ["CircularStdLight", "sans-serif"],
-      primary: ["Inter", "sans-serif"],
-      "primary-bold": ["CircularStdBold", "sans-serif"],
-      "primary-black": ["CircularStdBlack", "sans-serif"],
-    },
+    // fontFamily: {
+    //   "primary-light": ["CircularStdLight", "sans-serif"],
+    //   primary: ["Inter", "sans-serif"],
+    //   "primary-bold": ["CircularStdBold", "sans-serif"],
+    //   "primary-black": ["CircularStdBlack", "sans-serif"],
+    // },
     boxShadow: {
       xs: "rgba(0,0,0, 0.2) 0px 1px 1px, rgba(0,0,0, 0.2) 0px 0px 1px",
       sm: "rgba(9, 30, 66, 0.25) 0px 1px 1px 0px, rgba(9, 30, 66, 0.31) 0px 0px 1px 0px",

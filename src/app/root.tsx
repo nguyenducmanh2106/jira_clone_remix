@@ -12,9 +12,9 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import cx from "classix";
-import { Theme, Preference } from "@app/store/theme.store";
+import { Theme, Preference,ThemeProvider,useTheme } from "@app/store/theme.store";
 import { getThemeSession } from "./session-storage/theme-storage.server";
-import { ThemeProvider, useTheme } from "./store/theme.store";
+// import { ThemeProvider, useTheme } from "./store/theme.store";
 import { Error404 } from "./components/error-404";
 import { Error500 } from "./components/error-500";
 import styles from "./styles/app-compiled.css";

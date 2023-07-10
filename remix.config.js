@@ -28,4 +28,6 @@ module.exports = {
   ],
   assetsBuildDirectory: "public/build",
   publicPath: "/build/",
+  // sourceMap: true,
+  devServerPort: 8003,
 };

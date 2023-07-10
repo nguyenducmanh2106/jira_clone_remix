@@ -78,12 +78,14 @@ export const SettingColumn = (props: ICustomHeaderParams): JSX.Element => {
     //       </DialogDescription>
     //     </DialogHeader>
     //     <div className={cx(
-    //       "grid gap-4 py-4 overflow-y-auto flex setting-column my-[8px]",
+    //       "grid grid-cols-2 gap-4 border-b overflow-y-auto setting-column my-[8px]",
 
     //     )} >
-    //       <DndProvider backend={HTML5Backend}>
+    //       {/* <DndProvider backend={HTML5Backend}>
     //         <ListColumnDrag />
-    //       </DndProvider>
+    //       </DndProvider> */}
+    //       <GroupAllField columns={allColumns} toggleDisplayColumns={toggleDisplayColumns} isChange={isChange} />
+    //       <ListColumnDrag columns={columnDisplayings} toggleDisplayColumns={toggleDisplayColumns} />
     //     </div>
     //     <DialogFooter>
     //       <Button type="submit">Save changes</Button>

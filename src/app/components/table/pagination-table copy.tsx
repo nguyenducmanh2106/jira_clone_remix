@@ -35,7 +35,7 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
     return props.totalRecord ?? 0;
   }, [props.totalRecord]);
   useEffect(() => {
-    checkNextOrPreviousPage(props.gridRef.current!.api)
+    checkNextOrPreviousPage(props.gridRef.current?.api)
   }, [])
 
   const [hasNextPage, setHasNextPage] = useState<boolean>(false)
@@ -43,7 +43,7 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
   const onChangePageSize = (value: string) => {
     // console.log(props.gridRef.current?.api.paginationGetRowCount())
 
-    props.gridRef.current!.api.paginationSetPageSize(+value);
+    props.gridRef.current?.api.paginationSetPageSize(+value);
     // props.gridRef.current!.api.setCacheBlockSize(+value);
     // props.gridRef.current!.api.paginationGoToPage(4);
   }
@@ -51,16 +51,16 @@ export const PaginationTable = (props: INoRowsOverlay): JSX.Element => {
 
     switch (value) {
       case "first-page":
-        props.gridRef.current!.api.paginationGoToFirstPage()
+        props.gridRef.current?.api.paginationGoToFirstPage()
         break;
       case "prev-page":
-        props.gridRef.current!.api.paginationGoToPreviousPage()
+        props.gridRef.current?.api.paginationGoToPreviousPage()
         break;
       case "next-page":
-        props.gridRef.current!.api.paginationGoToNextPage()
+        props.gridRef.current?.api.paginationGoToNextPage()
         break;
       case "last-page":
-        props.gridRef.current!.api.paginationGoToLastPage()
+        props.gridRef.current?.api.paginationGoToLastPage()
         break;
     }
     console.log(props.gridRef?.current?.api?.paginationGetCurrentPage())

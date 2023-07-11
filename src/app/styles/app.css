@@ -111,6 +111,10 @@
     --ag-font-size: 13px;
     /* --ag-font-family: "Inter", "sans-serif"; */
     --ag-font-family: "Inter", "Inter_Fallback";
+    --ag-header-background-color: #fff;
+    --ag-odd-row-background-color: #fff;
+    --ag-header-column-separator-height: 100%;
+    --ag-row-border-color: #ececed;
   }
 
   .dark {

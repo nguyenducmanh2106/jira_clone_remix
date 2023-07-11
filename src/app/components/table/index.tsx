@@ -373,6 +373,7 @@ export const TableView = ({
             <div style={gridStyle} className="ag-theme-balham">
               <AgGridReact<IOlympicData>
                 ref={gridRef}
+                rowHeight={32}
                 columnDefs={columnDefs}
                 components={components}
                 defaultColDef={defaultColDef}

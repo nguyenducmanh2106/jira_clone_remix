@@ -102,6 +102,11 @@ const navItems: NavItemProps[] = [
     name: "Components",
   },
   {
+    href: "custom-field",
+    icon: <RiBriefcase3Line size={24} />,
+    name: "Custom Fields",
+  },
+  {
     href: "server-error",
     icon: <BsCloudSlash size={24} />,
     name: "Server error",

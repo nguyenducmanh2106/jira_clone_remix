@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { memo, useEffect, useState } from 'react'
 import { Columns } from './Columns'
 import { ColDef, ColGroupDef } from 'ag-grid-community'
-import { Input } from '@app/components/Input'
+import { Input } from '@app/components/ui/input';
 
 export interface Column {
     columns: ColDef[];

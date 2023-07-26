@@ -1,22 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ColDef, IHeaderParams } from 'ag-grid-community';
-import * as Popover from '@radix-ui/react-popover';
 // import ReactPortal from '../portal';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import {
   GearIcon,
 } from '@radix-ui/react-icons';
 import { RiFilterLine, RiCloseLine } from "react-icons/ri";
 import { CheckedState } from '@radix-ui/react-checkbox';
-import { Button } from '../../Button/button';
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '../../Sheet';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { GroupAllField } from './GroupAllField/ListColumns';
 import cx from "classix";
-import { Input } from '../../Input';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../dialog';
 import { ListColumnDrag } from './GroupSelectedField/ListColumDrag';
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@app/components/ui/sheet';
+import { Button } from '@app/components/ui/button';
 export interface ICustomHeaderParams extends IHeaderParams {
   menuIcon: string;
   checkboxSelection: boolean,
@@ -98,7 +94,7 @@ export const SettingColumn = (props: ICustomHeaderParams): JSX.Element => {
           <GearIcon />
         </div>
       </SheetTrigger>
-      <SheetContent position="right" className='p-0 w-[600px]'>
+      <SheetContent side="right" className='p-0 w-[600px]'>
         <SheetHeader className='p-[8px]'>
           <SheetTitle>Tùy chỉnh cột</SheetTitle>
         </SheetHeader>

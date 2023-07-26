@@ -16,7 +16,7 @@ import {
 } from '@radix-ui/react-icons';
 import { RiFilterLine, RiCloseLine } from "react-icons/ri";
 import { CheckedState } from '@radix-ui/react-checkbox';
-import { Button } from '../Button/button';
+import { Button } from '../ui/button';
 
 export interface ICustomHeaderParams extends IHeaderParams {
   menuIcon: string;

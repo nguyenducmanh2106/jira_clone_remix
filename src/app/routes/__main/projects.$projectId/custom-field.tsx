@@ -1,6 +1,6 @@
+import PlaygroundPage from "@app/components/CustomizeField";
 import { Error500 } from "@app/components/error-500";
-import { TableView } from "@app/components/table";
-import { MetaFunction, V2_MetaFunction } from "@remix-run/node";
+import { V2_MetaFunction } from "@remix-run/node";
 
 export const meta: V2_MetaFunction<any> = ({ data }) => {
   // const { project } = data as LoaderData;
@@ -53,5 +53,5 @@ export function ErrorBoundary({ error }: { error: Error }) {
 }
 
 export default function ComponentsRoute() {
-  return <TableView />;
+  return <PlaygroundPage />;
 }

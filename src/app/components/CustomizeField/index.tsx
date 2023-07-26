@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons"
 
 
@@ -14,25 +13,25 @@ import { TopPSelector } from "./components/top-p-selector"
 import { models, types } from "./data/models"
 import { presets } from "./data/presets"
 import { Textarea } from "../ui/textarea"
-import { Button } from "../Button/button"
 import { Separator } from "../ui/separator"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
 import { Label } from "../ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { Button } from "../ui/button"
 
 
 export default function PlaygroundPage() {
   return (
     <>
       <div className="md:hidden">
-        <Image
+        <img
           src="/examples/playground-light.png"
           width={1280}
           height={916}
           alt="Playground"
           className="block dark:hidden"
         />
-        <Image
+        <img
           src="/examples/playground-dark.png"
           width={1280}
           height={916}

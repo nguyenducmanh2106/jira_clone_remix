@@ -2,10 +2,9 @@ import type { CSSProperties, FC } from 'react'
 import { memo, useMemo, useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from './ItemTypes'
-import { Checkbox } from '@app/components/Checkbox'
 import { ColDef, ColGroupDef } from 'ag-grid-community'
-import { Label } from '@app/components/Label'
-import { CheckedState } from '@radix-ui/react-checkbox'
+import { Label } from '@app/components/ui/label'
+import { Checkbox } from '@app/components/ui/checkbox'
 
 const style: CSSProperties = {
     border: '1px solid transparent',

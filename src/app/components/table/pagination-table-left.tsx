@@ -26,7 +26,7 @@ export const PaginationTableLeft = (props: IStatusPanelParams): JSX.Element => {
   }, []);
 
   return (
-    <div className="whitespace-nowrap dark:border-white bg-white py-[12px] px-[16px] text-2xs text-bla dark:bg-dark-500 dark:text-white">
+    <div className="whitespace-nowrap text-black dark:border-white bg-white py-[12px] px-[16px] text-2xs text-bla dark:bg-dark-500 dark:text-white">
       <div className="flex items-center justify-between h-[32px]">
         <div className="left-pagination hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
           <div>

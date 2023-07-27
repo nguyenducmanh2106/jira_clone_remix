@@ -21,8 +21,8 @@ export const Container: FC = memo(function Container() {
     const fields = ["Autocomplete", "Attach", "Attach Image", "Button", "Textarea"]
     const tablist: TabModel[] = [
         {
-            label: "Details",
-            key: "Details",
+            label: "Add new tab",
+            key: "AddNewTab",
         },
         // {
         //     label: "Details1",

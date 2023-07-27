@@ -44,6 +44,7 @@ export const Field: FC<IFieldProps> = memo(function Field({
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "field",
+      item: { label: "abc", key: "abc" },
       canDrag: !forbidDrag,
       collect: (monitor: DragSourceMonitor) => ({
         isDragging: monitor.isDragging(),
@@ -72,17 +73,6 @@ export const Field: FC<IFieldProps> = memo(function Field({
       ref={drag}
       role="SourceBox"
     >
-      {/* <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Label>{color}</Label>
-            {children}
-          </TooltipTrigger>
-          <TooltipContent>
-            {color}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider> */}
       <Label>{label}</Label>
       {children}
     </div>

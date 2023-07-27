@@ -1,11 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  HamburgerMenuIcon,
-  DotFilledIcon,
-  CheckIcon,
   ChevronRightIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
   DoubleArrowLeftIcon,
   ChevronLeftIcon,
   DoubleArrowRightIcon,

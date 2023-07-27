@@ -71,38 +71,140 @@
   background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -96px -16px;
 }
 
+.form-section-container .form-section {
+  background-color: inherit;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.form-section-container .form-section .section-header.has-label,
+.form-section-container .form-section .section-header .section-label {
+  display: flex;
+}
+
+.form-section-container .form-section .section-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+}
+
+.form-section-container .form-section .section-header .section-actions {
+  display: flex;
+  align-items: center;
+}
+.form-section-container .form-section .section-header .btn-section {
+  padding: 6px;
+  box-shadow: none;
+}
+.form-section-container .form-section .section-header .btn-section:hover {
+  background-color: #f4f5f6;
+}
+
+.form-section-container .form-section .section-columns-container {
+  display: flex;
+  min-height: 2rem;
+  border-radius: 6px;
+}
+.form-builder-container .form-sidebar [data-is-user-generated="1"],
+.form-builder-container .form-main [data-is-user-generated="1"] {
+  background-color: #fef4e2;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #f4f5f6;
+  border-radius: 6px;
+  border: 1px dashed #c0c6cc;
+  padding: 0.5rem;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.column .column-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  padding-left: 0.3rem;
+}
+.form-column .column-label {
+  font-weight: 600;
+  color: #1f272e;
+  cursor: pointer;
+}
+.column .column-header .column-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.field {
+  text-align: left;
+  width: 100%;
+  background-color: #f4f5f6;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  padding: 0.3rem;
+  /* font-size: var(--text-sm); */
+}
+.field .field-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+.field .field-controls .field-label {
+  display: flex;
+  align-items: center;
+}
+.field .field-controls .field-actions {
+  flex: none;
+}
+
+.field.hovered,
+.field.selected {
+  border-color: #2490ef;
+}
+
+.hidden-span {
+  visibility: hidden;
+  position: absolute;
+  width: max-content;
+}
+
 @layer base {
   :root {
     --font-sans: "Inter", "Inter_Fallback";
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
- 
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
- 
+
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
- 
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
- 
+
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
- 
+
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
- 
+
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
- 
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
- 
+
     --ring: 215 20.2% 65.1%;
- 
+
     --radius: 0.5rem;
   }
 
@@ -122,31 +224,31 @@
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
- 
+
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
- 
+
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
- 
+
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
- 
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
- 
+
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
- 
+
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
- 
+
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
- 
+
     --ring: 217.2 32.6% 17.5%;
   }
 }

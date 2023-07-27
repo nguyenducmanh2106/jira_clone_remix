@@ -45,11 +45,13 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
 
     return (
         <Tabs defaultValue="account" className="w-full">
-            <TabsList className={cx("grid w-full", "grid-cols-" + tablist.length.toString())}>
-                {tablist.map((tab: TabModel) =>
-                    <TabsTrigger key={tab.key} value="account">{tab.label}</TabsTrigger>
-                )}
-            </TabsList>
+            <div className='w-full'>
+                <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+                    {tablist.map((tab: TabModel) =>
+                        <TabsTrigger key={tab.key} value="account">{tab.label}</TabsTrigger>
+                    )}
+                </TabsList>
+            </div>
             <TabsContent value="account">
                 <FormSection />
             </TabsContent>

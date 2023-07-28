@@ -15,11 +15,12 @@ import { Textarea } from '@app/components/ui/textarea'
 import { Button } from '@app/components/ui/button'
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons'
 import { TabModel } from './types'
+import cx from 'classix'
 
 
 export const Container: FC = memo(function Container() {
     const fields = ["Autocomplete", "Attach", "Attach Image", "Button", "Textarea"]
-    
+
     return (
         <div className="hidden h-full flex-col md:flex">
             <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
@@ -50,7 +51,15 @@ export const Container: FC = memo(function Container() {
                                 </TabsList>
                             </div>
                             {/* <ModelSelector types={types} models={models} /> */}
-                            <Input placeholder="Search fields" />
+                            <Input placeholder="Search fields" className={cx(
+                                "border-1 box-border h-[36px] rounded border-none bg-grey-100 py-2",
+                                "pr-8 pl-2 outline outline-2 outline-grey-400 duration-200 ease-in-out",
+                                "placeholder:font-primary-light placeholder:text-xs placeholder:text-font-light",
+                                "placeholder:duration-200 placeholder:ease-in-out hover:bg-grey-300",
+                                "focus:bg-white focus:shadow-blue focus:outline-primary-main dark:bg-dark-500",
+                                "dark:outline-dark-100 dark:placeholder:text-font-main-dark dark:placeholder:opacity-50",
+                                "dark:placeholder:text-opacity-100 dark:focus:outline-primary-main-dark"
+                            )} />
                             <Separator className="my-4" />
                             <div className="md:order-2">
                                 <TabsContent value="complete" className="mt-0 border-0 p-0">
@@ -85,7 +94,7 @@ export const Container: FC = memo(function Container() {
                         <div className="md:order-2">
                             <div className="mt-0 border-[1px] p-0">
                                 <div className="flex h-full flex-col space-y-4 min-h-[700px]">
-                                    <FormBuilderContainer  />
+                                    <FormBuilderContainer />
                                 </div>
                             </div>
                         </div>

@@ -18,13 +18,17 @@ export interface DragItem {
 
 export interface FormBuilderProps {
     onDrop: (item: any) => void
-    fields: FieldDto[]
+    fields: FieldDto[],
+    moveItem: (fromListId, fromIndex, toListId, toIndex) => void,
+    listId: string;
 }
 
 
 const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag({
     onDrop,
     fields,
+    moveItem,
+    listId
 }) {
     const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
         () => ({
@@ -42,15 +46,23 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
         [onDrop],
     )
 
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
 
     return (
 
         <div
-            className="column"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={cx("column", isHovered ? "hovered" : "")}
             title="column_break_13"
-            data-is-user-generated={0}
-            data-draggable="true"
-            draggable="false"
         >
             <div className="column-header">
                 <div className="column-label">
@@ -108,8 +120,8 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                 >
                     {/* {canDrop && <p>Drop here.</p>} */}
 
-                    {fields.map((field: FieldDto) => (
-                        <SectionField key={field.idx} />
+                    {fields.map((field, index) => (
+                        <SectionField key={field.idx} id={field.id} text={field.text} index={field.id} listId={listId} moveItem={moveItem} />
                     ))}
                 </div>
             </div>
@@ -118,23 +130,25 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
 })
 
 
-export const SectionColumn = () => {
+export const SectionColumn = ({ list, setList, moveItem, listId }) => {
     const handleDrop = useCallback(
         (field: FieldDto) => {
-            fields.push(field)
-            setFields(fields)
+            list.push(field)
+            setList(list)
         },
         [],
     )
-    const [fields, setFields] = useState<FieldDto[]>([
-        { idx: 1 },
-        { idx: 2 },
-    ])
+    // const [fields, setFields] = useState<FieldDto[]>([
+    //     { idx: 1 },
+    //     { idx: 2 },
+    // ])
 
     return (
         <SectionColumnDrag
-            fields={fields}
+            fields={list}
             onDrop={handleDrop}
+            moveItem={moveItem}
+            listId={listId}
         />
     )
 }

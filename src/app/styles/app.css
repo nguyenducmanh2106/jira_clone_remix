@@ -166,6 +166,16 @@
 .field.selected {
   border-color: #2490ef;
 }
+.column.hovered,
+.column.selected {
+  border-color: #2490ef;
+  border-style: solid;
+}
+
+.form-section-container .form-section.hovered,
+.form-section-container .form-section.selected {
+  border-color: #2490ef;
+}
 
 .hidden-span {
   visibility: hidden;

@@ -12,7 +12,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import cx from "classix";
-import { Theme, Preference,ThemeProvider,useTheme } from "@app/store/theme.store";
+import { Theme, Preference, ThemeProvider, useTheme } from "@app/store/theme.store";
 import { getThemeSession } from "./session-storage/theme-storage.server";
 // import { ThemeProvider, useTheme } from "./store/theme.store";
 import { Error404 } from "./components/error-404";
@@ -22,6 +22,8 @@ import fonts from "./styles/fonts.css";
 import AgGridStyles from "ag-grid-community/styles/ag-grid.css";
 import AgThemeAlpineStyles from "ag-grid-community/styles/ag-theme-alpine.min.css";
 import AgThemeBalhamStyles from "ag-grid-community/styles/ag-theme-balham.min.css";
+import { Provider } from "react-redux";
+import store from "./store/app.store";
 
 export const links = () => {
   return [
@@ -112,9 +114,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function AppWithProviders() {
   const { theme, preference } = useLoaderData<LoaderData>();
   return (
-    <ThemeProvider specifiedTheme={theme} specifiedPreference={preference}>
-      <App />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider specifiedTheme={theme} specifiedPreference={preference}>
+        <App />
+      </ThemeProvider>
+    </Provider>
   );
 }
 

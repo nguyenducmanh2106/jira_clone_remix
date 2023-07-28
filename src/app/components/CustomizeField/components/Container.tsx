@@ -19,16 +19,7 @@ import { TabModel } from './types'
 
 export const Container: FC = memo(function Container() {
     const fields = ["Autocomplete", "Attach", "Attach Image", "Button", "Textarea"]
-    const tablist: TabModel[] = [
-        {
-            label: "Add new tab",
-            key: "AddNewTab",
-        },
-        // {
-        //     label: "Details1",
-        //     key: "Details1",
-        // }
-    ]
+    
     return (
         <div className="hidden h-full flex-col md:flex">
             <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
@@ -94,7 +85,7 @@ export const Container: FC = memo(function Container() {
                         <div className="md:order-2">
                             <div className="mt-0 border-[1px] p-0">
                                 <div className="flex h-full flex-col space-y-4 min-h-[700px]">
-                                    <FormBuilderContainer tablist={tablist} />
+                                    <FormBuilderContainer  />
                                 </div>
                             </div>
                         </div>

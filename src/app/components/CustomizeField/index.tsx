@@ -21,7 +21,7 @@ import { Field } from "./components/field"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { Container } from "./components/Container"
-
+import { TouchBackend } from 'react-dnd-touch-backend'
 
 export default function PlaygroundPage() {
   return (

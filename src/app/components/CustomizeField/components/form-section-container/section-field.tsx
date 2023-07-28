@@ -5,17 +5,23 @@ import { SectionColumn } from "./section-column"
 import { useRef, useState } from "react"
 import { cx } from "class-variance-authority"
 import { FieldDto } from "@/src/api"
+import { useDrag, useDrop } from "react-dnd"
+import { ItemTypes } from "@app/components/testm/ItemTypes"
 
+import { useSelector, useDispatch } from "react-redux"
+import { increment } from "@app/store/Slice/counterSlice"
 export interface SectionFieldProps {
     fields: FieldDto
 }
-export function SectionField() {
+export function SectionField({ id, text, index, listId, moveItem }) {
+    const count = useSelector(state => state.counter)
+    const dispatch = useDispatch()
+
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isFocus, setIsFocus] = useState<boolean>(false);
     const handleMouseEnter = () => {
         setIsHovered(true);
     };
-    const divRefs = useRef(null);
 
     const handleMouseLeave = () => {
         setIsHovered(false);
@@ -23,18 +29,32 @@ export function SectionField() {
 
     const handleFocus = () => {
         setIsFocus(true);
-        console.log(divRefs.current)
+        dispatch(increment())
     };
+
+    const [, dragRef] = useDrag({
+        type: ItemTypes.ITEM,
+        item: { id, index, listId },
+    });
+
+    const [, dropRef] = useDrop({
+        accept: ItemTypes.ITEM,
+        hover: (item) => {
+            if (item.id !== id) {
+                moveItem(item.listId, item.index, listId, index);
+                item.index = index;
+                item.listId = listId;
+            }
+        },
+    });
     return (
         <div
-            ref={divRefs}
+            ref={(node) => dragRef(dropRef(node))}
             onClick={handleFocus}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className={cx("field", isHovered ? "hovered" : "")}
             title="boarding_begins_on"
-            data-is-user-generated={0}
-            data-draggable="true"
         >
             <div
                 className="control frappe-control editable"
@@ -46,24 +66,24 @@ export function SectionField() {
                         <div
                             title="Double click to edit label"
                         >
-                            <span data-v-a015357f="">Onboarding Begins On</span>
-                            <span data-v-a015357f="" className="hidden-span">
+                            <span>{text} {count}</span>
+                            <span className="hidden-span">
                                 Onboarding Begins On
                             </span>
-                            <span data-v-a015357f="" className="hidden-span">
+                            <span className="hidden-span">
                                 Label
                             </span>
                         </div>
-                        <div data-v-43f9e43e="" className="reqd-asterisk">
+                        <div className="reqd-asterisk">
                             *
                         </div>
                     </div>
                     <div className="field-actions">
                         {isHovered ? <>
-                            <button data-v-43f9e43e="" className="btn btn-xs btn-icon">
+                            <button className="btn btn-xs btn-icon">
                                 <CopyIcon />
                             </button>
-                            <button data-v-43f9e43e="" className="btn btn-xs btn-icon">
+                            <button className="btn btn-xs btn-icon">
                                 <Cross2Icon />
                             </button>
                         </> : <></>}
@@ -75,9 +95,7 @@ export function SectionField() {
                     placeholder=""
                     readOnly
                 />
-
                 <div className="selected-color no-value" />
-
             </div>
         </div>
     )

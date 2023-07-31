@@ -14,7 +14,6 @@ import { Field } from './field'
 import { Textarea } from '@app/components/ui/textarea'
 import { Button } from '@app/components/ui/button'
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons'
-import { TabModel } from './types'
 import cx from 'classix'
 
 

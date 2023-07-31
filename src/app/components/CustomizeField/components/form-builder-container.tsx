@@ -44,15 +44,14 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
         [onDrop],
     )
     const { fields } = useSelector(state => state.fieldSection)
-    const dispatch = useDispatch()
-    console.log(fields)
 
+    const fieldTabs = fields.filter((field: FieldDto) => field.fieldtype === FIELD_TYPE.TAB_BREAK)
+    const fieldFormSections = fields.filter((field: FieldDto) => field.fieldtype === FIELD_TYPE.SECTION_BREAK)
 
     return (
-        <Tabs defaultValue="details_tab" className="w-full">
+        <Tabs defaultValue="custom_tab_break" className="w-full">
             <div className='w-full'>
                 <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
-                    <TabsTrigger key="details_tab" value="details_tab">details</TabsTrigger>
                     {fields.map((field: FieldDto) => {
                         if (field.fieldtype === FIELD_TYPE.TAB_BREAK) {
                             return (
@@ -62,47 +61,28 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
                     })}
                 </TabsList>
             </div>
-            <TabsContent key="details_tab" value="details_tab">
-                <FormSection
-                    label=""
-                    positionTab={0}
-                    positionFormSection={0}
-                />
-                {fields.map((field: FieldDto) => {
-                    if (field.fieldtype === FIELD_TYPE.SECTION_BREAK) {
-                        return (
-                            <FormSection
-                                key={field.fieldname}
-                                label={field.label as string}
-                                positionTab={0}
-                                positionFormSection={0}
-                            />
-                        )
-                    }
-                    else if (field.fieldtype === FIELD_TYPE.TAB_BREAK) {
-                        return;
-                    }
-                })}
-            </TabsContent>
-            {fields.map((field: FieldDto) => {
-                if (field.fieldtype === FIELD_TYPE.TAB_BREAK) {
-                    return (
-                        <TabsContent key={field.fieldname} value={field.fieldname as string}>
-                            {fields.map((field: FieldDto) => {
-                                if (field.fieldtype === FIELD_TYPE.SECTION_BREAK) {
-                                    return (
-                                        <FormSection
-                                            key={field.fieldname}
-                                            label={field.label as string}
-                                            positionTab={0}
-                                            positionFormSection={0}
-                                        />
-                                    )
-                                }
-                            })}
-                        </TabsContent>
-                    )
-                }
+            {fieldTabs.map((fieldTab: FieldDto, positionTab: number) => {
+                let positionFormSection = 0;
+                const positionTabInList = fields.findIndex((item: FieldDto) => item.fieldname === fieldTab.fieldname);
+                return (
+                    <TabsContent key={fieldTab.fieldname} value={fieldTab.fieldname as string}>
+                        {fieldFormSections.map((field: FieldDto) => {
+                            const positionFormSectionInList = fields.findIndex((item: FieldDto) => item.fieldname === field.fieldname);
+                            if (positionTabInList < positionFormSectionInList) {
+                                positionFormSection++;
+                                console.log(positionTabInList,positionFormSectionInList)
+                                return (
+                                    <FormSection
+                                        key={field.fieldname}
+                                        label={field.label as string}
+                                        positionTab={positionTab}
+                                        positionFormSection={positionFormSection - 1}
+                                    />
+                                )
+                            }
+                        })}
+                    </TabsContent>
+                )
             })}
 
             {/* <TabsContent value="AddNewTab1">
@@ -139,7 +119,7 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
 })
 
 export interface FormBuilderContainerState {
-    tablist: TabModel[]
+    tablist: any
 }
 export const FormBuilderContainer = (props) => {
     const [lastDroppedColor, setLastDroppedColor] = useState<string | null>(null)

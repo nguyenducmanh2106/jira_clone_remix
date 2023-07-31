@@ -1,3 +1,4 @@
+import { FieldDto } from "@/src/api";
 import { createSlice } from "@reduxjs/toolkit";
 
 type positionFormSection = {
@@ -9,8 +10,28 @@ type ActionProps = {
     type: string
 }
 
-const initState = {
+type state = {
+    fields: FieldDto[],
+    listId: string
+}
+
+const initState: state = {
     fields: [
+        {
+            "fieldname": "custom_tab_break",
+            "fieldtype": "Tab Break",
+            "label": "Details"
+        },
+        {
+            "fieldname": "custom_section_break",
+            "fieldtype": "Section Break",
+            "label": "detail"
+        },
+        {
+            "fieldname": "custom_column_break",
+            "fieldtype": "Column Break",
+            "label": ""
+        },
         {
             "fieldname": "naming_series",
             "fieldtype": "Select",
@@ -152,6 +173,17 @@ const initState = {
             "fieldtype": "Tab Break",
             "label": "Job Description"
         },
+        
+        {
+            "fieldname": "custom_section_break_onym",
+            "fieldtype": "Section Break",
+            "label": "Job Description section"
+        },
+        {
+            "fieldname": "custom_column_break_onym",
+            "fieldtype": "Column Break",
+            "label": "Job Description column"
+        },
         {
             "fetch_from": "designation.description",
             "fetch_if_empty": 1,
@@ -172,25 +204,24 @@ const initState = {
             "show_dashboard": 1
         },
     ],
-    listId: ''
+    listId: '',
 }
 
 const fieldSectionSlice = createSlice({
     name: 'fieldSection',
     initialState: initState,
     reducers: {
-        increment: state => state,
-        decrement: state => state,
+        //lấy danh sách field từ vị trí positionTab - 1 đến vị trí positionTab và từ vị trí positionFormSection - 1 đến vị trí positionFormSection
         sectionColumnByPosition: (state, action: ActionProps) => {
             const { positionTab, positionFormSection } = action.payload;
-            const fields = state.fields;
-
+            // const {fields} = state;
+            console.log(state)
             switch (positionTab) {
                 case 0:
-                    fields.splice(2, 4);
-                    return { ...state, fields };
+                    // fields.splice(2, 4);
+                    return { ...state };
                 default:
-                    return { ...state, fields };
+                    return { ...state };
             }
         }
         // moveItem: (state,fromListId, fromIndex, toListId, toIndex) => {
@@ -199,5 +230,5 @@ const fieldSectionSlice = createSlice({
     }
 })
 
-export const { increment, decrement, sectionColumnByPosition } = fieldSectionSlice.actions;
+export const { sectionColumnByPosition } = fieldSectionSlice.actions;
 export default fieldSectionSlice.reducer;

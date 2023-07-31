@@ -1,9 +1,10 @@
 import { CopyIcon, Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons"
 import { SectionColumn } from "./section-column"
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import cx from "classix";
-import { useDispatch, useSelector } from "react-redux";
-import { sectionColumnByPosition } from "@app/store/Slice/fieldSectionSlice";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { FieldDto } from "@/src/api";
+import { FIELD_TYPE } from "@/src/constants";
 export type FormSectionProps = {
     label: string,
     positionTab: number,
@@ -18,10 +19,39 @@ export function FormSection(props: FormSectionProps) {
         setIsHovered(true);
     };
 
-    useEffect(() => {
-        dispatch(sectionColumnByPosition({ positionTab: props.positionTab, positionFormSection: props.positionFormSection }))
-    }, [])
+
     const { fields } = useSelector(state => state.fieldSection)
+
+    const fieldFilterByPositions: FieldDto[] = useMemo(() => {
+        const { positionTab, positionFormSection } = props;
+        const resultFilters: FieldDto[] = []
+        switch (positionTab) {
+            case 0:
+                if (positionFormSection == 0) {
+                    // fields.forEach((field: FieldDto, idx: number) => {
+                    //     if (field.fieldtype == FIELD_TYPE.TAB_BREAK) return;
+                    //     if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) return;
+                    //     resultFilters.push(field)
+                    // })
+                    for (let idx = 0; idx < fields.length; idx++) {
+                        const field = fields[idx];
+                        if (field.fieldtype == FIELD_TYPE.TAB_BREAK) break;
+                        if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
+                        resultFilters.push(field)
+                    }
+
+                }
+
+                break;
+            default:
+                break;
+        }
+        return resultFilters;
+
+    }, [props, fields])
+
+
+    console.log(fieldFilterByPositions)
 
     const handleMouseLeave = () => {
         setIsHovered(false);
@@ -64,8 +94,8 @@ export function FormSection(props: FormSectionProps) {
     return (
         <div className="form-section-container">
             <div
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+                // onMouseEnter={handleMouseEnter}
+                // onMouseLeave={handleMouseLeave}
                 className={cx("form-section", isHovered ? "hovered" : "")}
                 title="details_section">
                 <div className="section-header has-label">
@@ -88,8 +118,22 @@ export function FormSection(props: FormSectionProps) {
                 </div>
                 <div className="section-columns">
                     <div className="section-columns-container">
-                        <SectionColumn list={listA} setList={setListA} moveItem={moveItem} listId="listA" />
-                        <SectionColumn list={listA} setList={setListA} moveItem={moveItem} listId="listA" />
+                        {fieldFilterByPositions.map((field: FieldDto) => {
+                            if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) {
+                                const positionSectionColumn = fieldFilterByPositions.findIndex((item: FieldDto) => item.fieldtype === field.fieldtype);
+                                return (
+                                    <SectionColumn
+                                        key={field.fieldtype}
+                                        positionFormSection={props.positionFormSection}
+                                        positionSectionColumn={positionSectionColumn}
+                                        list={fieldFilterByPositions}
+                                        setList={setListA}
+                                        moveItem={moveItem}
+                                        listId="listA" />
+                                )
+                            }
+
+                        })}
                     </div>
                 </div>
             </div>

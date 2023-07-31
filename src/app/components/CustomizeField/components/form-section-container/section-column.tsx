@@ -6,11 +6,12 @@ import { Input } from '@app/components/ui/input'
 import { Label } from '@app/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tabs'
 import type { FC } from 'react'
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import type { DropTargetMonitor } from 'react-dnd'
 import { useDrop } from 'react-dnd'
 import cx from 'classix'
 import { FieldDto } from "@/src/api"
+import { FIELD_TYPE } from "@/src/constants"
 
 export interface DragItem {
     type: string
@@ -20,7 +21,9 @@ export interface FormBuilderProps {
     onDrop: (item: any) => void
     fields: FieldDto[],
     moveItem: (fromListId, fromIndex, toListId, toIndex) => void,
-    listId: string;
+    listId: string,
+    positionFormSection: number,
+    positionSectionColumn: number
 }
 
 
@@ -28,8 +31,10 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     onDrop,
     fields,
     moveItem,
-    listId
-}) {
+    listId,
+    positionFormSection,
+    positionSectionColumn
+}: FormBuilderProps) {
     const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
         () => ({
             accept: ["field"],
@@ -55,6 +60,37 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
+
+    const fieldFilterByPositions: FieldDto[] = useMemo(() => {
+        const resultFilters: FieldDto[] = []
+        switch (positionFormSection) {
+            case 0:
+                if (positionSectionColumn == 0) {
+                    for (let idx = 0; idx < fields.length; idx++) {
+                        const field = fields[idx];
+                        if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
+                        if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
+                        resultFilters.push(field)
+                    }
+
+                }
+
+                break;
+            default:
+                if (positionSectionColumn == 0) {
+                    for (let idx = 0; idx < fields.length; idx++) {
+                        const field = fields[idx];
+                        if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
+                        if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
+                        resultFilters.push(field)
+                    }
+
+                }
+                break;
+        }
+        return resultFilters;
+
+    }, [positionFormSection, positionSectionColumn, fields])
 
     return (
 
@@ -120,8 +156,8 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                 >
                     {/* {canDrop && <p>Drop here.</p>} */}
 
-                    {fields.map((field, index) => (
-                        <SectionField key={field.idx} id={field.id} text={field.text} index={field.id} listId={listId} moveItem={moveItem} />
+                    {fieldFilterByPositions.map((field, index) => (
+                        <SectionField key={field.idx} id={field.id} text={field.fieldname} index={field.id} listId={listId} moveItem={moveItem} />
                     ))}
                 </div>
             </div>
@@ -130,7 +166,7 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
 })
 
 
-export const SectionColumn = ({ list, setList, moveItem, listId }) => {
+export const SectionColumn = ({ list, setList, moveItem, listId, positionFormSection, positionSectionColumn }) => {
     const handleDrop = useCallback(
         (field: FieldDto) => {
             list.push(field)
@@ -146,6 +182,8 @@ export const SectionColumn = ({ list, setList, moveItem, listId }) => {
     return (
         <SectionColumnDrag
             fields={list}
+            positionFormSection={positionFormSection}
+            positionSectionColumn={positionSectionColumn}
             onDrop={handleDrop}
             moveItem={moveItem}
             listId={listId}

@@ -1,20 +1,27 @@
 import { CopyIcon, Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons"
 import { SectionColumn } from "./section-column"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cx from "classix";
 import { useDispatch, useSelector } from "react-redux";
+import { sectionColumnByPosition } from "@app/store/Slice/fieldSectionSlice";
 export type FormSectionProps = {
-    label: string
+    label: string,
+    positionTab: number,
+    positionFormSection: number
 }
 export function FormSection(props: FormSectionProps) {
 
-    const { fields } = useSelector(state => state.fieldSection)
     const dispatch = useDispatch()
 
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const handleMouseEnter = () => {
         setIsHovered(true);
     };
+
+    useEffect(() => {
+        dispatch(sectionColumnByPosition({ positionTab: props.positionTab, positionFormSection: props.positionFormSection }))
+    }, [])
+    const { fields } = useSelector(state => state.fieldSection)
 
     const handleMouseLeave = () => {
         setIsHovered(false);

@@ -7,7 +7,6 @@ import type { FC } from 'react'
 import { memo, useCallback, useState } from 'react'
 import type { DropTargetMonitor } from 'react-dnd'
 import { DndProvider, useDrop } from 'react-dnd'
-import { TabModel } from './types'
 import cx from 'classix'
 import FormSection from './form-section-container'
 import ListContainer from '@app/components/testm/ListContainer'
@@ -53,6 +52,7 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
         <Tabs defaultValue="details_tab" className="w-full">
             <div className='w-full'>
                 <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+                    <TabsTrigger key="details_tab" value="details_tab">details</TabsTrigger>
                     {fields.map((field: FieldDto) => {
                         if (field.fieldtype === FIELD_TYPE.TAB_BREAK) {
                             return (
@@ -62,6 +62,28 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
                     })}
                 </TabsList>
             </div>
+            <TabsContent key="details_tab" value="details_tab">
+                <FormSection
+                    label=""
+                    positionTab={0}
+                    positionFormSection={0}
+                />
+                {fields.map((field: FieldDto) => {
+                    if (field.fieldtype === FIELD_TYPE.SECTION_BREAK) {
+                        return (
+                            <FormSection
+                                key={field.fieldname}
+                                label={field.label as string}
+                                positionTab={0}
+                                positionFormSection={0}
+                            />
+                        )
+                    }
+                    else if (field.fieldtype === FIELD_TYPE.TAB_BREAK) {
+                        return;
+                    }
+                })}
+            </TabsContent>
             {fields.map((field: FieldDto) => {
                 if (field.fieldtype === FIELD_TYPE.TAB_BREAK) {
                     return (
@@ -72,6 +94,8 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
                                         <FormSection
                                             key={field.fieldname}
                                             label={field.label as string}
+                                            positionTab={0}
+                                            positionFormSection={0}
                                         />
                                     )
                                 }

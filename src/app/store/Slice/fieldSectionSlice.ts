@@ -1,12 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+type positionFormSection = {
+    positionTab: number,
+    positionFormSection: number
+}
+type ActionProps = {
+    payload: positionFormSection,
+    type: string
+}
+
 const initState = {
     fields: [
-        {
-            "fieldname": "details_tab",
-            "fieldtype": "Tab Break",
-            "label": "Details"
-        },
         {
             "fieldname": "naming_series",
             "fieldtype": "Select",
@@ -162,11 +166,6 @@ const initState = {
             "label": "Reason for Requesting"
         },
         {
-            "fieldname": "section_break_6",
-            "fieldtype": "Section Break",
-            "label": ""
-        },
-        {
             "fieldname": "connections_tab",
             "fieldtype": "Tab Break",
             "label": "Connections",
@@ -182,11 +181,23 @@ const fieldSectionSlice = createSlice({
     reducers: {
         increment: state => state,
         decrement: state => state,
+        sectionColumnByPosition: (state, action: ActionProps) => {
+            const { positionTab, positionFormSection } = action.payload;
+            const fields = state.fields;
+
+            switch (positionTab) {
+                case 0:
+                    fields.splice(2, 4);
+                    return { ...state, fields };
+                default:
+                    return { ...state, fields };
+            }
+        }
         // moveItem: (state,fromListId, fromIndex, toListId, toIndex) => {
 
         // },
     }
 })
 
-export const { increment, decrement } = fieldSectionSlice.actions;
+export const { increment, decrement, sectionColumnByPosition } = fieldSectionSlice.actions;
 export default fieldSectionSlice.reducer;

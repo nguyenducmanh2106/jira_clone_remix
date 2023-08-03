@@ -4,7 +4,7 @@ import { Input } from '@app/components/ui/input'
 import { Label } from '@app/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tabs'
 import type { FC } from 'react'
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import type { DropTargetMonitor } from 'react-dnd'
 import { DndProvider, useDrop } from 'react-dnd'
 import cx from 'classix'
@@ -14,6 +14,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useDispatch, useSelector } from 'react-redux'
 import { FieldDto } from '@/src/api'
 import { FIELD_TYPE } from '@/src/constants'
+import { nestElementType } from '@domain/types/nestElement'
+import { fieldSectionType } from '@app/store/Slice/fieldSectionSlice'
+import { SectionTab } from './form-section-container/section-tab'
 
 export interface DragItem {
     type: string
@@ -43,16 +46,14 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
         }),
         [onDrop],
     )
-    const { fields } = useSelector(state => state.fieldSection)
+    const { fields, nestElement } = useSelector((state) => state.fieldSection)
 
-    const fieldTabs = fields.filter((field: FieldDto) => field.fieldtype === FIELD_TYPE.TAB_BREAK)
-    const fieldFormSections = fields.filter((field: FieldDto) => field.fieldtype === FIELD_TYPE.SECTION_BREAK)
 
     return (
         <Tabs defaultValue="custom_tab_break" className="w-full">
             <div className='w-full'>
                 <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
-                    {fields.map((field: FieldDto) => {
+                    {nestElement?.components.map((field: FieldDto) => {
                         if (field.fieldtype === FIELD_TYPE.TAB_BREAK) {
                             return (
                                 <TabsTrigger key={field.fieldname} value={field.fieldname as string}>{field.label}</TabsTrigger>
@@ -61,59 +62,24 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
                     })}
                 </TabsList>
             </div>
-            {fieldTabs.map((fieldTab: FieldDto, positionTab: number) => {
-                let positionFormSection = 0;
-                const positionTabInList = fields.findIndex((item: FieldDto) => item.fieldname === fieldTab.fieldname);
+            {nestElement?.components.map((fieldTab: nestElementType, positionTab: number) => {
                 return (
                     <TabsContent key={fieldTab.fieldname} value={fieldTab.fieldname as string}>
-                        {fieldFormSections.map((field: FieldDto) => {
-                            const positionFormSectionInList = fields.findIndex((item: FieldDto) => item.fieldname === field.fieldname);
-                            if (positionTabInList < positionFormSectionInList) {
-                                positionFormSection++;
-                                console.log(positionTabInList,positionFormSectionInList)
-                                return (
-                                    <FormSection
-                                        key={field.fieldname}
-                                        label={field.label as string}
-                                        positionTab={positionTab}
-                                        positionFormSection={positionFormSection - 1}
-                                    />
-                                )
-                            }
+                        {fieldTab?.components?.map((field: nestElementType, positionSection: number) => {
+                            return (
+                                <FormSection
+                                    key={field.fieldname}
+                                    label={field.label as string}
+                                    fieldFormSection={field}
+                                    tabName={fieldTab.fieldname as string}
+                                    tabIndex={positionTab}
+                                    sectionIndex={positionSection}
+                                />
+                            )
                         })}
                     </TabsContent>
                 )
             })}
-
-            {/* <TabsContent value="AddNewTab1">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Password</CardTitle>
-                        <CardDescription>
-                            Change your password here. After saving, you will be logged out.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <div style={{ display: 'flex' }}>
-                            <div style={{ flex: 1 }}>
-                                <h3>List A</h3>
-                                {listA.map((item, index) => (
-                                    <ListContainer key={item.id} id={item.id} text={item.text} index={index} listId="listA" moveItem={moveItem} />
-                                ))}
-                            </div>
-                            <div style={{ flex: 1 }}>
-                                <h3>List B</h3>
-                                {listB.map((item, index) => (
-                                    <ListContainer key={item.id} id={item.id} text={item.text} index={index} listId="listB" moveItem={moveItem} />
-                                ))}
-                            </div>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button>Save password</Button>
-                    </CardFooter>
-                </Card>
-            </TabsContent> */}
         </Tabs>
     )
 })

@@ -1,5 +1,5 @@
 import { CopyIcon, Cross2Icon } from "@radix-ui/react-icons"
-import { SectionField } from "./section-field"
+import SectionField from "./section-field"
 import { Button } from '@app/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@app/components/ui/card'
 import { Input } from '@app/components/ui/input'
@@ -8,10 +8,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tab
 import type { FC } from 'react'
 import { memo, useCallback, useMemo, useState } from 'react'
 import type { DropTargetMonitor } from 'react-dnd'
-import { useDrop } from 'react-dnd'
+import { useDrag, useDrop } from 'react-dnd'
 import cx from 'classix'
 import { FieldDto } from "@/src/api"
 import { FIELD_TYPE } from "@/src/constants"
+import { nestElementType } from "@domain/types/nestElement"
+import React from "react"
+import { ItemTypes } from "@app/components/testm/ItemTypes"
+import { useDispatch } from "react-redux"
+import { moveItem } from "@app/store/Slice/fieldSectionSlice"
 
 export interface DragItem {
     type: string
@@ -19,25 +24,30 @@ export interface DragItem {
 
 export interface FormBuilderProps {
     onDrop: (item: any) => void
-    fields: FieldDto[],
-    moveItem: (fromListId, fromIndex, toListId, toIndex) => void,
-    listId: string,
-    positionFormSection: number,
-    positionSectionColumn: number
+    fields: nestElementType,
+    // moveItem: (fromListId, fromIndex, toListId, toIndex) => void,
+    // listId: string,
+    tabName: string,
+    sectionName: string,
+    tabIndex: number,
+    sectionIndex: number,
+    columnIndex: number,
 }
 
 
 const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag({
     onDrop,
     fields,
-    moveItem,
-    listId,
-    positionFormSection,
-    positionSectionColumn
+    // listId,
+    tabName,
+    sectionName,
+    tabIndex,
+    sectionIndex,
+    columnIndex
 }: FormBuilderProps) {
     const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
         () => ({
-            accept: ["field"],
+            accept: [ItemTypes.FIELD],
             drop(_item: DragItem, monitor) {
                 onDrop(_item)
                 return undefined
@@ -57,44 +67,67 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
         setIsHovered(true);
     };
 
+    const [, dragRef] = useDrag({
+        type: ItemTypes.FIELD,
+        // item: { id, index },
+        item: {},
+    });
+
+    const dispatch = useDispatch()
+    const [, dropRef] = useDrop({
+        accept: ItemTypes.FIELD,
+        hover: (item: FieldDto) => {
+            // dispatch(moveItem({}))
+
+            // if (item.id !== id) {
+
+            //     // moveItem(item.listId, item.index, listId, index);
+            //     // item.idx = index;
+            //     // item.listId = listId;
+            // }
+        },
+    });
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
 
-    const fieldFilterByPositions: FieldDto[] = useMemo(() => {
-        const resultFilters: FieldDto[] = []
-        switch (positionFormSection) {
-            case 0:
-                if (positionSectionColumn == 0) {
-                    for (let idx = 0; idx < fields.length; idx++) {
-                        const field = fields[idx];
-                        if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
-                        if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
-                        resultFilters.push(field)
-                    }
+    const fieldFilterByPositions: nestElementType = useMemo(() => {
+        const resultFilters: nestElementType = { ...fields }
+        // switch (positionFormSection) {
+        //     case 0:
+        //         if (positionSectionColumn == 0) {
+        //             for (let idx = 0; idx < fields.length; idx++) {
+        //                 const field = fields[idx];
+        //                 if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
+        //                 if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
+        //                 resultFilters.push(field)
+        //             }
 
-                }
+        //         }
 
-                break;
-            default:
-                if (positionSectionColumn == 0) {
-                    for (let idx = 0; idx < fields.length; idx++) {
-                        const field = fields[idx];
-                        if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
-                        if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
-                        resultFilters.push(field)
-                    }
+        //         break;
+        //     default:
+        //         if (positionSectionColumn == 0) {
+        //             for (let idx = 0; idx < fields.length; idx++) {
+        //                 const field = fields[idx];
+        //                 if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
+        //                 if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
+        //                 resultFilters.push(field)
+        //             }
 
-                }
-                break;
-        }
+        //         }
+        //         break;
+        // }
         return resultFilters;
 
-    }, [positionFormSection, positionSectionColumn, fields])
+    }, [fields])
+
+    // console.log(fieldFilterByPositions)
 
     return (
 
         <div
+            // ref={(node) => dragRef(dropRef(node))}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className={cx("column", isHovered ? "hovered" : "")}
@@ -151,13 +184,24 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
             </div>
             <div className="column-container">
                 <div
+                    style={{ minHeight: "200px" }}
                     ref={drop}
                     role="TargetBox"
                 >
                     {/* {canDrop && <p>Drop here.</p>} */}
 
-                    {fieldFilterByPositions.map((field, index) => (
-                        <SectionField key={field.idx} id={field.id} text={field.fieldname} index={field.id} listId={listId} moveItem={moveItem} />
+                    {fieldFilterByPositions.components?.map((field: FieldDto, index) => (
+                        <SectionField key={field.fieldname}
+                            id={field.fieldname}
+                            tabName={tabName}
+                            sectionName={sectionName}
+                            columnName={fieldFilterByPositions.fieldname}
+                            text={field.fieldname}
+                            fieldIndex={index}
+                            tabIndex={tabIndex}
+                            sectionIndex={sectionIndex}
+                            columnIndex={columnIndex}
+                        />
                     ))}
                 </div>
             </div>
@@ -166,27 +210,35 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
 })
 
 
-export const SectionColumn = ({ list, setList, moveItem, listId, positionFormSection, positionSectionColumn }) => {
+// eslint-disable-next-line react/display-name
+const SectionColumn = ({ list, setList, tabName, sectionName, tabIndex, sectionIndex, columnIndex }) => {
     const handleDrop = useCallback(
         (field: FieldDto) => {
-            list.push(field)
+            // console.log(field)
+            // list.push(field)
             setList(list)
         },
         [],
     )
-    // const [fields, setFields] = useState<FieldDto[]>([
-    //     { idx: 1 },
-    //     { idx: 2 },
-    // ])
 
+    // console.log("column render")
     return (
         <SectionColumnDrag
             fields={list}
-            positionFormSection={positionFormSection}
-            positionSectionColumn={positionSectionColumn}
+            tabName={tabName}
+            sectionName={sectionName}
             onDrop={handleDrop}
-            moveItem={moveItem}
-            listId={listId}
+            tabIndex={tabIndex}
+            sectionIndex={sectionIndex}
+            columnIndex={columnIndex}
         />
     )
 }
+
+function areEqual(prevProps: any, nextProps: any) {
+    /* Trả về true nếu nextProps bằng prevProps, ngược lại trả về false */
+    if (prevProps.sectionName == nextProps.sectionName) return true;
+    return false;
+}
+
+export default React.memo(SectionColumn)

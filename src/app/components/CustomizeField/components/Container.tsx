@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 import { FormBuilderContainer } from './form-builder-container'
 import { PresetSelector } from './preset-selector'
 import { presets } from '../data/presets'
@@ -15,11 +15,16 @@ import { Textarea } from '@app/components/ui/textarea'
 import { Button } from '@app/components/ui/button'
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons'
 import cx from 'classix'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { nestComponent } from '@app/store/Slice/fieldSectionSlice'
 
 export const Container: FC = memo(function Container() {
     const fields = ["Autocomplete", "Attach", "Attach Image", "Button", "Textarea"]
-
+    const dispatch = useDispatch();
+    console.log("render container")
+    useEffect(() => {
+        dispatch(nestComponent())
+    }, [])
     return (
         <div className="hidden h-full flex-col md:flex">
             <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">

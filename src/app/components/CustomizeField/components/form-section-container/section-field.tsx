@@ -14,7 +14,7 @@ export interface SectionFieldProps {
 }
 function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex }) {
 
-    // console.log("rendering section field")
+    // console.log({ id, text, fieldIndex, tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex })
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -35,24 +35,25 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
         end: (item, monitor) => {
             const didDrop = monitor.didDrop()
             if (!didDrop) {
-                const objMove = {
-                    fromTab: item.tabName,
-                    fromIndexTab: item.tabIndex,
-                    toTab: tabName,
-                    toIndexTab: tabIndex,
-                    fromSection: item.sectionName,
-                    fromIndexSection: item.sectionIndex,
-                    toSection: sectionName,
-                    toIndexSection: sectionIndex,
-                    fromColumn: item.columnName,
-                    fromIndexColumn: item.columnIndex,
-                    toColumn: columnName,
-                    toIndexColumn: columnIndex,
-                    fromIndexField: item.fieldIndex,
-                    toIndexField: fieldIndex,
-                    fieldDnD: ItemTypes.FIELD
-                }
-                dispatch(moveItem(objMove))
+                console.log("didDrop")
+                // const objMove = {
+                //     fromTab: item.tabName,
+                //     fromIndexTab: item.tabIndex,
+                //     toTab: tabName,
+                //     toIndexTab: tabIndex,
+                //     fromSection: item.sectionName,
+                //     fromIndexSection: item.sectionIndex,
+                //     toSection: sectionName,
+                //     toIndexSection: sectionIndex,
+                //     fromColumn: item.columnName,
+                //     fromIndexColumn: item.columnIndex,
+                //     toColumn: columnName,
+                //     toIndexColumn: columnIndex,
+                //     fromIndexField: item.fieldIndex,
+                //     toIndexField: fieldIndex,
+                //     fieldDnD: ItemTypes.FIELD
+                // }
+                // dispatch(moveItem(objMove))
             }
         },
     });
@@ -61,7 +62,11 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
         accept: ItemTypes.FIELD,
         hover: (item: FieldDto, monitor) => {
             if (item.id !== id) {
-                console.log(monitor.canDrop())
+                console.log("hover drop")
+                console.log({
+                    fromIndexField: item.fieldIndex,
+                    toIndexField: fieldIndex,
+                })
 
                 const objMove = {
                     fromTab: item.tabName,
@@ -78,6 +83,7 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
                     toIndexColumn: columnIndex,
                     fromIndexField: item.fieldIndex,
                     toIndexField: fieldIndex,
+                    fieldname: item.id,
                     fieldDnD: ItemTypes.FIELD
                 }
                 dispatch(moveItem(objMove))

@@ -3,7 +3,6 @@ import { FIELD_TYPE } from "@/src/constants";
 import { ItemTypes } from "@app/components/testm/ItemTypes";
 import { nestElementType } from "@domain/types/nestElement";
 import { createSlice } from "@reduxjs/toolkit";
-import update from "immutability-helper";
 
 export type fieldSectionType = {
     fields: FieldDto[],
@@ -218,10 +217,13 @@ function isEmptyObject(obj: FieldDto) {
     return Object.keys(obj).length === 0;
 }
 
-function moveField(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumns: nestElementType[]) {
-    console.log("toList:")
+function moveField(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldname: string, fieldInColumns: nestElementType[]) {
+    console.log("fieldName: " + fieldname)
+    console.log("toList:", toFieldIndex)
     if (fromColumnName === toColumnName) {
         const newList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
+        fromFieldIndex = newList.findIndex((item: nestElementType) => item.fieldname === fieldname);
+        console.log("fromList:", fromFieldIndex)
         const item = newList[fromFieldIndex];
         newList.splice(fromFieldIndex, 1);
         newList.splice(toFieldIndex, 0, item);
@@ -233,9 +235,10 @@ function moveField(fromColumnName: string, fromColumnIndex: number, toColumnName
         // }
     } else {
         const fromList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
+        fromFieldIndex = fromList.findIndex((item: nestElementType) => item.fieldname === fieldname);
         const item = fromList[fromFieldIndex];
         fromList.splice(fromFieldIndex, 1);
-        // console.log("toList:",toColumnIndex)
+        console.log("fromList:",fromFieldIndex)
 
         const toList: nestElementType[] = (fieldInColumns[toColumnIndex].components ?? []) as nestElementType[];
         toList.splice(toFieldIndex, 0, item);
@@ -333,7 +336,6 @@ const fieldSectionSlice = createSlice({
         },
         moveItem: (state, action) => {
             const components = state.nestElement.components as nestElementType[]
-            // console.log(JSON.parse(JSON.stringify(nestElement)));
             const {
                 fromTab,
                 fromIndexTab,
@@ -349,9 +351,9 @@ const fieldSectionSlice = createSlice({
                 toIndexColumn,
                 fromIndexField,
                 toIndexField,
+                fieldname,
                 fieldDnD
             } = action.payload
-            // console.log(action.payload)
 
             // const item = fromListId === 'listA' ? listA[fromIndex] : listB[fromIndex];
             // if (fromListId === toListId) {
@@ -378,7 +380,7 @@ const fieldSectionSlice = createSlice({
                         const fieldInTab = components[fromIndexTab].components as nestElementType[]
                         if (fromSection === toSection) {
                             const fieldInSection = fieldInTab[fromIndexSection].components as nestElementType[]
-                            moveField(fromColumn, fromIndexColumn, toColumn, toIndexColumn, fromIndexField, toIndexField, fieldInSection)
+                            moveField(fromColumn, fromIndexColumn, toColumn, toIndexColumn, fromIndexField, toIndexField, fieldname, fieldInSection)
                         }
                     }
                     break;
@@ -392,7 +394,7 @@ const fieldSectionSlice = createSlice({
                     break;
             }
 
-            console.log(JSON.parse(JSON.stringify(components)));
+            // console.log(JSON.parse(JSON.stringify(components)));
             return state;
         }
     }

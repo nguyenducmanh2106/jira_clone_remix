@@ -186,12 +186,13 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                 <div
                     style={{ minHeight: "200px" }}
                     ref={drop}
-                    role="TargetBox"
+                // role="TargetBox"
                 >
                     {/* {canDrop && <p>Drop here.</p>} */}
 
                     {fieldFilterByPositions.components?.map((field: FieldDto, index) => (
-                        <SectionField key={field.fieldname}
+                        <SectionField
+                            key={field.fieldname}
                             id={field.fieldname}
                             tabName={tabName}
                             sectionName={sectionName}
@@ -216,7 +217,9 @@ const SectionColumn = ({ list, setList, tabName, sectionName, tabIndex, sectionI
         (field: FieldDto) => {
             // console.log(field)
             // list.push(field)
-            setList(list)
+            console.log("onDrop")
+            console.log({ list, field, tabName, sectionName, tabIndex, sectionIndex, columnIndex })
+            // setList(list)
         },
         [],
     )

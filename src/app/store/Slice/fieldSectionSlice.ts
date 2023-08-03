@@ -255,11 +255,14 @@ function moveFieldInSection(fromColumnIndex: number, toColumnIndex: number, from
 
     if (fromColumnIndex === toColumnIndex) {
         const newList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
+        fromFieldIndex = newList.findIndex((item: nestElementType) => item.fieldname === fieldname);
+        console.log("fromList:", fromFieldIndex)
         const item = newList[fromFieldIndex];
         newList.splice(fromFieldIndex, 1);
         newList.splice(toFieldIndex, 0, item);
     } else {
         const fromList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
+        fromFieldIndex = fromList.findIndex((item: nestElementType) => item.fieldname === fieldname);
         const item = fromList[fromFieldIndex];
         fromList.splice(fromFieldIndex, 1);
         if (!fieldInColumns[toColumnIndex].components) {
@@ -467,6 +470,7 @@ const fieldSectionSlice = createSlice({
                 toIndexColumn,
                 fromIndexField,
                 toIndexField,
+                fieldname,
                 fieldDnD
             } = action.payload
 

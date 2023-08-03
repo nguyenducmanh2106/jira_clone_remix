@@ -48,8 +48,27 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
         () => ({
             accept: [ItemTypes.FIELD],
-            drop(_item: DragItem, monitor) {
-                onDrop(_item)
+            drop(item: DragItem, monitor) {
+                // onDrop(_item)
+                console.log(item)
+                // const objMove = {
+                //     fromTab: item.tabName,
+                //     fromIndexTab: item.tabIndex,
+                //     toTab: tabName,
+                //     toIndexTab: tabIndex,
+                //     fromSection: item.sectionName,
+                //     fromIndexSection: item.sectionIndex,
+                //     toSection: sectionName,
+                //     toIndexSection: sectionIndex,
+                //     fromColumn: "item.columnName",
+                //     fromIndexColumn: item.columnIndex,
+                //     toColumn: "columnName",
+                //     toIndexColumn: columnIndex,
+                //     fromIndexField: item.fieldIndex,
+                //     toIndexField: 0,
+                //     fieldDnD: ItemTypes.FIELD
+                // }
+                // dispatch(moveItem(objMove))
                 return undefined
             },
             collect: (monitor: DropTargetMonitor) => ({
@@ -128,8 +147,8 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
 
         <div
             // ref={(node) => dragRef(dropRef(node))}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            // onMouseEnter={handleMouseEnter}
+            // onMouseLeave={handleMouseLeave}
             className={cx("column", isHovered ? "hovered" : "")}
             title="column_break_13"
         >
@@ -216,10 +235,10 @@ const SectionColumn = ({ list, setList, tabName, sectionName, tabIndex, sectionI
     const handleDrop = useCallback(
         (field: FieldDto) => {
             // console.log(field)
-            // list.push(field)
             console.log("onDrop")
             console.log({ list, field, tabName, sectionName, tabIndex, sectionIndex, columnIndex })
-            // setList(list)
+
+
         },
         [],
     )

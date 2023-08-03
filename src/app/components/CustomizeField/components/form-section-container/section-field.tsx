@@ -63,10 +63,6 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
         hover: (item: FieldDto, monitor) => {
             if (item.id !== id) {
                 console.log("hover drop")
-                console.log({
-                    fromIndexField: item.fieldIndex,
-                    toIndexField: fieldIndex,
-                })
 
                 const objMove = {
                     fromTab: item.tabName,
@@ -83,18 +79,22 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
                     toIndexColumn: columnIndex,
                     fromIndexField: item.fieldIndex,
                     toIndexField: fieldIndex,
-                    fieldname: item.id,
                     fieldDnD: ItemTypes.FIELD
                 }
                 dispatch(moveItem(objMove))
-                // item.fieldIndex = fieldIndex;
-                // item.listId = listId;
+                item.fieldIndex = fieldIndex;
+                item.tabName = tabName;
+                item.tabIndex = tabIndex;
+                item.sectionName = sectionName;
+                item.sectionIndex = sectionIndex;
+                item.columnName = columnName;
+                item.columnIndex = columnIndex;
             }
             // return undefined;
         },
     });
 
-    const opacity = isDragging ? 0 : 1;
+    const opacity = isDragging ? 1 : 1;
     return (
         <div
             ref={(node) => dragRef(dropRef(node))}

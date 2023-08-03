@@ -14,27 +14,6 @@ export const Colors = {
   YELLOW: 'yellow',
   BLUE: 'blue',
 }
-// export function Field(props: IField) {
-//   return (
-//     <div
-//       className="field rounded-[6px] block bg-[#F4F5F6] border-[0.5px] border-solid border-[#C0C6CC] cursor-pointer py-[0.5rem] px-[0.75rem] text-sm"
-//       ref={drag}
-//       role="SourceBox"
-//     >
-//       <TooltipProvider>
-//         <Tooltip>
-//           <TooltipTrigger asChild>
-//             <Label>{props.label}</Label>
-//             {children}
-//           </TooltipTrigger>
-//           <TooltipContent>
-//             {props.label}
-//           </TooltipContent>
-//         </Tooltip>
-//       </TooltipProvider>
-//     </div>
-//   )
-// }
 
 export const Field: FC<IFieldProps> = memo(function Field({
   label,
@@ -71,7 +50,6 @@ export const Field: FC<IFieldProps> = memo(function Field({
       title=""
       className="field rounded-[6px] block bg-[#F4F5F6] border-[0.5px] border-solid border-[#C0C6CC] cursor-pointer py-[0.5rem] px-[0.75rem] text-sm"
       ref={drag}
-      role="SourceBox"
     >
       <Label>{label}</Label>
       {children}

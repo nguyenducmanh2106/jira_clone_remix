@@ -217,33 +217,32 @@ function isEmptyObject(obj: FieldDto) {
     return Object.keys(obj).length === 0;
 }
 
-function moveField(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldname: string, fieldInColumns: nestElementType[]) {
-    console.log("fieldName: " + fieldname)
-    console.log("toList:", toFieldIndex)
+function moveFieldInSection(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumns: nestElementType[]) {
     if (fromColumnName === toColumnName) {
         const newList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
-        fromFieldIndex = newList.findIndex((item: nestElementType) => item.fieldname === fieldname);
-        console.log("fromList:", fromFieldIndex)
         const item = newList[fromFieldIndex];
         newList.splice(fromFieldIndex, 1);
         newList.splice(toFieldIndex, 0, item);
-
-        // if (fromListId === 'listA') {
-        //     setListA(newList);
-        // } else {
-        //     setListB(newList);
-        // }
     } else {
         const fromList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
-        fromFieldIndex = fromList.findIndex((item: nestElementType) => item.fieldname === fieldname);
         const item = fromList[fromFieldIndex];
         fromList.splice(fromFieldIndex, 1);
-        console.log("fromList:",fromFieldIndex)
-
         const toList: nestElementType[] = (fieldInColumns[toColumnIndex].components ?? []) as nestElementType[];
         toList.splice(toFieldIndex, 0, item);
-        // fromListId === 'listA' ? setListA(fromList) : setListB(fromList)
-        // toListId === 'listA' ? setListA(toList) : setListB(toList)
+    }
+}
+function moveFieldInTwoSection(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumnsOfSectionOne: nestElementType[],fieldInColumnsOfSectionTwo: nestElementType[]) {
+    if (fromColumnName === toColumnName) {
+        const newList: nestElementType[] = fieldInColumnsOfSectionOne[fromColumnIndex].components as nestElementType[];
+        const item = newList[fromFieldIndex];
+        newList.splice(fromFieldIndex, 1);
+        newList.splice(toFieldIndex, 0, item);
+    } else {
+        const fromList: nestElementType[] = fieldInColumnsOfSectionOne[fromColumnIndex].components as nestElementType[];
+        const item = fromList[fromFieldIndex];
+        fromList.splice(fromFieldIndex, 1);
+        const toList: nestElementType[] = (fieldInColumnsOfSectionTwo[toColumnIndex].components ?? []) as nestElementType[];
+        toList.splice(toFieldIndex, 0, item);
     }
 }
 const fieldSectionSlice = createSlice({
@@ -351,28 +350,8 @@ const fieldSectionSlice = createSlice({
                 toIndexColumn,
                 fromIndexField,
                 toIndexField,
-                fieldname,
                 fieldDnD
             } = action.payload
-
-            // const item = fromListId === 'listA' ? listA[fromIndex] : listB[fromIndex];
-            // if (fromListId === toListId) {
-            //     const newList = fromListId === 'listA' ? [...listA] : [...listB];
-            //     newList.splice(fromIndex, 1);
-            //     newList.splice(toIndex, 0, item);
-            //     if (fromListId === 'listA') {
-            //         setListA(newList);
-            //     } else {
-            //         setListB(newList);
-            //     }
-            // } else {
-            //     const fromList = fromListId === 'listA' ? [...listA] : [...listB];
-            //     fromList.splice(fromIndex, 1);
-            //     const toList = toListId === 'listA' ? [...listA] : [...listB];
-            //     toList.splice(toIndex, 0, item);
-            //     fromListId === 'listA' ? setListA(fromList) : setListB(fromList)
-            //     toListId === 'listA' ? setListA(toList) : setListB(toList)
-            // }
 
             switch (fieldDnD) {
                 case ItemTypes.FIELD:
@@ -380,7 +359,12 @@ const fieldSectionSlice = createSlice({
                         const fieldInTab = components[fromIndexTab].components as nestElementType[]
                         if (fromSection === toSection) {
                             const fieldInSection = fieldInTab[fromIndexSection].components as nestElementType[]
-                            moveField(fromColumn, fromIndexColumn, toColumn, toIndexColumn, fromIndexField, toIndexField, fieldname, fieldInSection)
+                            moveFieldInSection(fromColumn, fromIndexColumn, toColumn, toIndexColumn, fromIndexField, toIndexField, fieldInSection)
+                        }
+                        else {
+                            const fieldInSectionOne = fieldInTab[fromIndexSection].components as nestElementType[]
+                            const fieldInSectionTwo = fieldInTab[toIndexSection].components as nestElementType[]
+                            moveFieldInTwoSection(fromColumn, fromIndexColumn, toColumn, toIndexColumn, fromIndexField, toIndexField, fieldInSectionOne, fieldInSectionTwo)
                         }
                     }
                     break;
@@ -394,7 +378,7 @@ const fieldSectionSlice = createSlice({
                     break;
             }
 
-            // console.log(JSON.parse(JSON.stringify(components)));
+            console.log(JSON.parse(JSON.stringify(components)));
             return state;
         }
     }

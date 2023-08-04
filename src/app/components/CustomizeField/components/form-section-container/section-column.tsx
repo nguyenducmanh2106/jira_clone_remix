@@ -48,9 +48,10 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
         () => ({
             accept: [ItemTypes.FIELD],
-            drop(item: DragItem, monitor) {
-                // onDrop(_item)
+            hover(item: DragItem, monitor) {
                 console.log(item)
+                // onDrop(_item)
+                // console.log(item)
                 // const objMove = {
                 //     fromTab: item.tabName,
                 //     fromIndexTab: item.tabIndex,
@@ -69,7 +70,7 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                 //     fieldDnD: ItemTypes.FIELD
                 // }
                 // dispatch(moveItem(objMove))
-                return undefined
+                // return undefined
             },
             collect: (monitor: DropTargetMonitor) => ({
                 isOver: monitor.isOver(),

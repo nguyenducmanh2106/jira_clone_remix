@@ -218,6 +218,8 @@ function isEmptyObject(obj: FieldDto) {
 }
 
 function moveFieldInSection(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumns: nestElementType[]) {
+    // console.log("from field index - to field index",fromFieldIndex,toFieldIndex)
+    
     if (fromColumnName === toColumnName) {
         const newList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
         const item = newList[fromFieldIndex];

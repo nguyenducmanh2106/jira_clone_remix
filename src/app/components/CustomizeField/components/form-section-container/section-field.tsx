@@ -28,14 +28,14 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
 
     const [{ isDragging }, dragRef] = useDrag({
         type: ItemTypes.FIELD,
-        item: { id, fieldIndex, tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex },
+        item: { id, fieldIndex,a:"a", tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex },
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
         }),
         end: (item, monitor) => {
             const didDrop = monitor.didDrop()
             if (!didDrop) {
-                console.log("didDrop")
+                // console.log("didDrop")
                 // const objMove = {
                 //     fromTab: item.tabName,
                 //     fromIndexTab: item.tabIndex,
@@ -64,24 +64,24 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
             if (item.id !== id) {
                 console.log("hover drop")
 
-                const objMove = {
-                    fromTab: item.tabName,
-                    fromIndexTab: item.tabIndex,
-                    toTab: tabName,
-                    toIndexTab: tabIndex,
-                    fromSection: item.sectionName,
-                    fromIndexSection: item.sectionIndex,
-                    toSection: sectionName,
-                    toIndexSection: sectionIndex,
-                    fromColumn: item.columnName,
-                    fromIndexColumn: item.columnIndex,
-                    toColumn: columnName,
-                    toIndexColumn: columnIndex,
-                    fromIndexField: item.fieldIndex,
-                    toIndexField: fieldIndex,
-                    fieldDnD: ItemTypes.FIELD
-                }
-                dispatch(moveItem(objMove))
+                // const objMove = {
+                //     fromTab: item.tabName,
+                //     fromIndexTab: item.tabIndex,
+                //     toTab: tabName,
+                //     toIndexTab: tabIndex,
+                //     fromSection: item.sectionName,
+                //     fromIndexSection: item.sectionIndex,
+                //     toSection: sectionName,
+                //     toIndexSection: sectionIndex,
+                //     fromColumn: item.columnName,
+                //     fromIndexColumn: item.columnIndex,
+                //     toColumn: columnName,
+                //     toIndexColumn: columnIndex,
+                //     fromIndexField: item.fieldIndex,
+                //     toIndexField: fieldIndex,
+                //     fieldDnD: ItemTypes.FIELD
+                // }
+                // dispatch(moveItem(objMove))
                 item.fieldIndex = fieldIndex;
                 item.tabName = tabName;
                 item.tabIndex = tabIndex;
@@ -98,11 +98,11 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
     return (
         <div
             ref={(node) => dragRef(dropRef(node))}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            // onMouseEnter={handleMouseEnter}
+            // onMouseLeave={handleMouseLeave}
             className={cx("field", "mt-[0.4rem]", isHovered ? "hovered" : "")}
             title="boarding_begins_on"
-            style={{ opacity }}
+            style={{ opacity, transition: "all .25s", border: "1px dashed #c0c6cc" }}
         >
             <div
                 className="control frappe-control editable"

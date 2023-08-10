@@ -25,8 +25,9 @@ import { TouchBackend } from 'react-dnd-touch-backend'
 
 export default function PlaygroundPage() {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Container />
-    </DndProvider>
+    // <DndProvider backend={HTML5Backend}>
+    //   <Container />
+    // </DndProvider>
+     <Container />
   )
 }

@@ -6,6 +6,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { FieldDto } from "@/src/api";
 import { FIELD_TYPE } from "@/src/constants";
 import { nestElementType } from "@domain/types/nestElement";
+import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided } from "react-beautiful-dnd";
 export type FormSectionProps = {
     label: string,
     tabName: string,
@@ -64,7 +65,9 @@ export function FormSection(props: FormSectionProps) {
     //         toListId === 'listA' ? setListA(toList) : setListB(toList)
     //     }
     // };
-
+    const onDragEnd = (result: DropResult) => {
+        console.log(result)
+    }
     return (
         <div className="form-section-container">
             <div
@@ -91,7 +94,39 @@ export function FormSection(props: FormSectionProps) {
                     </div>
                 </div>
                 <div className="section-columns">
-                    <div className="section-columns-container">
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable
+                            droppableId={fieldFormSection.fieldname as string}
+                            type="COLUMN"
+                            direction="horizontal"
+                            ignoreContainerClipping={true}
+                            isCombineEnabled={true}
+                        >
+                            {(provided: DroppableProvided) => (
+                                <div className="section-columns-container" ref={provided.innerRef} {...provided.droppableProps}>
+                                    {fieldFilterByPositions?.components?.map((field: FieldDto, columnIndex: number) => {
+                                        return (
+                                            <SectionColumn
+                                                tabName={tabName}
+                                                sectionName={fieldFilterByPositions.fieldname}
+                                                tabIndex={tabIndex}
+                                                sectionIndex={sectionIndex}
+                                                columnIndex={columnIndex}
+                                                key={field.fieldname}
+                                                list={field}
+                                                setList={setListA}
+                                                isCombineEnabled={true}
+                                                useClone={true}
+                                                isScrollable={false}
+                                            />
+                                        )
+                                    })}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                    {/* <div className="section-columns-container">
                         {fieldFilterByPositions?.components?.map((field: FieldDto, columnIndex: number) => {
                             return (
                                 <SectionColumn
@@ -108,7 +143,9 @@ export function FormSection(props: FormSectionProps) {
                                 />
                             )
                         })}
-                    </div>
+
+                    </div> */}
+
                 </div>
             </div>
         </div>

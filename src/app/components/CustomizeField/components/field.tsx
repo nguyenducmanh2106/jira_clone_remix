@@ -20,36 +20,36 @@ export const Field: FC<IFieldProps> = memo(function Field({
   children,
 }) {
   const [forbidDrag, setForbidDrag] = useState(false)
-  const [{ isDragging }, drag] = useDrag(
-    () => ({
-      type: "field",
-      item: { label: "abc", key: "abc" },
-      canDrag: !forbidDrag,
-      collect: (monitor: DragSourceMonitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    }),
-    [forbidDrag, label],
-  )
+  // const [{ isDragging }, drag] = useDrag(
+  //   () => ({
+  //     type: "field",
+  //     item: { label: "abc", key: "abc" },
+  //     canDrag: !forbidDrag,
+  //     collect: (monitor: DragSourceMonitor) => ({
+  //       isDragging: monitor.isDragging(),
+  //     }),
+  //   }),
+  //   [forbidDrag, label],
+  // )
 
   const onToggleForbidDrag = useCallback(() => {
     setForbidDrag(!forbidDrag)
   }, [forbidDrag, setForbidDrag])
 
 
-  const containerStyle = useMemo(
-    () => ({
-      opacity: isDragging ? 0.4 : 1,
-      cursor: forbidDrag ? 'default' : 'move',
-    }),
-    [isDragging, forbidDrag],
-  )
+  // const containerStyle = useMemo(
+  //   () => ({
+  //     opacity: isDragging ? 0.4 : 1,
+  //     cursor: forbidDrag ? 'default' : 'move',
+  //   }),
+  //   [isDragging, forbidDrag],
+  // )
 
   return (
     <div
       title=""
       className="field rounded-[6px] block bg-[#F4F5F6] border-[0.5px] border-solid border-[#C0C6CC] cursor-pointer py-[0.5rem] px-[0.75rem] text-sm"
-      ref={drag}
+      // ref={drag}
     >
       <Label>{label}</Label>
       {children}

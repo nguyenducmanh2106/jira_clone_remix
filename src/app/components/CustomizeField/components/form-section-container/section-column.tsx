@@ -17,6 +17,7 @@ import React from "react"
 import { ItemTypes } from "@app/components/testm/ItemTypes"
 import { useDispatch } from "react-redux"
 import { moveItem } from "@app/store/Slice/fieldSectionSlice"
+import { Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DroppableStateSnapshot } from "react-beautiful-dnd"
 
 export interface DragItem {
     type: string
@@ -25,8 +26,9 @@ export interface DragItem {
 export interface FormBuilderProps {
     onDrop: (item: any) => void
     fields: nestElementType,
-    // moveItem: (fromListId, fromIndex, toListId, toIndex) => void,
-    // listId: string,
+    isScrollable?: boolean,
+    isCombineEnabled?: boolean,
+    useClone?: boolean,
     tabName: string,
     sectionName: string,
     tabIndex: number,
@@ -43,43 +45,46 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     sectionName,
     tabIndex,
     sectionIndex,
-    columnIndex
+    columnIndex,
+    isScrollable,
+    isCombineEnabled,
+    useClone,
 }: FormBuilderProps) {
-    const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
-        () => ({
-            accept: [ItemTypes.FIELD],
-            hover(item: DragItem, monitor) {
-                console.log(item)
-                // onDrop(_item)
-                // console.log(item)
-                // const objMove = {
-                //     fromTab: item.tabName,
-                //     fromIndexTab: item.tabIndex,
-                //     toTab: tabName,
-                //     toIndexTab: tabIndex,
-                //     fromSection: item.sectionName,
-                //     fromIndexSection: item.sectionIndex,
-                //     toSection: sectionName,
-                //     toIndexSection: sectionIndex,
-                //     fromColumn: "item.columnName",
-                //     fromIndexColumn: item.columnIndex,
-                //     toColumn: "columnName",
-                //     toIndexColumn: columnIndex,
-                //     fromIndexField: item.fieldIndex,
-                //     toIndexField: 0,
-                //     fieldDnD: ItemTypes.FIELD
-                // }
-                // dispatch(moveItem(objMove))
-                // return undefined
-            },
-            collect: (monitor: DropTargetMonitor) => ({
-                isOver: monitor.isOver(),
-                canDrop: monitor.canDrop(),
-                draggingColor: monitor.getItemType() as string,
-            }),
-        }),
-        [onDrop],
-    )
+    // const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
+    //     () => ({
+    //         accept: [ItemTypes.FIELD],
+    //         hover(item: DragItem, monitor) {
+    //             console.log(item)
+    //             // onDrop(_item)
+    //             // console.log(item)
+    //             // const objMove = {
+    //             //     fromTab: item.tabName,
+    //             //     fromIndexTab: item.tabIndex,
+    //             //     toTab: tabName,
+    //             //     toIndexTab: tabIndex,
+    //             //     fromSection: item.sectionName,
+    //             //     fromIndexSection: item.sectionIndex,
+    //             //     toSection: sectionName,
+    //             //     toIndexSection: sectionIndex,
+    //             //     fromColumn: "item.columnName",
+    //             //     fromIndexColumn: item.columnIndex,
+    //             //     toColumn: "columnName",
+    //             //     toIndexColumn: columnIndex,
+    //             //     fromIndexField: item.fieldIndex,
+    //             //     toIndexField: 0,
+    //             //     fieldDnD: ItemTypes.FIELD
+    //             // }
+    //             // dispatch(moveItem(objMove))
+    //             // return undefined
+    //         },
+    //         collect: (monitor: DropTargetMonitor) => ({
+    //             isOver: monitor.isOver(),
+    //             canDrop: monitor.canDrop(),
+    //             draggingColor: monitor.getItemType() as string,
+    //         }),
+    //     }),
+    //     [onDrop],
+    // )
 
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -87,57 +92,33 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
         setIsHovered(true);
     };
 
-    const [, dragRef] = useDrag({
-        type: ItemTypes.FIELD,
-        // item: { id, index },
-        item: {},
-    });
+    // const [, dragRef] = useDrag({
+    //     type: ItemTypes.FIELD,
+    //     // item: { id, index },
+    //     item: {},
+    // });
 
     const dispatch = useDispatch()
-    const [, dropRef] = useDrop({
-        accept: ItemTypes.FIELD,
-        hover: (item: FieldDto) => {
-            // dispatch(moveItem({}))
+    // const [, dropRef] = useDrop({
+    //     accept: ItemTypes.FIELD,
+    //     hover: (item: FieldDto) => {
+    //         // dispatch(moveItem({}))
 
-            // if (item.id !== id) {
+    //         // if (item.id !== id) {
 
-            //     // moveItem(item.listId, item.index, listId, index);
-            //     // item.idx = index;
-            //     // item.listId = listId;
-            // }
-        },
-    });
+    //         //     // moveItem(item.listId, item.index, listId, index);
+    //         //     // item.idx = index;
+    //         //     // item.listId = listId;
+    //         // }
+    //     },
+    // });
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
 
     const fieldFilterByPositions: nestElementType = useMemo(() => {
         const resultFilters: nestElementType = { ...fields }
-        // switch (positionFormSection) {
-        //     case 0:
-        //         if (positionSectionColumn == 0) {
-        //             for (let idx = 0; idx < fields.length; idx++) {
-        //                 const field = fields[idx];
-        //                 if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
-        //                 if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
-        //                 resultFilters.push(field)
-        //             }
 
-        //         }
-
-        //         break;
-        //     default:
-        //         if (positionSectionColumn == 0) {
-        //             for (let idx = 0; idx < fields.length; idx++) {
-        //                 const field = fields[idx];
-        //                 if (field.fieldtype == FIELD_TYPE.SECTION_BREAK) break;
-        //                 if (field.fieldtype == FIELD_TYPE.COLUMN_BREAK) break;
-        //                 resultFilters.push(field)
-        //             }
-
-        //         }
-        //         break;
-        // }
         return resultFilters;
 
     }, [fields])
@@ -145,94 +126,164 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     // console.log(fieldFilterByPositions)
 
     return (
-
-        <div
-            // ref={(node) => dragRef(dropRef(node))}
-            // onMouseEnter={handleMouseEnter}
-            // onMouseLeave={handleMouseLeave}
-            className={cx("column", isHovered ? "hovered" : "")}
-            title="column_break_13"
-        >
-            <div className="column-header">
-                <div className="column-label">
-                    <div
-                        title="Double click to edit label"
-                    >
-                        <i data-v-a015357f="" className="text-muted">
-                            No Label
-                        </i>
-                        <span data-v-a015357f="" className="hidden-span" />
-                        <span data-v-a015357f="" className="hidden-span">
-                            Column Title
-                        </span>
-                    </div>
-                </div>
-                <div className="column-actions">
-                    <button
-                        className="btn btn-xs btn-icon"
-                        title="Move the current column & the following columns to a new section"
-                    >
-                        <div >
-                            <svg className="icon  icon-sm" style={{}}>
-                                <use className="" href="#icon-move" />
-                            </svg>
-                        </div>
-                    </button>
-                    <button
-                        data-v-31db23b4=""
-                        className="btn btn-xs btn-icon"
-                        title="Add Column"
-                    >
-                        <div data-v-31db23b4="">
-                            <svg className="icon  icon-sm" style={{}}>
-                                <use className="" href="#icon-add" />
-                            </svg>
-                        </div>
-                    </button>
-                    <button
-                        data-v-31db23b4=""
-                        className="btn btn-xs btn-icon"
-                        title="Remove Column"
-                    >
-                        <div data-v-31db23b4="">
-                            <svg className="icon  icon-sm" style={{}}>
-                                <use className="" href="#icon-remove" />
-                            </svg>
-                        </div>
-                    </button>
-                </div>
-            </div>
-            <div className="column-container">
+        <Draggable draggableId={fieldFilterByPositions.fieldname as string} index={columnIndex as number}>
+            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                 <div
-                    style={{ minHeight: "200px" }}
-                    ref={drop}
-                // role="TargetBox"
+                    // ref={(node) => dragRef(dropRef(node))}
+                    // onMouseEnter={handleMouseEnter}
+                    // onMouseLeave={handleMouseLeave}
+                    className={cx("column", isHovered ? "hovered" : "")}
+                    title="column_break_13"
+                    ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps}
                 >
-                    {/* {canDrop && <p>Drop here.</p>} */}
+                    <div className="column-header">
+                        <div className="column-label">
+                            <div
+                                title="Double click to edit label"
+                            >
+                                <i data-v-a015357f="" className="text-muted">
+                                    No Label
+                                </i>
+                                <span data-v-a015357f="" className="hidden-span" />
+                                <span data-v-a015357f="" className="hidden-span">
+                                    Column Title
+                                </span>
+                            </div>
+                        </div>
+                        <div className="column-actions">
+                            <button
+                                className="btn btn-xs btn-icon"
+                                title="Move the current column & the following columns to a new section"
+                            >
+                                <div >
+                                    <svg className="icon  icon-sm" style={{}}>
+                                        <use className="" href="#icon-move" />
+                                    </svg>
+                                </div>
+                            </button>
+                            <button
+                                data-v-31db23b4=""
+                                className="btn btn-xs btn-icon"
+                                title="Add Column"
+                            >
+                                <div data-v-31db23b4="">
+                                    <svg className="icon  icon-sm" style={{}}>
+                                        <use className="" href="#icon-add" />
+                                    </svg>
+                                </div>
+                            </button>
+                            <button
+                                data-v-31db23b4=""
+                                className="btn btn-xs btn-icon"
+                                title="Remove Column"
+                            >
+                                <div data-v-31db23b4="">
+                                    <svg className="icon  icon-sm" style={{}}>
+                                        <use className="" href="#icon-remove" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="column-container" >
+                        <Droppable
+                            droppableId={fieldFilterByPositions.fieldname as string}
+                            type={'field'}
+                            ignoreContainerClipping={false}
+                            isDropDisabled={false}
+                            isCombineEnabled={isCombineEnabled}
+                        // renderClone={
+                        //     useClone
+                        //         ? (provided, snapshot, descriptor) => (
+                        //             <div>hello</div>
+                        //             // <QuoteItem
+                        //             //     quote={quotes[descriptor.source.index]}
+                        //             //     provided={provided}
+                        //             //     isDragging={snapshot.isDragging}
+                        //             //     isClone
+                        //             // />
+                        //         )
+                        //         : null
+                        // }
+                        >
+                            {(
+                                dropProvided: DroppableProvided,
+                                dropSnapshot: DroppableStateSnapshot,
+                            ) => (
+                                <div
+                                    // style={style}
+                                    // isDraggingOver={dropSnapshot.isDraggingOver}
+                                    // isDropDisabled={isDropDisabled}
+                                    // isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+                                    {...dropProvided.droppableProps}
+                                >
+                                    <div className="dropzone" ref={dropProvided.innerRef}>
+                                        {fieldFilterByPositions.components?.map((field: FieldDto, index) => (
+                                            <Draggable key={field.fieldname} draggableId={field.fieldname as string} index={index}>
+                                                {(
+                                                    dragProvided: DraggableProvided,
+                                                    dragSnapshot: DraggableStateSnapshot,
+                                                ) => (
+                                                    <SectionField
+                                                        key={field.fieldname}
+                                                        id={field.fieldname}
+                                                        tabName={tabName}
+                                                        sectionName={sectionName}
+                                                        columnName={fieldFilterByPositions.fieldname}
+                                                        text={field.fieldname}
+                                                        fieldIndex={index}
+                                                        tabIndex={tabIndex}
+                                                        sectionIndex={sectionIndex}
+                                                        columnIndex={columnIndex}
+                                                        isDragging={dragSnapshot.isDragging}
+                                                        isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+                                                        provided={dragProvided}
+                                                        isClone={true}
+                                                    />
+                                                )}
+                                            </Draggable>
 
-                    {fieldFilterByPositions.components?.map((field: FieldDto, index) => (
-                        <SectionField
-                            key={field.fieldname}
-                            id={field.fieldname}
-                            tabName={tabName}
-                            sectionName={sectionName}
-                            columnName={fieldFilterByPositions.fieldname}
-                            text={field.fieldname}
-                            fieldIndex={index}
-                            tabIndex={tabIndex}
-                            sectionIndex={sectionIndex}
-                            columnIndex={columnIndex}
-                        />
-                    ))}
+                                        ))}
+                                        {dropProvided.placeholder}
+                                    </div>
+                                </div>
+                            )}
+                        </Droppable>
+                    </div>
+
+                    {/* <div className="column-container">
+                       <div
+                           style={{ minHeight: "200px" }}
+                           ref={drop}
+                       >
+                           {fieldFilterByPositions.components?.map((field: FieldDto, index) => (
+                               <SectionField
+                                   key={field.fieldname}
+                                   id={field.fieldname}
+                                   tabName={tabName}
+                                   sectionName={sectionName}
+                                   columnName={fieldFilterByPositions.fieldname}
+                                   text={field.fieldname}
+                                   fieldIndex={index}
+                                   tabIndex={tabIndex}
+                                   sectionIndex={sectionIndex}
+                                   columnIndex={columnIndex}
+                               />
+                           ))}
+                       </div>
+                   </div> */}
                 </div>
-            </div>
-        </div>
+            )}
+        </Draggable>
+
     )
 })
 
 
 // eslint-disable-next-line react/display-name
-const SectionColumn = ({ list, setList, tabName, sectionName, tabIndex, sectionIndex, columnIndex }) => {
+const SectionColumn = ({ list, setList, tabName, sectionName, tabIndex, sectionIndex, columnIndex, isScrollable,
+    isCombineEnabled,
+    useClone }) => {
     const handleDrop = useCallback(
         (field: FieldDto) => {
             // console.log(field)
@@ -254,6 +305,9 @@ const SectionColumn = ({ list, setList, tabName, sectionName, tabIndex, sectionI
             tabIndex={tabIndex}
             sectionIndex={sectionIndex}
             columnIndex={columnIndex}
+            isScrollable={isScrollable}
+            isCombineEnabled={isCombineEnabled}
+            useClone={useClone}
         />
     )
 }

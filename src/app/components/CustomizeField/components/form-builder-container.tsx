@@ -31,21 +31,21 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
     onDrop,
     lastDroppedColor,
 }) {
-    const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
-        () => ({
-            accept: ["field"],
-            drop(_item: DragItem, monitor) {
-                onDrop(monitor.getItemType())
-                return undefined
-            },
-            collect: (monitor: DropTargetMonitor) => ({
-                isOver: monitor.isOver(),
-                canDrop: monitor.canDrop(),
-                draggingColor: monitor.getItemType() as string,
-            }),
-        }),
-        [onDrop],
-    )
+    // const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
+    //     () => ({
+    //         accept: ["field"],
+    //         drop(_item: DragItem, monitor) {
+    //             onDrop(monitor.getItemType())
+    //             return undefined
+    //         },
+    //         collect: (monitor: DropTargetMonitor) => ({
+    //             isOver: monitor.isOver(),
+    //             canDrop: monitor.canDrop(),
+    //             draggingColor: monitor.getItemType() as string,
+    //         }),
+    //     }),
+    //     [onDrop],
+    // )
     const { fields, nestElement } = useSelector((state) => state.fieldSection)
 
 

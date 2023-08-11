@@ -126,13 +126,15 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     // console.log(fieldFilterByPositions)
 
     return (
-        <Draggable draggableId={fieldFilterByPositions.fieldname as string} index={columnIndex as number}>
+        <Draggable
+            draggableId={`${fieldFilterByPositions.tabIndex}:${fieldFilterByPositions.sectionIndex}:${fieldFilterByPositions.fieldname}`}
+            index={columnIndex as number}>
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                 <div
                     // ref={(node) => dragRef(dropRef(node))}
-                    // onMouseEnter={handleMouseEnter}
-                    // onMouseLeave={handleMouseLeave}
-                    className={cx("column", isHovered ? "hovered" : "")}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    className={cx("column flex-auto", isHovered ? "hovered" : "")}
                     title="column_break_13"
                     ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps}
                 >
@@ -185,10 +187,11 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                             </button>
                         </div>
                     </div>
-                    <div className="column-container" >
+                    <div className="column-container flex-auto" >
                         <Droppable
-                            droppableId={fieldFilterByPositions.fieldname as string}
-                            type={'field'}
+                            // droppableId={fieldFilterByPositions.fieldname as string}
+                            droppableId={`${tabIndex}:${sectionIndex}:${columnIndex}:${fieldFilterByPositions.fieldname}`}
+                            type={ItemTypes.FIELD}
                             ignoreContainerClipping={false}
                             isDropDisabled={false}
                             isCombineEnabled={isCombineEnabled}
@@ -209,69 +212,47 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                             {(
                                 dropProvided: DroppableProvided,
                                 dropSnapshot: DroppableStateSnapshot,
-                            ) => (
-                                <div
-                                    // style={style}
-                                    // isDraggingOver={dropSnapshot.isDraggingOver}
-                                    // isDropDisabled={isDropDisabled}
-                                    // isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
-                                    {...dropProvided.droppableProps}
-                                >
-                                    <div className="dropzone" ref={dropProvided.innerRef}>
+                            ) => {
+                                console.log(dropProvided)
+                                return (
+                                    <div className="dropzone h-full" ref={dropProvided.innerRef}
+                                        {...dropProvided.droppableProps}
+                                    >
                                         {fieldFilterByPositions.components?.map((field: FieldDto, index) => (
                                             <Draggable key={field.fieldname} draggableId={field.fieldname as string} index={index}>
                                                 {(
                                                     dragProvided: DraggableProvided,
                                                     dragSnapshot: DraggableStateSnapshot,
                                                 ) => (
-                                                    <SectionField
-                                                        key={field.fieldname}
-                                                        id={field.fieldname}
-                                                        tabName={tabName}
-                                                        sectionName={sectionName}
-                                                        columnName={fieldFilterByPositions.fieldname}
-                                                        text={field.fieldname}
-                                                        fieldIndex={index}
-                                                        tabIndex={tabIndex}
-                                                        sectionIndex={sectionIndex}
-                                                        columnIndex={columnIndex}
-                                                        isDragging={dragSnapshot.isDragging}
-                                                        isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-                                                        provided={dragProvided}
-                                                        isClone={true}
-                                                    />
+                                                    <div>
+                                                        <SectionField
+                                                            key={field.fieldname}
+                                                            id={field.fieldname}
+                                                            tabName={tabName}
+                                                            sectionName={sectionName}
+                                                            columnName={fieldFilterByPositions.fieldname}
+                                                            text={field.fieldname}
+                                                            fieldIndex={index}
+                                                            tabIndex={tabIndex}
+                                                            sectionIndex={sectionIndex}
+                                                            columnIndex={columnIndex}
+                                                            isDragging={dragSnapshot.isDragging}
+                                                            isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+                                                            provided={dragProvided}
+                                                            isClone={true}
+                                                        />
+                                                    </div>
                                                 )}
                                             </Draggable>
 
                                         ))}
-                                        {dropProvided.placeholder}
+                                        <div>{dropProvided.placeholder}</div>
+                                        
                                     </div>
-                                </div>
-                            )}
+                                )
+                            }}
                         </Droppable>
                     </div>
-
-                    {/* <div className="column-container">
-                       <div
-                           style={{ minHeight: "200px" }}
-                           ref={drop}
-                       >
-                           {fieldFilterByPositions.components?.map((field: FieldDto, index) => (
-                               <SectionField
-                                   key={field.fieldname}
-                                   id={field.fieldname}
-                                   tabName={tabName}
-                                   sectionName={sectionName}
-                                   columnName={fieldFilterByPositions.fieldname}
-                                   text={field.fieldname}
-                                   fieldIndex={index}
-                                   tabIndex={tabIndex}
-                                   sectionIndex={sectionIndex}
-                                   columnIndex={columnIndex}
-                               />
-                           ))}
-                       </div>
-                   </div> */}
                 </div>
             )}
         </Draggable>

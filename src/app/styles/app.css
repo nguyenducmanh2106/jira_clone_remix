@@ -105,7 +105,7 @@
 
 .form-section-container .form-section .section-columns-container {
   display: flex;
-  min-height: 2rem;
+  /* min-height: 2rem; */
   border-radius: 6px;
 }
 .form-builder-container .form-sidebar [data-is-user-generated="1"],

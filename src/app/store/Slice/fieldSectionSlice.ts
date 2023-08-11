@@ -136,7 +136,7 @@ const initState: fieldSectionType = {
             "label": "Timelines"
         },
         {
-            "fieldname": "column_break_1151",
+            "fieldname": "column_break_11511",
             "fieldtype": "Column Break"
         },
         {
@@ -154,7 +154,7 @@ const initState: fieldSectionType = {
             "mandatory_depends_on": "eval:doc.status==\"Filled\""
         },
         {
-            "fieldname": "column_break_15",
+            "fieldname": "column_break_1551",
             "fieldtype": "Column Break"
         },
         {
@@ -201,10 +201,43 @@ const initState: fieldSectionType = {
             "label": "Reason for Requesting"
         },
         {
+            "fieldname": "custom_section_break_onym142",
+            "fieldtype": "Section Break",
+            "label": "Job Description section 1"
+        },
+        {
+            "fieldname": "custom_column_break_onym1424",
+            "fieldtype": "Column Break",
+            "label": "Job Description column 1"
+        },
+        {
+            "fetch_from": "designation.description",
+            "fetch_if_empty": 1,
+            "fieldname": "description1",
+            "fieldtype": "Text Editor",
+            "label": "Job Description 1",
+            "reqd": 1
+        },
+        {
             "fieldname": "connections_tab",
             "fieldtype": "Tab Break",
             "label": "Connections",
             "show_dashboard": 1
+        },
+        {
+            "fieldname": "custom_section_break_onym14452",
+            "fieldtype": "Section Break",
+            "label": "Job Description section 122"
+        },
+        {
+            "fieldname": "custom_column_break_onym2424",
+            "fieldtype": "Column Break",
+            "label": "Job Description column 11212"
+        },
+        {
+            "fieldname": "reason_for_requesting12",
+            "fieldtype": "Text",
+            "label": "Reason for Requesting 12"
         },
     ],
     listId: '',
@@ -217,10 +250,10 @@ function isEmptyObject(obj: FieldDto) {
     return Object.keys(obj).length === 0;
 }
 
-function moveFieldInSection(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumns: nestElementType[]) {
+function moveFieldInSection(fromColumnIndex: number, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumns: nestElementType[]) {
     // console.log("from field index - to field index",fromFieldIndex,toFieldIndex)
-    
-    if (fromColumnName === toColumnName) {
+
+    if (fromColumnIndex === toColumnIndex) {
         const newList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
         const item = newList[fromFieldIndex];
         newList.splice(fromFieldIndex, 1);
@@ -233,19 +266,37 @@ function moveFieldInSection(fromColumnName: string, fromColumnIndex: number, toC
         toList.splice(toFieldIndex, 0, item);
     }
 }
-function moveFieldInTwoSection(fromColumnName: string, fromColumnIndex: number, toColumnName: string, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumnsOfSectionOne: nestElementType[],fieldInColumnsOfSectionTwo: nestElementType[]) {
-    if (fromColumnName === toColumnName) {
-        const newList: nestElementType[] = fieldInColumnsOfSectionOne[fromColumnIndex].components as nestElementType[];
-        const item = newList[fromFieldIndex];
-        newList.splice(fromFieldIndex, 1);
-        newList.splice(toFieldIndex, 0, item);
-    } else {
-        const fromList: nestElementType[] = fieldInColumnsOfSectionOne[fromColumnIndex].components as nestElementType[];
-        const item = fromList[fromFieldIndex];
-        fromList.splice(fromFieldIndex, 1);
-        const toList: nestElementType[] = (fieldInColumnsOfSectionTwo[toColumnIndex].components ?? []) as nestElementType[];
-        toList.splice(toFieldIndex, 0, item);
+function moveFieldInTwoSection(fromColumnIndex: number, toColumnIndex: number, fromFieldIndex: number, toFieldIndex: number, fieldInColumnsOfSectionOne: nestElementType[], fieldInColumnsOfSectionTwo: nestElementType[]) {
+    const fromList: nestElementType[] = fieldInColumnsOfSectionOne[fromColumnIndex].components as nestElementType[];
+    const item = fromList[fromFieldIndex];
+    fromList.splice(fromFieldIndex, 1);
+    const toList: nestElementType[] = (fieldInColumnsOfSectionTwo[toColumnIndex].components ?? []) as nestElementType[];
+    toList.splice(toFieldIndex, 0, item);
+}
+
+function moveColumnInSection(fromTab: number, toTab: number, fromSection: number, toSection: number, fromColumn: number, toColumn: number, components: nestElementType[]) {
+    console.log({ fromTab, toTab, fromSection, toSection, fromColumn, toColumn })
+
+    if (fromTab === toTab) {
+        const fieldInTab = components[fromTab].components as nestElementType[]
+        if (fromSection == toSection) {
+            const fieldInSection = fieldInTab[fromSection].components as nestElementType[]
+            const item = fieldInSection[fromColumn];
+            fieldInSection.splice(fromColumn, 1);
+            fieldInSection.splice(toColumn, 0, item);
+        }
+        else {
+            const fieldInSectionOne = fieldInTab[fromSection].components as nestElementType[]
+            const fieldInSectionTwo = fieldInTab[toSection].components as nestElementType[]
+            const item = fieldInSectionOne[fromColumn];
+            fieldInSectionOne.splice(fromColumn, 1);
+            fieldInSectionTwo.splice(toColumn, 0, item);
+        }
     }
+    // else {
+    //     const fieldInTabOne = components[fromTab].components as nestElementType[]
+    //     const fieldInTabTwo = components[fromTab].components as nestElementType[]
+    // }
 }
 const fieldSectionSlice = createSlice({
     name: 'fieldSection',
@@ -263,51 +314,72 @@ const fieldSectionSlice = createSlice({
             let tempTab: nestElementType = {}
             let tempSection: nestElementType = {}
             let tempColumn: nestElementType = {}
-            cloneFields.forEach((field: FieldDto | nestElementType) => {
+
+            let tabIndex = 0;
+            let sectionIndex = 0;
+            let columnIndex = 0;
+            cloneFields.forEach((field: FieldDto | nestElementType, idx: number) => {
                 switch (field.fieldtype) {
                     case FIELD_TYPE.TAB_BREAK:
                         if (isEmptyObject(tempTab)) {
-                            tempTab = { ...field };
+                            tempTab = { ...field, tabIndex: tabIndex };
+                            tabIndex++;
                             break;
                         }
 
                         //chuyển tab
                         if (tempTab.fieldname !== field.fieldname) {
+                            sectionIndex = 0;
+                            columnIndex = 0;
+
+                            if (!tempSection["components"]) {
+                                tempSection["components"] = []
+                            }
+                            tempSection.components.push({ ...tempColumn, tabIndex: tempSection.tabIndex })
+
                             if (!tempTab["components"]) {
                                 tempTab["components"] = [];
                             }
-                            tempTab.components.push(tempSection);
+
+                            tempTab.components.push({ ...tempSection, tabIndex: tempTab.tabIndex });
                             componentResult.push(tempTab);
-                            tempTab = { ...field };
+                            tempTab = { ...field, tabIndex: tabIndex };
                             tempSection = {};
+                            tempColumn = {};
                         }
+                        tabIndex++;
+
                         break;
                     case FIELD_TYPE.SECTION_BREAK:
                         if (isEmptyObject(tempSection)) {
-                            tempSection = { ...field };
+                            tempSection = { ...field, sectionIndex: sectionIndex, tabIndex: tabIndex - 1 };
+                            sectionIndex++;
                             break;
                         }
 
                         //chuyển section
                         if (tempSection.fieldname !== field.fieldname) {
-
+                            columnIndex = 0;
                             if (!tempSection["components"]) {
                                 tempSection["components"] = []
                             }
-                            tempSection.components.push(tempColumn);
+                            tempSection.components.push({ ...tempColumn, tabIndex: tempSection.tabIndex, sectionIndex: tempSection.sectionIndex });
 
                             if (!tempTab["components"]) {
                                 tempTab["components"] = []
                             }
-                            tempTab.components.push(tempSection);
+                            tempTab.components.push({ ...tempSection, tabIndex: tempTab.tabIndex });
 
-                            tempSection = { ...field };
+                            //gán lại section mới
+                            tempSection = { ...field, sectionIndex: sectionIndex, tabIndex: tabIndex - 1 };
                             tempColumn = {};
                         }
+                        sectionIndex++;
                         break;
                     case FIELD_TYPE.COLUMN_BREAK:
                         if (isEmptyObject(tempColumn)) {
-                            tempColumn = { ...field };
+                            tempColumn = { ...field, columnIndex: columnIndex };
+                            columnIndex++;
                             break;
                         }
 
@@ -316,9 +388,12 @@ const fieldSectionSlice = createSlice({
                             if (!tempSection["components"]) {
                                 tempSection["components"] = []
                             }
-                            tempSection.components.push(tempColumn);
-                            tempColumn = { ...field };
+                            tempSection.components.push({ ...tempColumn, tabIndex: tempSection.tabIndex, sectionIndex: tempSection.sectionIndex });
+
+                            //gán lại column mới
+                            tempColumn = { ...field, columnIndex: columnIndex };
                         }
+                        columnIndex++;
                         break;
                     default:
                         if (!tempColumn["components"]) {
@@ -329,6 +404,14 @@ const fieldSectionSlice = createSlice({
                 }
             })
 
+            if (!tempSection["components"]) {
+                tempSection["components"] = []
+            }
+            tempSection.components.push({ ...tempColumn, tabIndex: tempSection.tabIndex, sectionIndex: tempSection.sectionIndex });
+            if (!tempTab["components"]) {
+                tempTab["components"] = []
+            }
+            tempTab.components.push({ ...tempSection, tabIndex: tempTab.tabIndex });
             componentResult.push(tempTab);
             tree.components = componentResult;
             // console.log(JSON.parse(JSON.stringify(componentResult)));
@@ -338,17 +421,11 @@ const fieldSectionSlice = createSlice({
         moveItem: (state, action) => {
             const components = state.nestElement.components as nestElementType[]
             const {
-                fromTab,
                 fromIndexTab,
-                toTab,
                 toIndexTab,
-                fromSection,
                 fromIndexSection,
-                toSection,
                 toIndexSection,
-                fromColumn,
                 fromIndexColumn,
-                toColumn,
                 toIndexColumn,
                 fromIndexField,
                 toIndexField,
@@ -357,16 +434,16 @@ const fieldSectionSlice = createSlice({
 
             switch (fieldDnD) {
                 case ItemTypes.FIELD:
-                    if (fromTab === toTab) {
+                    if (fromIndexTab === toIndexTab) {
                         const fieldInTab = components[fromIndexTab].components as nestElementType[]
-                        if (fromSection === toSection) {
+                        if (fromIndexSection === toIndexSection) {
                             const fieldInSection = fieldInTab[fromIndexSection].components as nestElementType[]
-                            moveFieldInSection(fromColumn, fromIndexColumn, toColumn, toIndexColumn, fromIndexField, toIndexField, fieldInSection)
+                            moveFieldInSection(fromIndexColumn, toIndexColumn, fromIndexField, toIndexField, fieldInSection)
                         }
                         else {
                             const fieldInSectionOne = fieldInTab[fromIndexSection].components as nestElementType[]
                             const fieldInSectionTwo = fieldInTab[toIndexSection].components as nestElementType[]
-                            moveFieldInTwoSection(fromColumn, fromIndexColumn, toColumn, toIndexColumn, fromIndexField, toIndexField, fieldInSectionOne, fieldInSectionTwo)
+                            moveFieldInTwoSection(fromIndexColumn, toIndexColumn, fromIndexField, toIndexField, fieldInSectionOne, fieldInSectionTwo)
                         }
                     }
                     break;
@@ -375,12 +452,14 @@ const fieldSectionSlice = createSlice({
                 case ItemTypes.SECTION:
                     break;
                 case ItemTypes.COLUMN:
+                    moveColumnInSection(fromIndexTab, toIndexTab, fromIndexSection, toIndexSection, fromIndexField, toIndexField, components);
+
                     break;
                 default:
                     break;
             }
 
-            console.log(JSON.parse(JSON.stringify(components)));
+            // console.log(JSON.parse(JSON.stringify(components)));
             return state;
         }
     }

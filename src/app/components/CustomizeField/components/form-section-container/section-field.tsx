@@ -102,60 +102,63 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
 
     const opacity = isDragging ? 1 : 1;
     return (
-        <div
-            ref={provided?.innerRef}
-            // ref={(node) => dragRef(dropRef(node))}
-            // onMouseEnter={handleMouseEnter}
-            // onMouseLeave={handleMouseLeave}
-            className={cx("field", "mt-[0.4rem]", isHovered ? "hovered" : "")}
-            title="boarding_begins_on"
-            style={{ opacity, transform: 'scale(1)', transition: 'transform 0.2s', border: "1px dashed #c0c6cc" }}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            data-is-dragging={isDragging}
-        >
+        <>
             <div
-                className="control frappe-control editable"
-                data-fieldname="boarding_begins_on"
-                data-fieldtype="Date"
+                ref={provided?.innerRef}
+                // ref={(node) => dragRef(dropRef(node))}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                className={cx("field", "mt-[0.4rem]", isHovered ? "hovered" : "")}
+                title="boarding_begins_on"
+                style={{ opacity, transform: 'scale(1)', transition: 'transform 0.2s', border: "1px dashed #c0c6cc" }}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                data-is-dragging={isDragging}
             >
-                <div className="field-controls">
-                    <div className="field-label">
-                        <div
-                            title="Double click to edit label"
-                        >
-                            <span>{text}</span>
-                            <span className="hidden-span">
-                                Onboarding Begins On
-                            </span>
-                            <span className="hidden-span">
-                                Label
-                            </span>
+                <div
+                    className="control frappe-control editable"
+                    data-fieldname="boarding_begins_on"
+                    data-fieldtype="Date"
+                >
+                    <div className="field-controls">
+                        <div className="field-label">
+                            <div
+                                title="Double click to edit label"
+                            >
+                                <span>{text}</span>
+                                <span className="hidden-span">
+                                    Onboarding Begins On
+                                </span>
+                                <span className="hidden-span">
+                                    Label
+                                </span>
+                            </div>
+                            <div className="reqd-asterisk">
+                                *
+                            </div>
                         </div>
-                        <div className="reqd-asterisk">
-                            *
+                        <div className="field-actions">
+                            {isHovered ? <>
+                                <button className="btn btn-xs btn-icon">
+                                    <CopyIcon />
+                                </button>
+                                <button className="btn btn-xs btn-icon">
+                                    <Cross2Icon />
+                                </button>
+                            </> : <></>}
                         </div>
                     </div>
-                    <div className="field-actions">
-                        {isHovered ? <>
-                            <button className="btn btn-xs btn-icon">
-                                <CopyIcon />
-                            </button>
-                            <button className="btn btn-xs btn-icon">
-                                <Cross2Icon />
-                            </button>
-                        </> : <></>}
-                    </div>
+                    <input
+                        className="w-full h-[32px]"
+                        type="text"
+                        placeholder=""
+                        readOnly
+                    />
+                    <div className="selected-color no-value" />
                 </div>
-                <input
-                    className="w-full h-[32px]"
-                    type="text"
-                    placeholder=""
-                    readOnly
-                />
-                <div className="selected-color no-value" />
             </div>
-        </div>
+            <div style={{ display: 'none' }}>{provided?.placeholder}</div>
+        </>
 
     )
 }

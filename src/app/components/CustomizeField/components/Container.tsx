@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { memo, useEffect } from 'react'
-import { FormBuilderContainer } from './form-builder-container'
+import FormBuilderContainer from './form-builder-container'
 import { PresetSelector } from './preset-selector'
 import { presets } from '../data/presets'
 import { PresetSave } from './preset-save'

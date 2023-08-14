@@ -34,28 +34,6 @@ export function FormSection(props: FormSectionProps) {
         setIsHovered(false);
     };
 
-    const [listA, setListA] = useState();
-
-    // const moveItem = (fromListId, fromIndex, toListId, toIndex) => {
-    //     const item = fromListId === 'listA' ? listA[fromIndex] : listB[fromIndex];
-    //     if (fromListId === toListId) {
-    //         const newList = fromListId === 'listA' ? [...listA] : [...listB];
-    //         newList.splice(fromIndex, 1);
-    //         newList.splice(toIndex, 0, item);
-    //         if (fromListId === 'listA') {
-    //             setListA(newList);
-    //         } else {
-    //             setListB(newList);
-    //         }
-    //     } else {
-    //         const fromList = fromListId === 'listA' ? [...listA] : [...listB];
-    //         fromList.splice(fromIndex, 1);
-    //         const toList = toListId === 'listA' ? [...listA] : [...listB];
-    //         toList.splice(toIndex, 0, item);
-    //         fromListId === 'listA' ? setListA(fromList) : setListB(fromList)
-    //         toListId === 'listA' ? setListA(toList) : setListB(toList)
-    //     }
-    // };
     const onDragEnd = (result: DropResult) => {
         console.log(result)
     }
@@ -99,8 +77,8 @@ export function FormSection(props: FormSectionProps) {
                                 droppableId={`${tabIndex}:${sectionIndex}:${fieldFormSection.fieldname}`}
                                 type={ItemTypes.COLUMN}
                                 direction="horizontal"
-                                ignoreContainerClipping={false}
-                                isCombineEnabled={true}
+                                ignoreContainerClipping={true}
+                                isCombineEnabled={false}
                             >
                                 {(provided: DroppableProvided) => (
                                     <div className="section-columns-container min-h-[200px]" ref={provided.innerRef} {...provided.droppableProps}>
@@ -108,14 +86,13 @@ export function FormSection(props: FormSectionProps) {
                                             return (
                                                 <SectionColumn
                                                     tabName={tabName}
-                                                    sectionName={fieldFilterByPositions.fieldname}
+                                                    sectionName={fieldFilterByPositions.fieldname as string}
                                                     tabIndex={tabIndex}
                                                     sectionIndex={sectionIndex}
                                                     columnIndex={columnIndex}
                                                     key={field.fieldname}
-                                                    list={field}
-                                                    setList={setListA}
-                                                    isCombineEnabled={true}
+                                                    fields={field}
+                                                    isCombineEnabled={false}
                                                     useClone={true}
                                                     isScrollable={false}
                                                 />

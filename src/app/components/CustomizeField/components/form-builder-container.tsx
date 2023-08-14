@@ -3,8 +3,8 @@ import { FIELD_TYPE } from '@/src/constants'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tabs'
 import { nestElementType } from '@domain/types/nestElement'
 import type { FC } from 'react'
-import { memo, useCallback, useState } from 'react'
-import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided, ResponderProvided } from 'react-beautiful-dnd'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { BeforeCapture, DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided, Position, ResponderProvided } from 'react-beautiful-dnd'
 import { useSelector } from 'react-redux'
 import FormSection from './form-section-container'
 import { useDispatch } from 'react-redux'
@@ -20,29 +20,12 @@ export interface FormBuilderProps {
     lastDroppedColor?: string,
 }
 
-const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
-    onDrop,
-    lastDroppedColor,
-}) {
-    // const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
-    //     () => ({
-    //         accept: ["field"],
-    //         drop(_item: DragItem, monitor) {
-    //             onDrop(monitor.getItemType())
-    //             return undefined
-    //         },
-    //         collect: (monitor: DropTargetMonitor) => ({
-    //             isOver: monitor.isOver(),
-    //             canDrop: monitor.canDrop(),
-    //             draggingColor: monitor.getItemType() as string,
-    //         }),
-    //     }),
-    //     [onDrop],
-    // )
+const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
+
     const dispatch = useDispatch()
     const { fields, nestElement } = useSelector((state) => state.fieldSection)
 
-    console.log(nestElement)
+    // console.log(nestElement)
     const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
 
         //kéo không có sự thay đổi
@@ -69,8 +52,33 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
         dispatch(moveItem(objMove))
     }
 
+    const clientSelectionRef = useRef<Position>({ x: 0, y: 0 });
+    // useEffect(() => {
+    //     const unsubscribe = bindEvents(window, [
+    //         {
+    //             eventName: 'mousemove',
+    //             fn: (event: MouseEvent) => {
+    //                 const current: Position = {
+    //                     x: event.clientX,
+    //                     y: event.clientY,
+    //                 };
+    //                 clientSelectionRef.current = current;
+    //             },
+    //             options: { passive: true },
+    //         },
+    //     ]);
+    //     return unsubscribe;
+    // });
+    function onBeforeCapture(before: BeforeCapture) {
+        window.dispatchEvent(
+            new CustomEvent('onBeforeCapture', {
+                detail: { before, clientSelection: clientSelectionRef.current },
+            }),
+        );
+    }
+
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
             <Tabs defaultValue={nestElement?.components[0]?.fieldname ?? "custom_tab_break"} className="w-full">
                 <div className='w-full'>
                     <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
@@ -78,7 +86,7 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
                             droppableId={'tab'}
                             type={ItemTypes.TAB}
                             direction="horizontal"
-                            ignoreContainerClipping={false}
+                            ignoreContainerClipping={true}
                             isCombineEnabled={true}
                         >
                             {(provided: DroppableProvided) => (
@@ -112,7 +120,7 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
                                 type={ItemTypes.SECTION}
                                 direction="vertical"
                                 ignoreContainerClipping={true}
-                                isCombineEnabled={true}
+                                isCombineEnabled={false}
                             >
                                 {(provided: DroppableProvided) => (
                                     <div className="tab-columns-container" ref={provided.innerRef} {...provided.droppableProps}>
@@ -152,21 +160,4 @@ const FormBuilder: FC<FormBuilderProps> = memo(function FormBuilder({
     )
 })
 
-export interface FormBuilderContainerState {
-    tablist: any
-}
-export const FormBuilderContainer = (props) => {
-    const [lastDroppedColor, setLastDroppedColor] = useState<string | null>(null)
-    const handleDrop = useCallback(
-        (color: string) => setLastDroppedColor(color),
-        [],
-    )
-
-    return (
-        <FormBuilder
-            {...props}
-            lastDroppedColor={lastDroppedColor as string}
-            onDrop={handleDrop}
-        />
-    )
-}
+export default FormBuilderContainer

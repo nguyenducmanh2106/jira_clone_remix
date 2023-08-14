@@ -157,7 +157,7 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
                     <div className="selected-color no-value" />
                 </div>
             </div>
-            <div style={{ display: 'none' }}>{provided?.placeholder}</div>
+            {provided?.placeholder}
         </>
 
     )

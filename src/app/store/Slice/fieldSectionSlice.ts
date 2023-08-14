@@ -275,7 +275,7 @@ function moveFieldInTwoSection(fromColumnIndex: number, toColumnIndex: number, f
 }
 
 function moveColumnInSection(fromTab: number, toTab: number, fromSection: number, toSection: number, fromColumn: number, toColumn: number, components: nestElementType[]) {
-    console.log({ fromTab, toTab, fromSection, toSection, fromColumn, toColumn })
+    // console.log({ fromTab, toTab, fromSection, toSection, fromColumn, toColumn })
 
     if (fromTab === toTab) {
         const fieldInTab = components[fromTab].components as nestElementType[]
@@ -292,6 +292,20 @@ function moveColumnInSection(fromTab: number, toTab: number, fromSection: number
             fieldInSectionOne.splice(fromColumn, 1);
             fieldInSectionTwo.splice(toColumn, 0, item);
         }
+    }
+    // else {
+    //     const fieldInTabOne = components[fromTab].components as nestElementType[]
+    //     const fieldInTabTwo = components[fromTab].components as nestElementType[]
+    // }
+}
+function moveSectionInTab(fromTab: number, toTab: number, fromSection: number, toSection: number, components: nestElementType[]) {
+    console.log({ fromTab, toTab, fromSection, toSection })
+
+    if (fromTab === toTab) {
+        const fieldInTab = components[fromTab].components as nestElementType[]
+        const item = fieldInTab[fromSection];
+        fieldInTab.splice(fromSection, 1);
+        fieldInTab.splice(toSection, 0, item);
     }
     // else {
     //     const fieldInTabOne = components[fromTab].components as nestElementType[]
@@ -450,6 +464,7 @@ const fieldSectionSlice = createSlice({
                 case ItemTypes.TAB:
                     break;
                 case ItemTypes.SECTION:
+                    moveSectionInTab(fromIndexTab, toIndexTab, fromIndexField, toIndexField, components)
                     break;
                 case ItemTypes.COLUMN:
                     moveColumnInSection(fromIndexTab, toIndexTab, fromIndexSection, toIndexSection, fromIndexField, toIndexField, components);

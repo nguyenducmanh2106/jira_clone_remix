@@ -1,30 +1,18 @@
-import { CopyIcon, Cross2Icon } from "@radix-ui/react-icons"
-import SectionField from "./section-field"
-import { Button } from '@app/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@app/components/ui/card'
-import { Input } from '@app/components/ui/input'
-import { Label } from '@app/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tabs'
-import type { FC } from 'react'
-import { memo, useCallback, useMemo, useState } from 'react'
-import type { DropTargetMonitor } from 'react-dnd'
-import { useDrag, useDrop } from 'react-dnd'
-import cx from 'classix'
 import { FieldDto } from "@/src/api"
-import { FIELD_TYPE } from "@/src/constants"
-import { nestElementType } from "@domain/types/nestElement"
-import React from "react"
 import { ItemTypes } from "@app/components/testm/ItemTypes"
-import { useDispatch } from "react-redux"
-import { moveItem } from "@app/store/Slice/fieldSectionSlice"
+import { nestElementType } from "@domain/types/nestElement"
+import cx from 'classix'
+import type { FC } from 'react'
+import React, { memo, useMemo, useState } from 'react'
 import { Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DroppableStateSnapshot } from "react-beautiful-dnd"
+import { useDispatch } from "react-redux"
+import SectionField from "./section-field"
 
 export interface DragItem {
     type: string
 }
 
 export interface FormBuilderProps {
-    onDrop: (item: any) => void
     fields: nestElementType,
     isScrollable?: boolean,
     isCombineEnabled?: boolean,
@@ -37,10 +25,8 @@ export interface FormBuilderProps {
 }
 
 
-const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag({
-    onDrop,
+const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
     fields,
-    // listId,
     tabName,
     sectionName,
     tabIndex,
@@ -50,41 +36,6 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
     isCombineEnabled,
     useClone,
 }: FormBuilderProps) {
-    // const [{ isOver, draggingColor, canDrop }, drop] = useDrop(
-    //     () => ({
-    //         accept: [ItemTypes.FIELD],
-    //         hover(item: DragItem, monitor) {
-    //             console.log(item)
-    //             // onDrop(_item)
-    //             // console.log(item)
-    //             // const objMove = {
-    //             //     fromTab: item.tabName,
-    //             //     fromIndexTab: item.tabIndex,
-    //             //     toTab: tabName,
-    //             //     toIndexTab: tabIndex,
-    //             //     fromSection: item.sectionName,
-    //             //     fromIndexSection: item.sectionIndex,
-    //             //     toSection: sectionName,
-    //             //     toIndexSection: sectionIndex,
-    //             //     fromColumn: "item.columnName",
-    //             //     fromIndexColumn: item.columnIndex,
-    //             //     toColumn: "columnName",
-    //             //     toIndexColumn: columnIndex,
-    //             //     fromIndexField: item.fieldIndex,
-    //             //     toIndexField: 0,
-    //             //     fieldDnD: ItemTypes.FIELD
-    //             // }
-    //             // dispatch(moveItem(objMove))
-    //             // return undefined
-    //         },
-    //         collect: (monitor: DropTargetMonitor) => ({
-    //             isOver: monitor.isOver(),
-    //             canDrop: monitor.canDrop(),
-    //             draggingColor: monitor.getItemType() as string,
-    //         }),
-    //     }),
-    //     [onDrop],
-    // )
 
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -92,26 +43,8 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
         setIsHovered(true);
     };
 
-    // const [, dragRef] = useDrag({
-    //     type: ItemTypes.FIELD,
-    //     // item: { id, index },
-    //     item: {},
-    // });
-
     const dispatch = useDispatch()
-    // const [, dropRef] = useDrop({
-    //     accept: ItemTypes.FIELD,
-    //     hover: (item: FieldDto) => {
-    //         // dispatch(moveItem({}))
 
-    //         // if (item.id !== id) {
-
-    //         //     // moveItem(item.listId, item.index, listId, index);
-    //         //     // item.idx = index;
-    //         //     // item.listId = listId;
-    //         // }
-    //     },
-    // });
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
@@ -134,7 +67,7 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                     // ref={(node) => dragRef(dropRef(node))}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                    className={cx("column flex-auto", isHovered ? "hovered" : "")}
+                    className={cx("column grow shrink", isHovered ? "hovered" : "")}
                     title="column_break_13"
                     ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps}
                 >
@@ -187,25 +120,38 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                             </button>
                         </div>
                     </div>
-                    <div className="column-container flex-auto" >
+                    <div className="column-container grow shrink" >
                         <Droppable
                             // droppableId={fieldFilterByPositions.fieldname as string}
                             droppableId={`${tabIndex}:${sectionIndex}:${columnIndex}:${fieldFilterByPositions.fieldname}`}
                             type={ItemTypes.FIELD}
-                            ignoreContainerClipping={false}
+                            ignoreContainerClipping={true}
                             isDropDisabled={false}
                             isCombineEnabled={isCombineEnabled}
+                        // isCombineEnabled={isCombineEnabled}
                         // renderClone={
                         //     useClone
-                        //         ? (provided, snapshot, descriptor) => (
-                        //             <div>hello</div>
-                        //             // <QuoteItem
-                        //             //     quote={quotes[descriptor.source.index]}
-                        //             //     provided={provided}
-                        //             //     isDragging={snapshot.isDragging}
-                        //             //     isClone
-                        //             // />
-                        //         )
+                        //         ? (provided, snapshot, descriptor) => {
+
+                        //             return (
+                        //                 <SectionField
+                        //                     key={descriptor.draggableId}
+                        //                     id={descriptor.draggableId}
+                        //                     tabName={0}
+                        //                     sectionName={0}
+                        //                     columnName={descriptor.draggableId}
+                        //                     text={'hello'}
+                        //                     fieldIndex={descriptor.source.index}
+                        //                     tabIndex={0}
+                        //                     sectionIndex={0}
+                        //                     columnIndex={0}
+                        //                     isDragging={snapshot.isDragging}
+                        //                     isGroupedOver={Boolean(snapshot.combineTargetFor)}
+                        //                     provided={provided}
+                        //                     isClone={useClone}
+                        //                 />
+                        //             )
+                        //         }
                         //         : null
                         // }
                         >
@@ -213,7 +159,7 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
                                 dropProvided: DroppableProvided,
                                 dropSnapshot: DroppableStateSnapshot,
                             ) => {
-                                console.log(dropProvided)
+                                // console.log(dropProvided)
                                 return (
                                     <div className="dropzone h-full" ref={dropProvided.innerRef}
                                         {...dropProvided.droppableProps}
@@ -247,7 +193,6 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
 
                                         ))}
                                         <div>{dropProvided.placeholder}</div>
-                                        
                                     </div>
                                 )
                             }}
@@ -261,42 +206,4 @@ const SectionColumnDrag: FC<FormBuilderProps> = memo(function SectionColumnDrag(
 })
 
 
-// eslint-disable-next-line react/display-name
-const SectionColumn = ({ list, setList, tabName, sectionName, tabIndex, sectionIndex, columnIndex, isScrollable,
-    isCombineEnabled,
-    useClone }) => {
-    const handleDrop = useCallback(
-        (field: FieldDto) => {
-            // console.log(field)
-            console.log("onDrop")
-            console.log({ list, field, tabName, sectionName, tabIndex, sectionIndex, columnIndex })
-
-
-        },
-        [],
-    )
-
-    // console.log("column render")
-    return (
-        <SectionColumnDrag
-            fields={list}
-            tabName={tabName}
-            sectionName={sectionName}
-            onDrop={handleDrop}
-            tabIndex={tabIndex}
-            sectionIndex={sectionIndex}
-            columnIndex={columnIndex}
-            isScrollable={isScrollable}
-            isCombineEnabled={isCombineEnabled}
-            useClone={useClone}
-        />
-    )
-}
-
-function areEqual(prevProps: any, nextProps: any) {
-    /* Trả về true nếu nextProps bằng prevProps, ngược lại trả về false */
-    if (prevProps.sectionName == nextProps.sectionName) return true;
-    return false;
-}
-
-export default React.memo(SectionColumn)
+export default SectionColumn

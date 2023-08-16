@@ -28,19 +28,6 @@
   background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -384px -16px;
 }
 
-.dragable-icon-hover {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-
-.dragable-icon-hover:before {
-  content: "";
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  background: transparent url(https://crm.misacdn.net/appnew/assets/Images/icon/icon_collection.svg) no-repeat -368px -16px;
-}
 .icon-close16 {
   display: inline-block;
   width: 16px;
@@ -76,7 +63,6 @@
   border: 1px solid transparent;
   border-radius: 6px;
   padding: 1rem;
-  cursor: pointer;
 }
 
 .form-section-container .form-section .section-header.has-label,
@@ -142,7 +128,7 @@
 }
 .field {
   text-align: left;
-  width: 100%;
+  /* width: 100%; */
   background-color: #f4f5f6;
   border-radius: 4px;
   border: 1px solid transparent;

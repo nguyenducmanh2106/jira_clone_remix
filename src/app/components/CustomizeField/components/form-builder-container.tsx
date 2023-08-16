@@ -4,12 +4,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tab
 import { nestElementType } from '@domain/types/nestElement'
 import type { FC } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { BeforeCapture, DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided, Position, ResponderProvided } from 'react-beautiful-dnd'
+import { BeforeCapture, DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided, Position, ResponderProvided, SensorAPI } from 'react-beautiful-dnd'
 import { useSelector } from 'react-redux'
 import FormSection from './form-section-container'
 import { useDispatch } from 'react-redux'
 import { moveItem } from '@app/store/Slice/fieldSectionSlice'
 import { ItemTypes } from '@app/components/testm/ItemTypes'
+import bindEvents from './form-section-container/bind-event'
 
 export interface DragItem {
     type: string
@@ -53,22 +54,23 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
     }
 
     const clientSelectionRef = useRef<Position>({ x: 0, y: 0 });
-    // useEffect(() => {
-    //     const unsubscribe = bindEvents(window, [
-    //         {
-    //             eventName: 'mousemove',
-    //             fn: (event: MouseEvent) => {
-    //                 const current: Position = {
-    //                     x: event.clientX,
-    //                     y: event.clientY,
-    //                 };
-    //                 clientSelectionRef.current = current;
-    //             },
-    //             options: { passive: true },
-    //         },
-    //     ]);
-    //     return unsubscribe;
-    // });
+    console.log(clientSelectionRef)
+    useEffect(() => {
+        const unsubscribe = bindEvents(window, [
+            {
+                eventName: 'mousemove',
+                fn: (event: MouseEvent) => {
+                    const current: Position = {
+                        x: event.clientX,
+                        y: event.clientY,
+                    };
+                    clientSelectionRef.current = current;
+                },
+                options: { passive: true },
+            },
+        ]);
+        return unsubscribe;
+    });
     function onBeforeCapture(before: BeforeCapture) {
         window.dispatchEvent(
             new CustomEvent('onBeforeCapture', {
@@ -76,9 +78,22 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
             }),
         );
     }
+    // const sensorAPIRef = useRef<SensorAPI>(null);
+    // const api: SensorAPI = sensorAPIRef.current;
 
+    // if (!api) {
+    //     console.warn('unable to find sensor api');
+    //     return null;
+    // }
     return (
-        <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
+        <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}
+            sensors={[
+                (api) => {
+                    // sensorAPIRef.current = api;
+                    // console.log(api)
+                },
+            ]}
+        >
             <Tabs defaultValue={nestElement?.components[0]?.fieldname ?? "custom_tab_break"} className="w-full">
                 <div className='w-full'>
                     <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">

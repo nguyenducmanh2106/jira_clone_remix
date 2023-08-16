@@ -1,5 +1,5 @@
 import { CopyIcon, Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { cx } from "class-variance-authority"
 import { FieldDto } from "@/src/api"
 import { useDrag, useDrop } from "react-dnd"
@@ -8,6 +8,7 @@ import { ItemTypes } from "@app/components/testm/ItemTypes"
 import { useDispatch } from "react-redux"
 import { moveItem } from "@app/store/Slice/fieldSectionSlice"
 import { DraggableProvided } from "react-beautiful-dnd"
+import bindEvents from "./bind-event"
 // import { moveItem } from "@app/store/Slice/fieldSectionSlice"
 export interface SectionFieldProps {
     fields: FieldDto,
@@ -15,12 +16,13 @@ export interface SectionFieldProps {
     provided: DraggableProvided,
     isClone?: boolean,
     isGroupedOver?: boolean,
+    className?: string,
 }
-function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex, isDragging,
+function SectionField({ className, id, text, fieldIndex, tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex, isDragging,
     isGroupedOver,
-    provided, isClone }) {
+    provided, isClone }: any) {
+    const ref = useRef<HTMLElement>(null);
 
-    // console.log({ id, text, fieldIndex, tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex })
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -29,91 +31,24 @@ function SectionField({ id, text, fieldIndex, tabName, sectionName, columnName, 
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
-    const dispatch = useDispatch()
 
-
-    // const [{ isDragging }, dragRef] = useDrag({
-    //     type: ItemTypes.FIELD,
-    //     item: { id, fieldIndex, a: "a", tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex },
-    //     collect: (monitor) => ({
-    //         isDragging: monitor.isDragging()
-    //     }),
-    //     end: (item, monitor) => {
-    //         const didDrop = monitor.didDrop()
-    //         if (!didDrop) {
-    //             // console.log("didDrop")
-    //             // const objMove = {
-    //             //     fromTab: item.tabName,
-    //             //     fromIndexTab: item.tabIndex,
-    //             //     toTab: tabName,
-    //             //     toIndexTab: tabIndex,
-    //             //     fromSection: item.sectionName,
-    //             //     fromIndexSection: item.sectionIndex,
-    //             //     toSection: sectionName,
-    //             //     toIndexSection: sectionIndex,
-    //             //     fromColumn: item.columnName,
-    //             //     fromIndexColumn: item.columnIndex,
-    //             //     toColumn: columnName,
-    //             //     toIndexColumn: columnIndex,
-    //             //     fromIndexField: item.fieldIndex,
-    //             //     toIndexField: fieldIndex,
-    //             //     fieldDnD: ItemTypes.FIELD
-    //             // }
-    //             // dispatch(moveItem(objMove))
-    //         }
-    //     },
-    // });
-
-    // const [, dropRef] = useDrop({
-    //     accept: ItemTypes.FIELD,
-    //     hover: (item: FieldDto, monitor) => {
-    //         if (item.id !== id) {
-    //             console.log("hover drop")
-
-    //             const objMove = {
-    //                 fromTab: item.tabName,
-    //                 fromIndexTab: item.tabIndex,
-    //                 toTab: tabName,
-    //                 toIndexTab: tabIndex,
-    //                 fromSection: item.sectionName,
-    //                 fromIndexSection: item.sectionIndex,
-    //                 toSection: sectionName,
-    //                 toIndexSection: sectionIndex,
-    //                 fromColumn: item.columnName,
-    //                 fromIndexColumn: item.columnIndex,
-    //                 toColumn: columnName,
-    //                 toIndexColumn: columnIndex,
-    //                 fromIndexField: item.fieldIndex,
-    //                 toIndexField: fieldIndex,
-    //                 fieldDnD: ItemTypes.FIELD
-    //             }
-    //             dispatch(moveItem(objMove))
-    //             item.fieldIndex = fieldIndex;
-    //             item.tabName = tabName;
-    //             item.tabIndex = tabIndex;
-    //             item.sectionName = sectionName;
-    //             item.sectionIndex = sectionIndex;
-    //             item.columnName = columnName;
-    //             item.columnIndex = columnIndex;
-    //         }
-    //         // return undefined;
-    //     },
-    // });
-
-    const opacity = isDragging ? 1 : 1;
+    const opacity = isDragging ? 0 : 1;
     return (
         <>
             <div
-                ref={provided?.innerRef}
-                // ref={(node) => dragRef(dropRef(node))}
+                // ref={provided?.innerRef}
+                ref={(node: HTMLElement) => {
+                    provided.innerRef(node);
+                    ref.current = node;
+                }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                className={cx("field", "mt-[0.4rem]", isHovered ? "hovered" : "")}
-                title="boarding_begins_on"
-                style={{ opacity, transform: 'scale(1)', transition: 'transform 0.2s', border: "1px dashed #c0c6cc" }}
+                className={cx("field", "mt-[0.4rem]", isDragging ? 'max-w-[200px]' : '', className, isHovered ? "hovered" : "")}
+                title={text}
+                style={{ border: "1px dashed #c0c6cc" }}
                 {...provided.draggableProps}
+                // role="abc"
                 {...provided.dragHandleProps}
-                data-is-dragging={isDragging}
             >
                 <div
                     className="control frappe-control editable"

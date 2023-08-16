@@ -122,25 +122,24 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                     </div>
                     <div className="column-container grow shrink" >
                         <Droppable
-                            // droppableId={fieldFilterByPositions.fieldname as string}
                             droppableId={`${tabIndex}:${sectionIndex}:${columnIndex}:${fieldFilterByPositions.fieldname}`}
                             type={ItemTypes.FIELD}
                             ignoreContainerClipping={true}
                             isDropDisabled={false}
                             isCombineEnabled={isCombineEnabled}
-                        // isCombineEnabled={isCombineEnabled}
                         // renderClone={
                         //     useClone
                         //         ? (provided, snapshot, descriptor) => {
 
                         //             return (
                         //                 <SectionField
+                        //                     className='w-[20px]'
                         //                     key={descriptor.draggableId}
                         //                     id={descriptor.draggableId}
                         //                     tabName={0}
                         //                     sectionName={0}
                         //                     columnName={descriptor.draggableId}
-                        //                     text={'hello'}
+                        //                     text={'hello 1'}
                         //                     fieldIndex={descriptor.source.index}
                         //                     tabIndex={0}
                         //                     sectionIndex={0}
@@ -172,12 +171,13 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                                                 ) => (
                                                     <div>
                                                         <SectionField
+                                                            className="field-form"
                                                             key={field.fieldname}
                                                             id={field.fieldname}
                                                             tabName={tabName}
                                                             sectionName={sectionName}
                                                             columnName={fieldFilterByPositions.fieldname}
-                                                            text={field.fieldname}
+                                                            text={field.label}
                                                             fieldIndex={index}
                                                             tabIndex={tabIndex}
                                                             sectionIndex={sectionIndex}

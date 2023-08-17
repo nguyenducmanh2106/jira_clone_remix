@@ -8,16 +8,17 @@ import { BeforeCapture, DragDropContext, Draggable, DraggableProvided, Draggable
 import { useSelector } from 'react-redux'
 import FormSection from './form-section-container'
 import { useDispatch } from 'react-redux'
-import { moveItem } from '@app/store/Slice/fieldSectionSlice'
+import { addSection, moveItem } from '@app/store/Slice/fieldSectionSlice'
 import { ItemTypes } from '@app/components/testm/ItemTypes'
 import bindEvents from './form-section-container/bind-event'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@app/components/ui/card'
+import { Button } from '@app/components/ui/button'
 
 export interface DragItem {
     type: string
 }
 
 export interface FormBuilderProps {
-    onDrop: (item: any) => void
     lastDroppedColor?: string,
 }
 
@@ -54,7 +55,7 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
     }
 
     const clientSelectionRef = useRef<Position>({ x: 0, y: 0 });
-    console.log(clientSelectionRef)
+    // console.log(clientSelectionRef)
     useEffect(() => {
         const unsubscribe = bindEvents(window, [
             {
@@ -78,6 +79,13 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
             }),
         );
     }
+
+    const handleAddSection = (tabIndex: number, sectionIndex: number) => {
+        dispatch(addSection({
+            currentTabIndex: tabIndex,
+            aboveSectionIndex: sectionIndex
+        }))
+    };
     // const sensorAPIRef = useRef<SensorAPI>(null);
     // const api: SensorAPI = sensorAPIRef.current;
 
@@ -85,15 +93,9 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
     //     console.warn('unable to find sensor api');
     //     return null;
     // }
+
     return (
-        <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}
-            sensors={[
-                (api) => {
-                    // sensorAPIRef.current = api;
-                    // console.log(api)
-                },
-            ]}
-        >
+        <>
             <Tabs defaultValue={nestElement?.components[0]?.fieldname ?? "custom_tab_break"} className="w-full">
                 <div className='w-full'>
                     <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
@@ -139,7 +141,7 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
                             >
                                 {(provided: DroppableProvided) => (
                                     <div className="tab-columns-container" ref={provided.innerRef} {...provided.droppableProps}>
-                                        {fieldTab?.components?.map((field: nestElementType, positionSection: number) => {
+                                        {fieldTab?.components && fieldTab?.components?.length > 0 ? fieldTab?.components?.map((field: nestElementType, positionSection: number) => {
                                             return (
                                                 <FormSection
                                                     key={field.fieldname}
@@ -150,7 +152,15 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
                                                     sectionIndex={positionSection}
                                                 />
                                             )
-                                        })}
+                                        }) : <Card>
+
+                                            <CardContent>
+                                                <div className='flex h-[110px] w-full justify-center items-center'>
+                                                    <Button onClick={() => handleAddSection(positionTab, 0)}>Add new section</Button>
+                                                </div>
+                                            </CardContent>
+
+                                        </Card>}
                                         {provided.placeholder}
                                     </div>
                                 )}
@@ -171,7 +181,7 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
                     )
                 })}
             </Tabs>
-        </DragDropContext>
+        </>
     )
 })
 

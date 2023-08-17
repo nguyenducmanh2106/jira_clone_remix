@@ -21,7 +21,7 @@ export default function bindEvents(
 ): Function {
   const unbindings: UnbindFn[] = bindings.map(
     (binding: EventBinding): UnbindFn => {
-        console.log('bindings:')
+        // console.log('bindings:')
       const options: any = getOptions(sharedOptions, binding.options);
 
       el.addEventListener(binding.eventName, binding.fn, options);

@@ -6,12 +6,21 @@ import { useDrag, useDrop } from "react-dnd"
 import { ItemTypes } from "@app/components/testm/ItemTypes"
 
 import { useDispatch } from "react-redux"
-import { moveItem } from "@app/store/Slice/fieldSectionSlice"
+import { moveItem, removeField } from "@app/store/Slice/fieldSectionSlice"
 import { DraggableProvided } from "react-beautiful-dnd"
 import bindEvents from "./bind-event"
 // import { moveItem } from "@app/store/Slice/fieldSectionSlice"
 export interface SectionFieldProps {
     fields: FieldDto,
+    id: string,
+    text: string,
+    fieldIndex: number,
+    tabIndex: number,
+    columnIndex: number,
+    sectionIndex: number,
+    tabName: string,
+    columnName: string,
+    sectionName: string,
     isDragging: boolean,
     provided: DraggableProvided,
     isClone?: boolean,
@@ -20,9 +29,10 @@ export interface SectionFieldProps {
 }
 function SectionField({ className, id, text, fieldIndex, tabName, sectionName, columnName, tabIndex, sectionIndex, columnIndex, isDragging,
     isGroupedOver,
-    provided, isClone }: any) {
+    provided, isClone }: SectionFieldProps) {
     const ref = useRef<HTMLElement>(null);
 
+    const dispatch = useDispatch()
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -32,7 +42,23 @@ function SectionField({ className, id, text, fieldIndex, tabName, sectionName, c
         setIsHovered(false);
     };
 
-    const opacity = isDragging ? 0 : 1;
+    const opacity = isDragging ? 0.7 : 1;
+
+    const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+        ...draggableStyle,
+        borderColor: isDragging || isHovered ? '#2490ef' : 'inherit',
+        opacity
+    });
+
+    const handleRemoveField = (fieldIndex: number) => {
+        const payload = {
+            currentTabIndex: tabIndex,
+            currentSectionIndex: sectionIndex,
+            currentColumnIndex: columnIndex,
+            fieldIndex,
+        }
+        dispatch(removeField(payload))
+    }
     return (
         <>
             <div
@@ -43,12 +69,12 @@ function SectionField({ className, id, text, fieldIndex, tabName, sectionName, c
                 }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                className={cx("field", "mt-[0.4rem]", isDragging ? 'max-w-[200px]' : '', className, isHovered ? "hovered" : "")}
+                className={cx("field", "mt-[0.4rem]", className, isHovered ? "hovered" : "")}
                 title={text}
-                style={{ border: "1px dashed #c0c6cc" }}
                 {...provided.draggableProps}
                 // role="abc"
                 {...provided.dragHandleProps}
+                style={getItemStyle(isDragging, provided.draggableProps.style)}
             >
                 <div
                     className="control frappe-control editable"
@@ -77,14 +103,16 @@ function SectionField({ className, id, text, fieldIndex, tabName, sectionName, c
                                 <button className="btn btn-xs btn-icon">
                                     <CopyIcon />
                                 </button>
-                                <button className="btn btn-xs btn-icon">
+                                <button className="btn btn-xs btn-icon"
+                                    onClick={() => handleRemoveField(fieldIndex)}
+                                >
                                     <Cross2Icon />
                                 </button>
                             </> : <></>}
                         </div>
                     </div>
                     <input
-                        className="w-full h-[32px]"
+                        className="w-full h-[32px] pointer-events-none"
                         type="text"
                         placeholder=""
                         readOnly
@@ -98,4 +126,4 @@ function SectionField({ className, id, text, fieldIndex, tabName, sectionName, c
     )
 }
 
-export default React.memo(SectionField);
+export default SectionField;

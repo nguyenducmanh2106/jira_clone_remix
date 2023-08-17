@@ -1,14 +1,13 @@
-import { CopyIcon, Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons"
-import SectionColumn from "./section-column"
-import { useMemo, useState } from "react";
-import cx from "classix";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { FieldDto } from "@/src/api";
-import { FIELD_TYPE } from "@/src/constants";
-import { nestElementType } from "@domain/types/nestElement";
-import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided } from "react-beautiful-dnd";
-import { Button } from "@app/components/ui/button";
 import { ItemTypes } from "@app/components/testm/ItemTypes";
+import { nestElementType } from "@domain/types/nestElement";
+import { Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons";
+import cx from "classix";
+import { useMemo, useState } from "react";
+import { Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided } from "react-beautiful-dnd";
+import { useDispatch } from "react-redux";
+import SectionColumn from "./section-column";
+import { addSection, removeSection } from "@app/store/Slice/fieldSectionSlice";
 export type FormSectionProps = {
     label: string,
     tabName: string,
@@ -19,6 +18,7 @@ export type FormSectionProps = {
 export function FormSection(props: FormSectionProps) {
 
     const { label, fieldFormSection, tabName, tabIndex, sectionIndex } = props;
+    const dispatch = useDispatch()
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -32,6 +32,20 @@ export function FormSection(props: FormSectionProps) {
 
     const handleMouseLeave = () => {
         setIsHovered(false);
+    };
+
+    const handleAddSection = (sectionIndex: number) => {
+        dispatch(addSection({
+            currentTabIndex: tabIndex,
+            aboveSectionIndex: sectionIndex
+        }))
+    };
+
+    const handleRemoveSection = (sectionIndex: number) => {
+        dispatch(removeSection({
+            currentTabIndex: tabIndex,
+            aboveSectionIndex: sectionIndex
+        }))
     };
 
     const onDragEnd = (result: DropResult) => {
@@ -50,7 +64,7 @@ export function FormSection(props: FormSectionProps) {
                     <div
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
-                        className={cx("form-section", isHovered ? "hovered" : "")}
+                        className={cx("form-section", isHovered || snapshot.isDragging ? "hovered" : "")}
                         title="details_section">
                         <div className="section-header has-label">
                             <div className="section-label">
@@ -63,10 +77,14 @@ export function FormSection(props: FormSectionProps) {
                                     title="Move the current section and the following sections to a new tab">
                                     <MoveIcon />
                                 </button>
-                                <button className="btn btn-xs btn-section" title="Add section above">
+                                <button className="btn btn-xs btn-section" title="Add section above"
+                                    onClick={() => handleAddSection(sectionIndex)}
+                                >
                                     <PlusIcon />
                                 </button>
-                                <button className="btn btn-xs btn-section" title="Remove section">
+                                <button className="btn btn-xs btn-section" title="Remove section"
+                                    onClick={() => handleRemoveSection(sectionIndex)}
+                                >
                                     <Cross2Icon />
                                 </button>
                             </div>

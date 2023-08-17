@@ -3,10 +3,12 @@ import { ItemTypes } from "@app/components/testm/ItemTypes"
 import { nestElementType } from "@domain/types/nestElement"
 import cx from 'classix'
 import type { FC } from 'react'
-import React, { memo, useMemo, useState } from 'react'
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DroppableStateSnapshot } from "react-beautiful-dnd"
 import { useDispatch } from "react-redux"
 import SectionField from "./section-field"
+import { Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons"
+import { addColumn, removeColumn } from "@app/store/Slice/fieldSectionSlice"
 
 export interface DragItem {
     type: string
@@ -24,7 +26,6 @@ export interface FormBuilderProps {
     columnIndex: number,
 }
 
-
 const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
     fields,
     tabName,
@@ -37,13 +38,15 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
     useClone,
 }: FormBuilderProps) {
 
+    const dispatch = useDispatch()
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [isClick, setIsClick] = useState<boolean>(false);
+    const [isDraggingOver, setIsDraggingOver] = useState<boolean>(false);
+    const ref = useRef<HTMLElement>(null);
 
     const handleMouseEnter = () => {
         setIsHovered(true);
     };
-
-    const dispatch = useDispatch()
 
     const handleMouseLeave = () => {
         setIsHovered(false);
@@ -56,22 +59,48 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
 
     }, [fields])
 
-    // console.log(fieldFilterByPositions)
+    const handleFocus = () => {
+        setIsClick(true)
+    };
+    const handleBlur = () => {
+        setIsClick(false)
+    };
+    const handAddColumn = (columnIndex: number) => {
+        dispatch(addColumn({
+            currentTabIndex: tabIndex,
+            currentSectionIndex: sectionIndex,
+            columnIndex: columnIndex
+        }))
+    }
+
+    const handRemoveColumn = (columnIndex: number) => {
+        dispatch(removeColumn({
+            currentTabIndex: tabIndex,
+            currentSectionIndex: sectionIndex,
+            columnIndex: columnIndex
+        }))
+    }
 
     return (
         <Draggable
-            draggableId={`${fieldFilterByPositions.tabIndex}:${fieldFilterByPositions.sectionIndex}:${fieldFilterByPositions.fieldname}`}
+            draggableId={`${tabIndex}:${sectionIndex}:${fieldFilterByPositions.fieldname}`}
             index={columnIndex as number}>
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                 <div
-                    // ref={(node) => dragRef(dropRef(node))}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                    className={cx("column grow shrink", isHovered ? "hovered" : "")}
+                    onClick={() => ref.current?.focus()}
+                    className={cx("column grow shrink min-w-[200px]", isHovered || isDraggingOver || snapshot.isDragging ? "hovered" : "")}
                     title="column_break_13"
-                    ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps}
+                    ref={(node: HTMLElement) => {
+                        provided.innerRef(node);
+                        ref.current = node;
+                    }}
+                    {...provided.draggableProps}  {...provided.dragHandleProps}
                 >
-                    <div className="column-header">
+                    <div className={cx(isClick ? 'flex' : 'hidden', "column-header")}>
                         <div className="column-label">
                             <div
                                 title="Double click to edit label"
@@ -85,38 +114,26 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                                 </span>
                             </div>
                         </div>
-                        <div className="column-actions">
+                        <div className={cx("column-actions")}>
                             <button
-                                className="btn btn-xs btn-icon"
+                                className="btn btn-xs btn-icon p-[4px]"
                                 title="Move the current column & the following columns to a new section"
                             >
-                                <div >
-                                    <svg className="icon  icon-sm" style={{}}>
-                                        <use className="" href="#icon-move" />
-                                    </svg>
-                                </div>
+                                <MoveIcon />
                             </button>
                             <button
-                                data-v-31db23b4=""
-                                className="btn btn-xs btn-icon"
+                                className="btn btn-xs btn-icon p-[4px]"
                                 title="Add Column"
+                                onClick={() => handAddColumn(columnIndex)}
                             >
-                                <div data-v-31db23b4="">
-                                    <svg className="icon  icon-sm" style={{}}>
-                                        <use className="" href="#icon-add" />
-                                    </svg>
-                                </div>
+                                <PlusIcon />
                             </button>
                             <button
-                                data-v-31db23b4=""
-                                className="btn btn-xs btn-icon"
+                                className="btn btn-xs btn-icon p-[4px]"
                                 title="Remove Column"
+                                onClick={() => handRemoveColumn(columnIndex)}
                             >
-                                <div data-v-31db23b4="">
-                                    <svg className="icon  icon-sm" style={{}}>
-                                        <use className="" href="#icon-remove" />
-                                    </svg>
-                                </div>
+                                <Cross2Icon />
                             </button>
                         </div>
                     </div>
@@ -158,7 +175,7 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                                 dropProvided: DroppableProvided,
                                 dropSnapshot: DroppableStateSnapshot,
                             ) => {
-                                // console.log(dropProvided)
+                                setIsDraggingOver(dropSnapshot.isDraggingOver)
                                 return (
                                     <div className="dropzone h-full" ref={dropProvided.innerRef}
                                         {...dropProvided.droppableProps}
@@ -168,27 +185,29 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                                                 {(
                                                     dragProvided: DraggableProvided,
                                                     dragSnapshot: DraggableStateSnapshot,
-                                                ) => (
-                                                    <div>
-                                                        <SectionField
-                                                            className="field-form"
-                                                            key={field.fieldname}
-                                                            id={field.fieldname}
-                                                            tabName={tabName}
-                                                            sectionName={sectionName}
-                                                            columnName={fieldFilterByPositions.fieldname}
-                                                            text={field.label}
-                                                            fieldIndex={index}
-                                                            tabIndex={tabIndex}
-                                                            sectionIndex={sectionIndex}
-                                                            columnIndex={columnIndex}
-                                                            isDragging={dragSnapshot.isDragging}
-                                                            isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-                                                            provided={dragProvided}
-                                                            isClone={true}
-                                                        />
-                                                    </div>
-                                                )}
+                                                ) => {
+                                                    return (
+                                                        <div>
+                                                            <SectionField
+                                                                className="field-form"
+                                                                key={field.fieldname}
+                                                                id={field.fieldname}
+                                                                tabName={tabName}
+                                                                sectionName={sectionName}
+                                                                columnName={fieldFilterByPositions.fieldname}
+                                                                text={field.label}
+                                                                fieldIndex={index}
+                                                                tabIndex={tabIndex}
+                                                                sectionIndex={sectionIndex}
+                                                                columnIndex={columnIndex}
+                                                                isDragging={dragSnapshot.isDragging}
+                                                                isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+                                                                provided={dragProvided}
+                                                                isClone={true}
+                                                            />
+                                                        </div>
+                                                    )
+                                                }}
                                             </Draggable>
 
                                         ))}

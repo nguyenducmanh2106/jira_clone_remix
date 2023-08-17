@@ -262,7 +262,10 @@ function moveFieldInSection(fromColumnIndex: number, toColumnIndex: number, from
         const fromList: nestElementType[] = fieldInColumns[fromColumnIndex].components as nestElementType[];
         const item = fromList[fromFieldIndex];
         fromList.splice(fromFieldIndex, 1);
-        const toList: nestElementType[] = (fieldInColumns[toColumnIndex].components ?? []) as nestElementType[];
+        if (!fieldInColumns[toColumnIndex].components) {
+            fieldInColumns[toColumnIndex].components = []
+        }
+        const toList: nestElementType[] = fieldInColumns[toColumnIndex].components as nestElementType[];
         toList.splice(toFieldIndex, 0, item);
     }
 }
@@ -270,7 +273,11 @@ function moveFieldInTwoSection(fromColumnIndex: number, toColumnIndex: number, f
     const fromList: nestElementType[] = fieldInColumnsOfSectionOne[fromColumnIndex].components as nestElementType[];
     const item = fromList[fromFieldIndex];
     fromList.splice(fromFieldIndex, 1);
-    const toList: nestElementType[] = (fieldInColumnsOfSectionTwo[toColumnIndex].components ?? []) as nestElementType[];
+
+    if (!fieldInColumnsOfSectionTwo[toColumnIndex].components) {
+        fieldInColumnsOfSectionTwo[toColumnIndex].components = []
+    }
+    const toList: nestElementType[] = fieldInColumnsOfSectionTwo[toColumnIndex].components as nestElementType[];
     toList.splice(toFieldIndex, 0, item);
 }
 
@@ -287,6 +294,10 @@ function moveColumnInSection(fromTab: number, toTab: number, fromSection: number
         }
         else {
             const fieldInSectionOne = fieldInTab[fromSection].components as nestElementType[]
+
+            if (!fieldInTab[toSection].components) {
+                fieldInTab[toSection].components = []
+            }
             const fieldInSectionTwo = fieldInTab[toSection].components as nestElementType[]
             const item = fieldInSectionOne[fromColumn];
             fieldInSectionOne.splice(fromColumn, 1);
@@ -311,6 +322,19 @@ function moveSectionInTab(fromTab: number, toTab: number, fromSection: number, t
     //     const fieldInTabOne = components[fromTab].components as nestElementType[]
     //     const fieldInTabTwo = components[fromTab].components as nestElementType[]
     // }
+}
+
+function makeid(length: number) {
+    // let result = '';
+    // const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    // const charactersLength = characters.length;
+    // let counter = 0;
+    // while (counter < length) {
+    //     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    //     counter += 1;
+    // }
+    // return result;
+    return (Math.random() + 1).toString(36).substring(length)
 }
 const fieldSectionSlice = createSlice({
     name: 'fieldSection',
@@ -476,9 +500,120 @@ const fieldSectionSlice = createSlice({
 
             // console.log(JSON.parse(JSON.stringify(components)));
             return state;
-        }
+        },
+        addSection: (state, action) => {
+            const components = state.nestElement.components as nestElementType[]
+            const {
+                currentTabIndex,
+                aboveSectionIndex
+            } = action.payload
+            const fieldInTab = components[currentTabIndex].components as nestElementType[]
+            const newSection = {
+                "fieldname": `custom_section_break_${makeid(2)}`,
+                "fieldtype": "Section Break",
+                "label": "No label"
+            }
+
+            fieldInTab.splice(aboveSectionIndex, 0, newSection)
+            if (!fieldInTab[aboveSectionIndex].components) {
+                fieldInTab[aboveSectionIndex].components = []
+            }
+            const fieldInSection = fieldInTab[aboveSectionIndex].components as nestElementType[]
+            const newColumn1 = {
+                "fieldname": `custom_column_break__${makeid(2)}`,
+                "fieldtype": "Column Break",
+                "label": "No label"
+            }
+            const newColumn2 = {
+                "fieldname": `custom_column_break__${makeid(2)}`,
+                "fieldtype": "Column Break",
+                "label": "No label"
+            }
+
+            fieldInSection.splice(0, 0, newColumn1, newColumn2)
+            return state
+        },
+        removeSection: (state, action) => {
+            const components = state.nestElement.components as nestElementType[]
+            const {
+                currentTabIndex,
+                aboveSectionIndex
+            } = action.payload
+            const fieldInTab = components[currentTabIndex].components as nestElementType[]
+
+            fieldInTab.splice(aboveSectionIndex, 1)
+            return state
+        },
+        addColumn: (state, action) => {
+            const components = state.nestElement.components as nestElementType[]
+            const {
+                currentTabIndex,
+                currentSectionIndex,
+                columnIndex
+            } = action.payload
+            const fieldInTab = components[currentTabIndex].components as nestElementType[]
+            const fieldInSection = fieldInTab[currentSectionIndex].components as nestElementType[]
+            const newColumn = {
+                "fieldname": `custom_column_break__${makeid(2)}`,
+                "fieldtype": "Column Break",
+                "label": "No label"
+            }
+
+            fieldInSection.splice(columnIndex, 0, newColumn)
+            return state
+        },
+        removeColumn: (state, action) => {
+            const components = state.nestElement.components as nestElementType[]
+            const {
+                currentTabIndex,
+                currentSectionIndex,
+                columnIndex
+            } = action.payload
+            const fieldInTab = components[currentTabIndex].components as nestElementType[]
+            const fieldInSection = fieldInTab[currentSectionIndex].components as nestElementType[]
+
+
+            fieldInSection.splice(columnIndex, 1)
+            return state
+        },
+        addField: (state, action) => {
+            const components = state.nestElement.components as nestElementType[]
+            const {
+                currentTabIndex,
+                currentSectionIndex,
+                currentColumnIndex,
+                fieldIndex,
+                fieldType
+            } = action.payload
+            const fieldInTab = components[currentTabIndex].components as nestElementType[]
+            const fieldInSection = fieldInTab[currentSectionIndex].components as nestElementType[]
+            const fieldInColumn = fieldInSection[currentColumnIndex].components as nestElementType[]
+            const newField = {
+                "fieldname": `field_custom_${makeid(2)}${makeid(4)}`,
+                "fieldtype": fieldType,
+                "label": "No label"
+            }
+
+            fieldInColumn.splice(fieldIndex, 0, newField)
+            return state
+        },
+        removeField: (state, action) => {
+            const components = state.nestElement.components as nestElementType[]
+            const {
+                currentTabIndex,
+                currentSectionIndex,
+                currentColumnIndex,
+                fieldIndex,
+            } = action.payload
+            const fieldInTab = components[currentTabIndex].components as nestElementType[]
+            const fieldInSection = fieldInTab[currentSectionIndex].components as nestElementType[]
+            const fieldInColumn = fieldInSection[currentColumnIndex].components as nestElementType[]
+
+            fieldInColumn.splice(fieldIndex, 1)
+            return state
+        },
     }
 })
 
-export const { nestComponent, moveItem } = fieldSectionSlice.actions;
+export const { nestComponent, moveItem, addSection, removeSection, addColumn, removeColumn, addField, removeField } = fieldSectionSlice.actions;
 export default fieldSectionSlice.reducer;

@@ -111,7 +111,7 @@
   margin-right: 4px;
 }
 .column .column-header {
-  display: none;
+  /* display: none; */
   align-items: center;
   justify-content: space-between;
   padding-bottom: 0.5rem;

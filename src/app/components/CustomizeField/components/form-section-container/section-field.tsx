@@ -11,7 +11,6 @@ import { DraggableProvided } from "react-beautiful-dnd"
 import bindEvents from "./bind-event"
 // import { moveItem } from "@app/store/Slice/fieldSectionSlice"
 export interface SectionFieldProps {
-    fields: FieldDto,
     id: string,
     text: string,
     fieldIndex: number,
@@ -120,7 +119,6 @@ function SectionField({ className, id, text, fieldIndex, tabName, sectionName, c
                     <div className="selected-color no-value" />
                 </div>
             </div>
-            {provided?.placeholder}
         </>
 
     )

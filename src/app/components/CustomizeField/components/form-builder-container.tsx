@@ -1,18 +1,16 @@
 import { FieldDto } from '@/src/api'
 import { FIELD_TYPE } from '@/src/constants'
+import { ItemTypes } from '@app/components/testm/ItemTypes'
+import { Button } from '@app/components/ui/button'
+import { Card, CardContent } from '@app/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/components/ui/tabs'
+import { addSection } from '@app/store/Slice/fieldSectionSlice'
 import { nestElementType } from '@domain/types/nestElement'
 import type { FC } from 'react'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { BeforeCapture, DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided, Position, ResponderProvided, SensorAPI } from 'react-beautiful-dnd'
-import { useSelector } from 'react-redux'
+import { memo } from 'react'
+import { Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided } from 'react-beautiful-dnd'
+import { useDispatch, useSelector } from 'react-redux'
 import FormSection from './form-section-container'
-import { useDispatch } from 'react-redux'
-import { addSection, moveItem } from '@app/store/Slice/fieldSectionSlice'
-import { ItemTypes } from '@app/components/testm/ItemTypes'
-import bindEvents from './form-section-container/bind-event'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@app/components/ui/card'
-import { Button } from '@app/components/ui/button'
 
 export interface DragItem {
     type: string
@@ -25,60 +23,9 @@ export interface FormBuilderProps {
 const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
 
     const dispatch = useDispatch()
-    const { fields, nestElement } = useSelector((state) => state.fieldSection)
+    const { nestElement } = useSelector((state) => state.fieldSection)
 
-    // console.log(nestElement)
-    const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
 
-        //kéo không có sự thay đổi
-        if (!result.destination) return
-        // console.log(result)
-
-        const { destination, source, type } = result;
-        const { droppableId: destinationId, index: destinationIndex } = destination;
-        const { droppableId: sourceId, index: sourceIndex } = source;
-        const [...destinationPosition] = destinationId.split(':')
-        const [...sourcePosition] = sourceId.split(':')
-        //nếu có sự thay đổi thì làm gì
-        const objMove = {
-            fromIndexTab: +sourcePosition[0],
-            toIndexTab: +destinationPosition[0],
-            fromIndexSection: +sourcePosition[1],
-            toIndexSection: +destinationPosition[1],
-            fromIndexColumn: +sourcePosition[2],
-            toIndexColumn: +destinationPosition[2],
-            fromIndexField: sourceIndex,
-            toIndexField: destinationIndex,
-            fieldDnD: type
-        }
-        dispatch(moveItem(objMove))
-    }
-
-    const clientSelectionRef = useRef<Position>({ x: 0, y: 0 });
-    // console.log(clientSelectionRef)
-    useEffect(() => {
-        const unsubscribe = bindEvents(window, [
-            {
-                eventName: 'mousemove',
-                fn: (event: MouseEvent) => {
-                    const current: Position = {
-                        x: event.clientX,
-                        y: event.clientY,
-                    };
-                    clientSelectionRef.current = current;
-                },
-                options: { passive: true },
-            },
-        ]);
-        return unsubscribe;
-    });
-    function onBeforeCapture(before: BeforeCapture) {
-        window.dispatchEvent(
-            new CustomEvent('onBeforeCapture', {
-                detail: { before, clientSelection: clientSelectionRef.current },
-            }),
-        );
-    }
 
     const handleAddSection = (tabIndex: number, sectionIndex: number) => {
         dispatch(addSection({
@@ -86,13 +33,6 @@ const FormBuilderContainer: FC<FormBuilderProps> = memo(function FormBuilder() {
             aboveSectionIndex: sectionIndex
         }))
     };
-    // const sensorAPIRef = useRef<SensorAPI>(null);
-    // const api: SensorAPI = sensorAPIRef.current;
-
-    // if (!api) {
-    //     console.warn('unable to find sensor api');
-    //     return null;
-    // }
 
     return (
         <>

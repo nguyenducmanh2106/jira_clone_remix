@@ -9,6 +9,7 @@ import { Draggable, DraggableProvided, DraggableStateSnapshot } from "react-beau
 import { DragSourceMonitor, useDrag } from "react-dnd";
 export interface IFieldProps {
   label: string;
+  id: string;
   index: number;
   onToggleForbidDrag?: () => void
   children?: ReactNode
@@ -20,13 +21,14 @@ export const Colors = {
 
 export const Field: FC<IFieldProps> = memo(function Field({
   label,
+  id,
   children,
   index
 }: IFieldProps) {
 
   return (
     <Draggable
-      draggableId={label}
+      draggableId={id}
       index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <>
@@ -45,9 +47,9 @@ export const Field: FC<IFieldProps> = memo(function Field({
           >
             <div
               title=""
-              className="field rounded-[6px] block bg-[#F4F5F6] border-[0.5px] border-solid border-[#C0C6CC] cursor-pointer text-sm"
+              className="field rounded-[6px] block bg-[#F4F5F6] border-[0.5px] border-solid border-[#C0C6CC] text-sm"
             >
-              <Label>{label}</Label>
+              <Label className="pointer-events-none">{label}</Label>
               {children}
             </div>
           </div>

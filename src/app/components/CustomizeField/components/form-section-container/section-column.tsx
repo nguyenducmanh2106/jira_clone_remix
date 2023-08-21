@@ -141,7 +141,7 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                         <Droppable
                             droppableId={`${tabIndex}:${sectionIndex}:${columnIndex}:${fieldFilterByPositions.fieldname}`}
                             type={ItemTypes.FIELD}
-                            ignoreContainerClipping={true}
+                            ignoreContainerClipping={false}
                             isDropDisabled={false}
                             isCombineEnabled={isCombineEnabled}
                         // renderClone={
@@ -191,11 +191,11 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                                                             <SectionField
                                                                 className="field-form"
                                                                 key={field.fieldname}
-                                                                id={field.fieldname}
+                                                                id={field.fieldname as string}
                                                                 tabName={tabName}
                                                                 sectionName={sectionName}
-                                                                columnName={fieldFilterByPositions.fieldname}
-                                                                text={field.label}
+                                                                columnName={fieldFilterByPositions.fieldname as string}
+                                                                text={field.label as string}
                                                                 fieldIndex={index}
                                                                 tabIndex={tabIndex}
                                                                 sectionIndex={sectionIndex}

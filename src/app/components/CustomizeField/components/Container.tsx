@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import FormBuilderContainer from './form-builder-container'
 import { PresetSelector } from './preset-selector'
 import { presets } from '../data/presets'
@@ -17,15 +17,39 @@ import { CounterClockwiseClockIcon } from '@radix-ui/react-icons'
 import cx from 'classix'
 import { useDispatch, useSelector } from 'react-redux'
 import { addField, moveItem, nestComponent } from '@app/store/Slice/fieldSectionSlice'
-import { DragDropContext, DropResult, Droppable, DroppableProvided, DroppableStateSnapshot, ResponderProvided } from 'react-beautiful-dnd'
+import { BeforeCapture, DragDropContext, DropResult, Droppable, DroppableProvided, DroppableStateSnapshot, Position, ResponderProvided } from 'react-beautiful-dnd'
 import { FieldTypes, ItemTypes } from '@app/components/testm/ItemTypes'
+import bindEvents from './form-section-container/bind-event'
+import FieldProperty from './form-section-container/field-properties'
 
 export const Container: FC = memo(function Container() {
     const fields = FieldTypes
     const dispatch = useDispatch();
+    const clientSelectionRef = useRef<Position>({ x: 0, y: 0 });
+    function onBeforeCapture(before: BeforeCapture) {
+        window.dispatchEvent(
+            new CustomEvent('onBeforeCapture', {
+                detail: { before, clientSelection: clientSelectionRef.current },
+            }),
+        );
+    }
     console.log("render container")
     useEffect(() => {
         dispatch(nestComponent())
+        const unsubscribe = bindEvents(window, [
+            {
+                eventName: 'mousemove',
+                fn: (event: MouseEvent) => {
+                    const current: Position = {
+                        x: event.clientX,
+                        y: event.clientY,
+                    };
+                    clientSelectionRef.current = current;
+                },
+                options: { passive: true },
+            },
+        ]);
+        return unsubscribe;
     }, [])
 
     const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
@@ -35,7 +59,7 @@ export const Container: FC = memo(function Container() {
 
         //nếu có sự thay đổi thì làm gì
 
-        console.log(result)
+        // console.log(result)
         const { destination, source, type, draggableId } = result;
         const { droppableId: destinationId, index: destinationIndex } = destination;
         const { droppableId: sourceId, index: sourceIndex } = source;
@@ -67,7 +91,7 @@ export const Container: FC = memo(function Container() {
         dispatch(moveItem(objMove))
     }
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
             <div className="hidden h-full flex-col md:flex">
                 <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
                     <h2 className="text-lg font-semibold">Playground</h2>
@@ -128,7 +152,7 @@ export const Container: FC = memo(function Container() {
                                                                 {...dropProvided.droppableProps}
                                                             >
                                                                 {fields.map((item, idx) =>
-                                                                    <Field key={item.key} label={item.label} index={idx} />
+                                                                    <Field key={item.key} label={item.label} id={item.key} index={idx} />
                                                                 )}
                                                                 <div>{dropProvided.placeholder}</div>
                                                             </div>
@@ -140,22 +164,7 @@ export const Container: FC = memo(function Container() {
                                         </div>
                                     </TabsContent>
                                     <TabsContent value="insert" className="mt-0 border-0 p-0">
-                                        <div className="flex flex-col space-y-4">
-                                            <div className="grid h-full grid-rows-2 gap-6 lg:grid-cols-2 lg:grid-rows-1">
-                                                <Textarea
-                                                    placeholder="We're writing to [inset]. Congrats from OpenAI!"
-                                                    className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
-                                                />
-                                                <div className="rounded-md border bg-muted"></div>
-                                            </div>
-                                            <div className="flex items-center space-x-2">
-                                                <Button>Submit</Button>
-                                                <Button variant="secondary">
-                                                    <span className="sr-only">Show history</span>
-                                                    <CounterClockwiseClockIcon className="h-4 w-4" />
-                                                </Button>
-                                            </div>
-                                        </div>
+                                        <FieldProperty className='field-properties' />
                                     </TabsContent>
                                 </div>
                             </div>

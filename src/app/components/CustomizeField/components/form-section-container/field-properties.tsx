@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@app/components/ui/select"
 import { Checkbox } from "@app/components/ui/checkbox"
+import { Textarea } from "@app/components/ui/textarea"
 export interface FieldPropertyProps {
     className?: string,
 }
@@ -70,13 +71,25 @@ function FieldProperty({ className }: FieldPropertyProps) {
         name: z.string().min(2, {
             message: "Username must be at least 2 characters.",
         }),
-        ...objMap
+        ...objMap,
+        defaultValue: z
+            .string()
+            .min(10, {
+                message: "Bio must be at least 10 characters.",
+            })
+            .max(160, {
+                message: "Bio must not be longer than 30 characters.",
+            }),
+        length: z.number(),
+        options: z.string(),
     })
+    const dynamicSchema = z.record(z.boolean())
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             // items: ["recents", "home"],
-            label: "manhnd"
+            label: "manhnd",
+            length: 0,
         },
     })
 
@@ -146,18 +159,6 @@ function FieldProperty({ className }: FieldPropertyProps) {
                                         className="flex flex-row items-start space-x-3 space-y-0"
                                     >
                                         <FormControl>
-                                            {/* <Checkbox
-                                                checked={field.value?.includes(item.value)}
-                                                onCheckedChange={(checked) => {
-                                                    return checked
-                                                        ? field.onChange([...field.value, item.value])
-                                                        : field.onChange(
-                                                            field.value?.filter(
-                                                                (value) => value !== item.value
-                                                            )
-                                                        )
-                                                }}
-                                            /> */}
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
@@ -171,6 +172,52 @@ function FieldProperty({ className }: FieldPropertyProps) {
                             }}
                         />
                     ))}
+                    <FormField
+                        control={form.control}
+                        name="defaultValue"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Default</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder=""
+                                        className="resize-none"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="length"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Length</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="options"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Option</FormLabel>
+                                <FormControl>
+                                    <Input  {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    For Links, enter the DocType as range. For Select, enter list of Options, each on a new line.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <Button type="submit">Submit</Button>
                 </form>
             </Form>

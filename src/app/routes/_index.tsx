@@ -5,6 +5,7 @@ import { User } from "@domain/user";
 import { getUserSession } from "@app/session-storage/user-storage.server";
 import { getUser } from "@infrastructure/db/user";
 import { MainLayout } from "@app/ui/main";
+import { Error404 } from "@app/components/error-404";
 
 type LoaderData = {
   user: User;
@@ -34,4 +35,15 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function AppRoute() {
   const { user } = useLoaderData() as LoaderData;
   return <MainLayout user={user} />;
+}
+
+export function CatchBoundary() {
+  return (
+    <div>
+      <Error404
+        message="It seems that you have lost! Go to the main page"
+        href="/"
+      />
+    </div>
+  );
 }

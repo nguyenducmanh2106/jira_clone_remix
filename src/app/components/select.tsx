@@ -1,7 +1,8 @@
 import * as Select from "@radix-ui/react-select";
 import { twix } from "tailwindcss-radix-ui";
 import cx from "classix";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+// import { RiArrowDropDownLine } from "react-icons/ri";
 
 export const SelectTrigger = twix(
   Select.Trigger,
@@ -13,7 +14,8 @@ export const SelectTrigger = twix(
 
 export const SelectTriggerIcon = (): JSX.Element => (
   <Select.Icon>
-    <RiArrowDropDownLine size={28} />
+    {/* <RiArrowDropDownLine size={28} /> */}
+    <ChevronDownIcon />
   </Select.Icon>
 );
 

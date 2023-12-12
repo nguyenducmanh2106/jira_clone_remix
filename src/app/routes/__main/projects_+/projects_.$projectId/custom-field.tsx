@@ -1,8 +1,8 @@
 import PlaygroundPage from "@app/components/CustomizeField";
 import { Error500 } from "@app/components/error-500";
-import { V2_MetaFunction } from "@remix-run/node";
+import { MetaFunction } from "@remix-run/node";
 
-export const meta: V2_MetaFunction<any> = ({ data }) => {
+export const meta: MetaFunction<any> = ({ data }) => {
   // const { project } = data as LoaderData;
   const title = "Project - Custom Fields";
   const description =

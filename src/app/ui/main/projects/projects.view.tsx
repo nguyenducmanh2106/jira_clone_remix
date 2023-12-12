@@ -1,7 +1,7 @@
 import { Link, Outlet, Form } from "@remix-run/react";
 import * as AlertDialog from "@app/components/alert-dialog";
-import { AiOutlinePlus } from "react-icons/ai";
-import { MdDeleteOutline } from "react-icons/md";
+// import { AiOutlinePlus } from "react-icons/ai";
+// import { MdDeleteOutline } from "react-icons/md";
 import cx from "classix";
 import { ProjectId, ProjectSummary, projectsMock } from "@domain/project";
 
@@ -20,7 +20,7 @@ export const ProjectsView = ({
         className="mt-8 flex w-fit items-center rounded bg-grey-300 py-3 pl-3 pr-4 hover:bg-primary-light hover:text-primary-main dark:bg-dark-200 dark:hover:bg-dark-100 dark:hover:text-font-main-dark"
       >
         <span>
-          <AiOutlinePlus size={22} />
+          {/* <AiOutlinePlus size={22} /> */}
         </span>
         <span className="ml-2 leading-4">Add Project</span>
       </Link>
@@ -80,7 +80,7 @@ const ProjectCard = ({ project }: ProjectCardProps): JSX.Element => {
           }
           disabled={isDefaultProject}
         >
-          <MdDeleteOutline size={15} />
+          {/* <MdDeleteOutline size={15} /> */}
           Delete project
         </AlertDialog.Trigger>
 

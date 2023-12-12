@@ -2,7 +2,6 @@ import type {
   ActionFunction,
   LoaderFunction,
   MetaFunction,
-  V2_MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
@@ -17,7 +16,7 @@ import { IssuePanel } from "@app/ui/main/project/board/issue-panel";
 import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
 import { emitter, EVENTS } from "@app/events";
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const { projectId } = data as LoaderData;
   const title = `Project - Create issue`;
   const description = "Create new issue, edit it and and assigne team members.";

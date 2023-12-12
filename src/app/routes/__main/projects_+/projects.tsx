@@ -1,7 +1,7 @@
 import type {
   LoaderFunction,
   ActionFunction,
-  V2_MetaFunction,
+  MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -10,7 +10,7 @@ import { getProjectsSummary, deleteProject } from "@infrastructure/db/project";
 import { getUserSession } from "@app/session-storage";
 import { ProjectsView } from "@app/ui/main/projects";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   const title = "Projects";
   const description =
     "See all your projects in one place. Create new ones and assigne team members.";

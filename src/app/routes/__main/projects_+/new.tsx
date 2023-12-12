@@ -2,7 +2,6 @@ import type {
   LoaderFunction,
   ActionFunction,
   MetaFunction,
-  V2_MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -14,7 +13,7 @@ import { ProjectPanelView } from "@app/ui/main/projects/project-panel/project-pa
 import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
 import { getRandomProjectImage } from "@utils/random-project-image";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   const title = "Project - Create project";
   const description = "Create new project and assigne team members.";
   const image =

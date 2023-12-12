@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { NavLink } from "@remix-run/react";
-import { HiOutlineViewBoards } from "react-icons/hi";
+// import { HiOutlineViewBoards } from "react-icons/hi";
 import cx from "classix";
-import { RiArrowDropLeftLine } from "react-icons/ri";
-import { ImStatsDots } from "react-icons/im";
-import { BsListNested } from "react-icons/bs";
-import { BsCloudSlash } from "react-icons/bs";
-import { TbError404 } from "react-icons/tb";
-import { RiBriefcase3Line } from "react-icons/ri";
+// import { RiArrowDropLeftLine } from "react-icons/ri";
+// import { ImStatsDots } from "react-icons/im";
+// import { BsListNested } from "react-icons/bs";
+// import { BsCloudSlash } from "react-icons/bs";
+// import { TbError404 } from "react-icons/tb";
+// import { RiBriefcase3Line } from "react-icons/ri";
 
 export const Sidebar = (props: Props): JSX.Element => {
   const { projectName, projectDescription, projectImage } = props;
@@ -66,7 +66,7 @@ export const Sidebar = (props: Props): JSX.Element => {
           )}
           aria-label="Toggle sidebar"
         >
-          <RiArrowDropLeftLine size={24} />
+          {/* <RiArrowDropLeftLine size={24} /> */}
         </button>
       </div>
     </aside>
@@ -82,38 +82,45 @@ interface Props {
 const navItems: NavItemProps[] = [
   {
     href: "board",
-    icon: <HiOutlineViewBoards size={24} />,
+    // icon: <HiOutlineViewBoards size={24} />,
+    icon: <>abc</>,
     name: "Board",
   },
   {
     href: "analytics",
-    icon: <ImStatsDots size={20} />,
+    // icon: <ImStatsDots size={20} />,
+    icon: <>abc</>,
     name: "Analytics",
   },
   {
     href: "backlog",
-    icon: <BsListNested size={24} />,
+    // icon: <BsListNested size={24} />,
+    icon: <>abc</>,
     name: "Backlog",
     disabled: true,
   },
   {
     href: "components",
-    icon: <RiBriefcase3Line size={24} />,
+    // icon: <RiBriefcase3Line size={24} />,
+    icon: <>abc</>,
     name: "Components",
   },
   {
     href: "custom-field",
-    icon: <RiBriefcase3Line size={24} />,
+    // icon: <RiBriefcase3Line size={24} />,
+    icon: <>abc</>,
     name: "Custom Fields",
   },
   {
     href: "server-error",
-    icon: <BsCloudSlash size={24} />,
+    // icon: <BsCloudSlash size={24} />,
+    icon: <>abc</>,
     name: "Server error",
   },
   {
     href: "not-found",
-    icon: <TbError404 size={24} />,
+    // icon: <TbError404 size={24} />,
+    icon: <>abc</>,
     name: "Not found",
   },
 ];

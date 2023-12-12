@@ -2,7 +2,6 @@ import type {
   ActionFunction,
   LoaderFunction,
   MetaFunction,
-  V2_MetaFunction,
 } from "@remix-run/node";
 import { redirect, json } from "@remix-run/node";
 import { useLoaderData, useLocation, useNavigate } from "@remix-run/react";
@@ -28,7 +27,7 @@ import { Error404 } from "@app/components/error-404";
 import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
 import { emitter, EVENTS } from "@app/events";
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const { issue, projectId } = data as LoaderData;
   const title = `Project - ${issue.name}`;
   const description = issue.description;

@@ -3,10 +3,11 @@ import { Form, useNavigate, useFetcher, useActionData } from "@remix-run/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import cx from "classix";
-import { BsCheckLg } from "react-icons/bs";
+// import { BsCheckLg } from "react-icons/bs";
 import { User } from "@domain/user";
 import { Project } from "@domain/project";
-import { ActionData as ProjectActionData } from "@app/routes/__main/projects/new";
+// import { ActionData as ProjectActionData } from "@app/routes/__main/projects/new";
+import { ActionData as ProjectActionData } from "@app/routes/__main/projects_+/new";
 import { useUserStore } from "@app/store/user.store";
 import { UserAvatar } from "@app/components/user-avatar";
 import { Title } from "@app/components/title";
@@ -139,7 +140,7 @@ export const ProjectPanelView = ({ project, users }: Props): JSX.Element => {
                             defaultChecked={user.id === loggedUser?.id}
                           >
                             <Checkbox.Indicator className="flex h-[36px] w-[36px] rounded-md bg-primary-main duration-150 ease-in flex-center">
-                              <BsCheckLg size={16} className="text-grey-400" />
+                              {/* <BsCheckLg size={16} className="text-grey-400" /> */}
                             </Checkbox.Indicator>
                           </Checkbox.Root>
                         </label>

@@ -2,8 +2,10 @@ import { FieldDto } from "@/src/api";
 import { FIELD_TYPE } from "@/src/constants";
 import { ItemTypes } from "@app/components/testm/ItemTypes";
 import { nestElementType } from "@domain/types/nestElement";
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from "@reduxjs/toolkit";
+import * as toolkitRaw from '@reduxjs/toolkit';
 
+const { createSlice } = ((toolkitRaw as any).default ?? toolkitRaw) as typeof toolkitRaw;
 export type fieldSectionType = {
     fields: FieldDto[],
     listId: string,

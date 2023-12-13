@@ -1,8 +1,8 @@
+import { cn } from "@/src/lib/utils";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import cx from "classix";
 import { twix } from "tailwindcss-radix-ui";
 
-const buttonBaseClass = cx(
+const buttonBaseClass = cn(
   "border-none py-1.5 px-3.5 rounded bg-grey-300 dark:bg-dark-100 font-primary-bold cursor-pointer"
 );
 
@@ -27,7 +27,7 @@ export const Description = twix(
 );
 export const Cancel = twix(
   AlertDialog.Cancel,
-  cx(
+  cn(
     "hover:bg-grey-400 dark:text-font-light-dark dark:hover:bg-dark-500",
     buttonBaseClass
   )
@@ -37,7 +37,7 @@ export const Confirm = (
 ): JSX.Element => (
   <button
     {...props}
-    className={cx(
+    className={cn(
       buttonBaseClass,
       "bg-error-light text-error-dark hover:bg-error-hover dark:bg-error-main-dark dark:text-error-light-dark dark:hover:bg-error-hover-dark",
       props.className

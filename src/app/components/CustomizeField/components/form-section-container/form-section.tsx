@@ -2,12 +2,12 @@ import { FieldDto } from "@/src/api";
 import { ItemTypes } from "@app/components/testm/ItemTypes";
 import { nestElementType } from "@domain/types/nestElement";
 import { Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons";
-import cx from "classix";
 import { useMemo, useState } from "react";
 import { Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import SectionColumn from "./section-column";
 import { addSection, removeSection } from "@app/store/Slice/fieldSectionSlice";
+import { cn } from "@/src/lib/utils";
 export type FormSectionProps = {
     label: string,
     tabName: string,
@@ -64,7 +64,7 @@ export function FormSection(props: FormSectionProps) {
                     <div
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
-                        className={cx("form-section", isHovered || snapshot.isDragging ? "hovered" : "")}
+                        className={cn("form-section", isHovered || snapshot.isDragging ? "hovered" : "")}
                         title="details_section">
                         <div className="section-header has-label">
                             <div className="section-label">

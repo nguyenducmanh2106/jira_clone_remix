@@ -1,7 +1,7 @@
 import { useState } from "react";
-import cx from "classix";
 import { TextareaAutosize } from "@app/components/textarea-autosize";
 import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
+import { cn } from "@/src/lib/utils";
 
 export const EditBox = ({
   defaultMessage,
@@ -39,7 +39,7 @@ export const EditBox = ({
   const onFocus = () => setIsEditing(true);
 
   const isError = initError && !messageIsValid();
-  const buttonStyle = cx("mt-2 py-2.5 px-4 rounded");
+  const buttonStyle = cn("mt-2 py-2.5 px-4 rounded");
   const placeholder = isError
     ? "Message cannot be empty"
     : "Add your comment...";
@@ -53,18 +53,18 @@ export const EditBox = ({
         placeholder={placeholder}
         onFocus={onFocus}
         autofocus={autofocus}
-        textareaClassName={cx(
+        textareaClassName={cn(
           "min-h-[80px] leading-6 font-primary-light outline outline-2 outline-grey-400 focus:outline-primary-main dark:outline-dark-200 dark:focus:outline-primary-main-dark bg-grey-200",
           isError &&
             "placeholder:text-error-main placeholder:text-opacity-70 !outline-error-main !outline-2"
         )}
       />
       <div
-        className={cx("space-x-2 text-sm", isEditing ? "visible" : "hidden")}
+        className={cn("space-x-2 text-sm", isEditing ? "visible" : "hidden")}
       >
         <button
           type="button"
-          className={cx(
+          className={cn(
             buttonStyle,
             "bg-primary-main text-white hover:bg-primary-main-hover"
           )}
@@ -74,7 +74,7 @@ export const EditBox = ({
           Save
         </button>
         <button
-          className={cx(
+          className={cn(
             buttonStyle,
             "hover:bg-error-light hover:text-error-dark dark:hover:bg-dark-100 dark:hover:text-font-main-dark"
           )}

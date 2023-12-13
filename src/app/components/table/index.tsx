@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import cx from "classix";
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
 import {
@@ -24,6 +23,7 @@ import { SettingColumn } from "./SettingColumns/setting-column";
 import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
 import { PaginationTableLeft } from "./pagination-table-left";
 import { CustomColumn } from "./action/columns";
+import { cn } from "@/src/lib/utils";
 
 export const TableView = ({
   show = true,
@@ -164,72 +164,6 @@ export const TableView = ({
     {
       colId: 'description',
       field: 'description',
-      headerName: 'Mô tả',
-      hide: true,
-      headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
-    },
-    {
-      colId: 'description1',
-      field: 'description1',
-      headerName: 'Mô tả',
-      hide: true,
-      headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
-    },
-    {
-      colId: 'description2',
-      field: 'description2',
-      headerName: 'Mô tả',
-      hide: true,
-      headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
-    },
-    {
-      colId: 'description3',
-      field: 'description3',
-      headerName: 'Mô tả',
-      hide: true,
-      headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
-    },
-    {
-      colId: 'description4',
-      field: 'description4',
-      headerName: 'Mô tả',
-      hide: true,
-      headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
-    },
-    {
-      colId: 'description5',
-      field: 'description5',
-      headerName: 'Mô tả',
-      hide: true,
-      headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
-    },
-    {
-      colId: 'description6',
-      field: 'description6',
       headerName: 'Mô tả',
       hide: true,
       headerComponent: HeaderTableView,
@@ -428,7 +362,7 @@ export const TableView = ({
   return (
     <div className="relative">
       <div
-        className={cx(
+        className={cn(
           "block"
         )}
       >

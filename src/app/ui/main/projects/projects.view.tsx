@@ -2,8 +2,8 @@ import { Link, Outlet, Form } from "@remix-run/react";
 import * as AlertDialog from "@app/components/alert-dialog";
 // import { AiOutlinePlus } from "react-icons/ai";
 // import { MdDeleteOutline } from "react-icons/md";
-import cx from "classix";
 import { ProjectId, ProjectSummary, projectsMock } from "@domain/project";
+import { cn } from "@/src/lib/utils";
 
 const defaultProjectsIds: ProjectId[] = projectsMock.map(
   (projectMock) => projectMock.id
@@ -45,7 +45,7 @@ const ProjectCard = ({ project }: ProjectCardProps): JSX.Element => {
     <div className="w-[400px]">
       <Link
         to={project.id}
-        className={cx(
+        className={cn(
           "group flex rounded shadow-sm outline outline-2 outline-transparent duration-100 ease-linear",
           "hover:-translate-y-0.5 hover:bg-primary-light hover:text-primary-main hover:shadow-md hover:outline-primary-main dark:bg-dark-200 dark:hover:text-primary-main-dark dark:hover:outline-primary-main-dark"
         )}
@@ -66,7 +66,7 @@ const ProjectCard = ({ project }: ProjectCardProps): JSX.Element => {
       </Link>
       <AlertDialog.Root>
         <AlertDialog.Trigger
-          className={cx(
+          className={cn(
             "flex items-center gap-1 cursor-pointer border-none text-sm mt-1",
             isDefaultProject
               ? "text-font-light dark:text-font-light-dark text-opacity-50 dark:text-opacity-40 cursor-not-allowed"

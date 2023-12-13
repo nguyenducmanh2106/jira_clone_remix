@@ -1,7 +1,6 @@
 import { FieldDto } from "@/src/api"
 import { ItemTypes } from "@app/components/testm/ItemTypes"
 import { nestElementType } from "@domain/types/nestElement"
-import cx from 'classix'
 import type { FC } from 'react'
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DroppableStateSnapshot } from "react-beautiful-dnd"
@@ -9,6 +8,7 @@ import { useDispatch } from "react-redux"
 import SectionField from "./section-field"
 import { Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons"
 import { addColumn, removeColumn } from "@app/store/Slice/fieldSectionSlice"
+import { cn } from "@/src/lib/utils"
 
 export interface DragItem {
     type: string
@@ -92,7 +92,7 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     onClick={() => ref.current?.focus()}
-                    className={cx("column grow shrink min-w-[200px]", isHovered || isDraggingOver || snapshot.isDragging ? "hovered" : "")}
+                    className={cn("column grow shrink min-w-[200px]", isHovered || isDraggingOver || snapshot.isDragging ? "hovered" : "")}
                     title="column_break_13"
                     ref={(node: HTMLElement) => {
                         provided.innerRef(node);
@@ -100,7 +100,7 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                     }}
                     {...provided.draggableProps}  {...provided.dragHandleProps}
                 >
-                    <div className={cx(isClick ? 'flex' : 'hidden', "column-header")}>
+                    <div className={cn(isClick ? 'flex' : 'hidden', "column-header")}>
                         <div className="column-label">
                             <div
                                 title="Double click to edit label"
@@ -114,7 +114,7 @@ const SectionColumn: FC<FormBuilderProps> = memo(function SectionColumn({
                                 </span>
                             </div>
                         </div>
-                        <div className={cx("column-actions")}>
+                        <div className={cn("column-actions")}>
                             <button
                                 className="btn btn-xs btn-icon p-[4px]"
                                 title="Move the current column & the following columns to a new section"

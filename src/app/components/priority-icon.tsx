@@ -1,5 +1,5 @@
-import cx from "classix";
 // import { HiFlag } from "react-icons/hi";
+import { cn } from "@/src/lib/utils";
 import { PriorityId } from "@domain/priority";
 import { FlagIcon } from "lucide-react";
 
@@ -8,7 +8,7 @@ export const PriorityIcon = ({
   size = 18,
 }: PriorityIconProps): JSX.Element => (
   <span
-    className={cx(
+    className={cn(
       "flex",
       priority === "low" && "text-success-main",
       priority === "medium" && "text-warn-main",

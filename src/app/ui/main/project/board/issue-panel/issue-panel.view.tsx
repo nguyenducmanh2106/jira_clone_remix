@@ -9,7 +9,6 @@ import {
   useNavigate,
 } from "@remix-run/react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { cx } from "classix";
 import { CategoryType } from "@domain/category";
 import { Issue, defaultIssuesIds } from "@domain/issue";
 import { Comment, CommentId } from "@domain/comment";
@@ -26,6 +25,7 @@ import { ViewComment } from "./comment/view-comment";
 import { SelectStatus } from "./select-status";
 import { SelectPriority } from "./select-priority";
 import { SelectAsignee } from "./select-asignee";
+import { cn } from "@/src/lib/utils";
 
 export const IssuePanel = ({ issue }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(true);
@@ -114,7 +114,7 @@ export const IssuePanel = ({ issue }: Props): JSX.Element => {
       <Dialog.Root open={true}>
         <Dialog.Portal container={portalContainer}>
           <Dialog.Overlay
-            className={cx(
+            className={cn(
               "absolute top-0 left-0 z-50 box-border grid h-full w-full place-items-center overflow-y-auto bg-black bg-opacity-50 py-[40px] px-[40px]",
               "radix-state-open:animate-fade-in duration-300",
               !isOpen && "bg-opacity-0"
@@ -123,7 +123,7 @@ export const IssuePanel = ({ issue }: Props): JSX.Element => {
             <Dialog.Content
               onEscapeKeyDown={handleProgrammaticClose}
               onPointerDownOutside={handleProgrammaticClose}
-              className={cx(
+              className={cn(
                 "relative z-50 w-4/5 max-w-[1000px] rounded-md bg-white py-6 px-8 shadow-lg dark:bg-dark-300",
                 "duration-300 radix-state-open:animate-slide-up",
                 !isOpen && "translate-y-[10px] opacity-0"

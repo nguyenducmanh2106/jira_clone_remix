@@ -1,6 +1,5 @@
 import { useState } from "react";
 import * as Select from "@radix-ui/react-select";
-import cx from "classix";
 import { CategoryId, CategoryType } from "@domain/category";
 import { useProjectStore } from "@app/ui/main/project";
 import {
@@ -10,6 +9,7 @@ import {
   SelectItem,
   SelectItemIndicator,
 } from "@app/components/select";
+import { cn } from "@/src/lib/utils";
 
 export const SelectStatus = ({ initStatus }: Props): JSX.Element => {
   const projectStore = useProjectStore();
@@ -40,7 +40,7 @@ export const SelectStatus = ({ initStatus }: Props): JSX.Element => {
     >
       <SelectTrigger
         aria-label="Open status select"
-        className={cx(
+        className={cn(
           selectedStatus === "IN_PROGRESS" &&
             "!bg-primary-main !text-white hover:!bg-primary-main-hover",
           selectedStatus === "DONE" &&
@@ -57,7 +57,7 @@ export const SelectStatus = ({ initStatus }: Props): JSX.Element => {
             <SelectItem key={index} value={category.id}>
               <SelectItemIndicator />
               <span
-                className={cx(
+                className={cn(
                   "flex w-fit items-center gap-2 rounded p-0.5 text-2xs uppercase dark:bg-dark-300",
                   category.type === "TODO" &&
                     "bg-grey-300 text-font-grey dark:text-font-light-dark",

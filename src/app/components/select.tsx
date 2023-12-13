@@ -1,12 +1,12 @@
 import * as Select from "@radix-ui/react-select";
 import { twix } from "tailwindcss-radix-ui";
-import cx from "classix";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { cn } from "@/src/lib/utils";
 // import { RiArrowDropDownLine } from "react-icons/ri";
 
 export const SelectTrigger = twix(
   Select.Trigger,
-  cx(
+  cn(
     "flex cursor-pointer items-center rounded border-none bg-grey-300 dark:bg-dark-500 py-1.5 px-2",
     "font-primary-bold text-sm text-font-grey dark:text-font-main-dark hover:bg-grey-500 dark:hover:bg-dark-200"
   )
@@ -26,7 +26,7 @@ export const SelectContent = twix(
 
 export const SelectItem = twix(
   Select.Item,
-  cx(
+  cn(
     "relative flex items-center gap-2 cursor-pointer select-none border-l-[3px] border-l-transparent p-2 pl-8",
     "font-primary-bold text-sm text-font-grey dark:text-font-light-dark font-primary-bold text-sm text-font-grey",
     "focus:border-l-[3px] focus:border-l-primary-main focus:bg-grey-300 focus-visible:outline-none dark:focus:bg-dark-100 dark:hover:bg-dark-100 outline-none"

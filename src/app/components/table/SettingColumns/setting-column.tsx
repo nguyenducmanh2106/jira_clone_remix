@@ -1,18 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { ColDef, IHeaderParams } from 'ag-grid-community';
+import { useState } from 'react';
 // import ReactPortal from '../portal';
+import { cn } from '@/src/lib/utils';
+import { Button } from '@app/components/ui/button';
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@app/components/ui/sheet';
 import {
   GearIcon,
 } from '@radix-ui/react-icons';
-import { RiFilterLine, RiCloseLine } from "react-icons/ri";
-import { CheckedState } from '@radix-ui/react-checkbox';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { GroupAllField } from './GroupAllField/ListColumns';
-import cx from "classix";
 import { ListColumnDrag } from './GroupSelectedField/ListColumDrag';
-import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@app/components/ui/sheet';
-import { Button } from '@app/components/ui/button';
 export interface ICustomHeaderParams extends IHeaderParams {
   columnGrids: ColDef[]
 }
@@ -96,7 +92,7 @@ export const SettingColumn = (props: ICustomHeaderParams): JSX.Element => {
         <SheetHeader className='p-[8px]'>
           <SheetTitle>Tùy chỉnh cột</SheetTitle>
         </SheetHeader>
-        <div className={cx(
+        <div className={cn(
           "grid grid-cols-2 gap-4 border-b overflow-y-auto setting-column my-[8px]",
 
         )} >

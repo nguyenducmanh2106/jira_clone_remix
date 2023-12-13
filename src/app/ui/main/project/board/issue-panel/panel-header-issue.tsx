@@ -1,11 +1,11 @@
 import { Form, Link, useLocation } from "@remix-run/react";
 import * as AlertDialog from "@app/components/alert-dialog";
-import cx from "classix";
 // import { MdDeleteOutline } from "react-icons/md";
 // import { IoCloseOutline } from "react-icons/io5";
 import { IssueId } from "@domain/issue";
 import { TaskIcon } from "@app/components/icons";
 import { Trash2, X } from "lucide-react";
+import { cn } from "@/src/lib/utils";
 
 export const PanelHeaderIssue = ({
   id,
@@ -47,7 +47,7 @@ const DeleteIssueModalDialog = ({
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger
-        className={cx(
+        className={cn(
           "flex cursor-pointer rounded border-none p-1.5 text-icon flex-center hover:bg-grey-300 dark:text-font-light-dark dark:hover:bg-dark-100",
           disabled
             ? "cursor-not-allowed"

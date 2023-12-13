@@ -1,7 +1,7 @@
 import { useState } from "react";
-import cx from "classix";
 import { TextareaAutosize } from "@app/components/textarea-autosize";
 import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
+import { cn } from "@/src/lib/utils";
 
 const DEFAULT_MAX_LENGTH = 80;
 
@@ -37,7 +37,7 @@ export const Title = ({
         readOnly={readOnly}
         onFocus={onFocus}
         onBlur={onBlur}
-        textareaClassName={cx(
+        textareaClassName={cn(
           "font-primary-black text-2xl",
           requireError &&
             "focus-visible:outline-error-main outline outline-2 outline-error-main dark:outline-error-main-dark dark:focus-visible:outline-error-main-dark"
@@ -51,7 +51,7 @@ export const Title = ({
       )}
       {isFocus && (
         <span
-          className={cx(
+          className={cn(
             "absolute right-0 top-full font-primary-light",
             isMaxLength
               ? "text-error-main dark:text-error-main-dark"

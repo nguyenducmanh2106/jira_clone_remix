@@ -13,7 +13,6 @@ import {
 
 export const LoginView = ({ users }: Props) => {
   const [selectedValue, setSelectedValue] = useState<User>(userMock1);
-
   const onValueChange = (userId: UserId) => {
     const foundUser = users.find((user) => user.id === userId);
 

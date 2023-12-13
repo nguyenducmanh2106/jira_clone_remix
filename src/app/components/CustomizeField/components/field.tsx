@@ -1,12 +1,7 @@
 
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@app/components/ui/dialog"
-import { Input } from "@app/components/ui/input"
-import { Label } from "@app/components/ui/label"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@app/components/ui/tooltip";
-import cx from "classix";
-import { CSSProperties, FC, ReactNode, memo, useCallback, useMemo, useState } from "react";
+import { Label } from "@app/components/ui/label";
+import { FC, ReactNode, memo } from "react";
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
-import { DragSourceMonitor, useDrag } from "react-dnd";
 export interface IFieldProps {
   label: string;
   id: string;

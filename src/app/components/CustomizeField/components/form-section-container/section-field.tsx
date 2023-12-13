@@ -1,14 +1,10 @@
-import { CopyIcon, Cross2Icon, MoveIcon, PlusIcon } from "@radix-ui/react-icons"
-import React, { useEffect, useRef, useState } from "react"
+import { CopyIcon, Cross2Icon } from "@radix-ui/react-icons"
 import { cx } from "class-variance-authority"
-import { FieldDto } from "@/src/api"
-import { useDrag, useDrop } from "react-dnd"
-import { ItemTypes } from "@app/components/testm/ItemTypes"
+import { useRef, useState } from "react"
 
-import { useDispatch } from "react-redux"
-import { moveItem, removeField } from "@app/store/Slice/fieldSectionSlice"
+import { removeField } from "@app/store/Slice/fieldSectionSlice"
 import { DraggableProvided } from "react-beautiful-dnd"
-import bindEvents from "./bind-event"
+import { useDispatch } from "react-redux"
 // import { moveItem } from "@app/store/Slice/fieldSectionSlice"
 export interface SectionFieldProps {
     id: string,

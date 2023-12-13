@@ -1,10 +1,10 @@
 import { Link } from "@remix-run/react";
-import cx from "classix";
 // import { HiQuestionMarkCircle } from "react-icons/hi";
 // import { AiFillGithub } from "react-icons/ai";
 import { Tooltip } from "@app/components/tooltip";
 import { SelctTheme } from "./select-theme";
 import { UserProfile } from "./user-profile";
+import { cn } from "@/src/lib/utils";
 
 export const Header = (): JSX.Element => {
   const iconBaseClass =
@@ -26,7 +26,7 @@ export const Header = (): JSX.Element => {
           <button
             aria-label="About this website"
             disabled
-            className={cx(iconBaseClass, "cursor-not-allowed")}
+            className={cn(iconBaseClass, "cursor-not-allowed")}
           >
             {/* <HiQuestionMarkCircle size={24} /> */}
           </button>

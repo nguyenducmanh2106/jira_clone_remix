@@ -2,18 +2,18 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Form, useNavigate, useFetcher, useActionData } from "@remix-run/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import cx from "classix";
 // import { BsCheckLg } from "react-icons/bs";
 import { User } from "@domain/user";
 import { Project } from "@domain/project";
 // import { ActionData as ProjectActionData } from "@app/routes/__main/projects/new";
-import { ActionData as ProjectActionData } from "@app/routes/__main/projects_+/new";
+import { ActionData as ProjectActionData } from "@app/routes/_main+/projects+/new";
 import { useUserStore } from "@app/store/user.store";
 import { UserAvatar } from "@app/components/user-avatar";
 import { Title } from "@app/components/title";
 import { Description } from "@app/components/description";
 import { Kbd } from "@app/components/kbd-placeholder";
 import { PanelHeaderProject } from "./panel-header-project";
+import { cn } from "@/src/lib/utils";
 
 export const ProjectPanelView = ({ project, users }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(true);
@@ -87,7 +87,7 @@ export const ProjectPanelView = ({ project, users }: Props): JSX.Element => {
         <Dialog.Portal container={portalContainer}>
           <Dialog.Overlay
             id="project-panel-overlay"
-            className={cx(
+            className={cn(
               "absolute top-0 left-0 z-50 box-border grid h-full w-full place-items-center overflow-y-auto bg-black bg-opacity-50 py-[40px] px-[40px]",
               "radix-state-open:animate-fade-in duration-300",
               !isOpen && "bg-opacity-0"
@@ -96,7 +96,7 @@ export const ProjectPanelView = ({ project, users }: Props): JSX.Element => {
             <Dialog.Content
               onEscapeKeyDown={handleProgrammaticClose}
               onPointerDownOutside={handleProgrammaticClose}
-              className={cx(
+              className={cn(
                 "relative z-50 w-4/5 max-w-[600px] rounded-md bg-white py-6 px-8 shadow-lg dark:bg-dark-300",
                 "duration-300 radix-state-open:animate-slide-up",
                 !isOpen && "translate-y-[10px] opacity-0"

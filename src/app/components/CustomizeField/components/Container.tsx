@@ -14,13 +14,13 @@ import { Field } from './field'
 import { Textarea } from '@app/components/ui/textarea'
 import { Button } from '@app/components/ui/button'
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons'
-import cx from 'classix'
 import { useDispatch, useSelector } from 'react-redux'
 import { addField, moveItem, nestComponent } from '@app/store/Slice/fieldSectionSlice'
 import { BeforeCapture, DragDropContext, DropResult, Droppable, DroppableProvided, DroppableStateSnapshot, Position, ResponderProvided } from 'react-beautiful-dnd'
 import { FieldTypes, ItemTypes } from '@app/components/testm/ItemTypes'
 import bindEvents from './form-section-container/bind-event'
 import FieldProperty from './form-section-container/field-properties'
+import { cn } from '@/src/lib/utils'
 
 export const Container: FC = memo(function Container() {
     const fields = FieldTypes
@@ -121,7 +121,7 @@ export const Container: FC = memo(function Container() {
                                     </TabsList>
                                 </div>
                                 {/* <ModelSelector types={types} models={models} /> */}
-                                <Input placeholder="Search fields" className={cx(
+                                <Input placeholder="Search fields" className={cn(
                                     "border-1 box-border h-[36px] rounded border-none bg-grey-100 py-2",
                                     "pr-8 pl-2 outline outline-2 outline-grey-400 duration-200 ease-in-out",
                                     "placeholder:font-primary-light placeholder:text-xs placeholder:text-font-light",

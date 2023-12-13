@@ -1,8 +1,8 @@
 import React from "react";
-import cx from "classix";
 // import { BiSearch } from "react-icons/bi";
 // import { IoCloseOutline } from "react-icons/io5";
 import { useProjectStore } from "@app/ui/main/project";
+import { cn } from "@/src/lib/utils";
 
 export const Search = (): JSX.Element => {
   const { search, setSearch } = useProjectStore();
@@ -28,7 +28,7 @@ export const Search = (): JSX.Element => {
         value={search}
         placeholder="Filter issues"
         onChange={handleChange}
-        className={cx(
+        className={cn(
           "border-1 box-border h-[40px] w-[120px] rounded border-none bg-grey-100 py-2",
           "pr-8 pl-2 outline outline-2 outline-grey-400 duration-200 ease-in-out",
           "placeholder:font-primary-light placeholder:text-xs placeholder:text-font-light",
@@ -45,12 +45,12 @@ export const Search = (): JSX.Element => {
   );
 };
 
-const iconBaseClass = cx(
+const iconBaseClass = cn(
   "flex border-none justify-center items-center font-icon z-10"
 );
 
 const SearchIcon = (): JSX.Element => (
-  <span className={cx(iconBaseClass, "dark:text-font-light-dark")}>
+  <span className={cn(iconBaseClass, "dark:text-font-light-dark")}>
     {/* <BiSearch size={16} /> */}
   </span>
 );
@@ -60,7 +60,7 @@ const ClearIcon = ({ onClick }: ClearIconProps): JSX.Element => (
   // before 'click' event, but not before 'onMouseDown'
   <button
     onMouseDown={onClick}
-    className={cx(
+    className={cn(
       iconBaseClass,
       "cursor-pointer rounded hover:bg-grey-300 dark:hover:bg-dark-100"
     )}

@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Link } from "@remix-run/react";
-import cx from "classix";
 import { useDrag } from "react-dnd";
 import { CategoryId } from "@domain/category";
 import { Issue, IssueId } from "@domain/issue";
 import { TaskIcon } from "@app/components/icons";
 import { PriorityIcon } from "@app/components/priority-icon";
 import { useSortBy } from "@app/hooks/useSortBy";
+import { cn } from "@/src/lib/utils";
 
 export interface DropItem {
   issueId: IssueId;
@@ -48,7 +48,7 @@ export const IssueCard = ({
   return (
     <div
       ref={isSubmitting ? undefined : dragRef}
-      className={cx(
+      className={cn(
         "flex w-full cursor-pointer flex-col rounded border-none bg-white p-3 text-left shadow-xs duration-200 ease-in-out hover:bg-primary-light dark:bg-dark-300 dark:text-font-main-dark dark:hover:bg-dark-100",
         isDragging && "opacity-50",
         isSubmitting && "opacity-50"

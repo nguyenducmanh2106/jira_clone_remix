@@ -63,7 +63,6 @@
     "ag-grid-enterprise": "^29.0.0",
     "ag-grid-react": "^29.0.0",
     "class-variance-authority": "^0.6.1",
-    "classix": "^2.1.17",
     "clsx": "^1.2.1",
     "cmdk": "^0.2.0",
     "fast-deep-equal": "^3.1.3",

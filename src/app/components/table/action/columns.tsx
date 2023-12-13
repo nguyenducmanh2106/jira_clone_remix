@@ -11,7 +11,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@app/components/ui/popo
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 import { cn } from '@/src/lib/utils';
 import { Checkbox } from '@app/components/ui/checkbox';
-import { cx } from 'class-variance-authority';
 import { GroupAllField } from '../SettingColumns/GroupAllField/ListColumns';
 import { ListColumnDrag } from '../SettingColumns/GroupSelectedField/ListColumDrag';
 // import { SelectContent, SelectItemIndicator, SelectTrigger } from '@radix-ui/react-select';
@@ -100,7 +99,7 @@ export const CustomColumn = ({ columns, ...props }: CustomColumnProps): JSX.Elem
                         ))}
                     </CommandGroup>
                 </Command> */}
-                <div className={cx(
+                <div className={cn(
                     "grid grid-cols-2 gap-4 border-b overflow-y-auto my-[8px]",
 
                 )} >

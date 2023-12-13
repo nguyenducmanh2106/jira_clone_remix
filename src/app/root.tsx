@@ -12,7 +12,6 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import cx from "classix";
 import { Theme, Preference, ThemeProvider, useTheme } from "@app/store/theme.store";
 import { getThemeSession } from "./session-storage/theme-storage.server";
 // import { ThemeProvider, useTheme } from "./store/theme.store";
@@ -25,6 +24,7 @@ import AgThemeAlpineStyles from "ag-grid-community/styles/ag-theme-alpine.min.cs
 import AgThemeBalhamStyles from "ag-grid-community/styles/ag-theme-balham.min.css";
 import { Provider } from "react-redux";
 import store from "./store/app.store";
+import { cn } from "../lib/utils";
 
 export const links: LinksFunction = () => {
   return [
@@ -150,7 +150,7 @@ const App = (): JSX.Element => {
   }, []);
 
   return (
-    <html lang="en" className={cx("h-full", isDarkTheme && Theme.DARK)}>
+    <html lang="en" className={cn("h-full", isDarkTheme && Theme.DARK)}>
       <head>
         <Meta />
         <Links />

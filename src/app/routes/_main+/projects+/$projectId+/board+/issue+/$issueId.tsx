@@ -6,7 +6,6 @@ import type {
 import { redirect, json } from "@remix-run/node";
 import { useLoaderData, useLocation, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import cx from "classix";
 import * as Dialog from "@radix-ui/react-dialog";
 import { UserId } from "@domain/user";
 import { ProjectId } from "@domain/project";
@@ -26,6 +25,7 @@ import { IssuePanel } from "@app/ui/main/project/board/issue-panel";
 import { Error404 } from "@app/components/error-404";
 import { textAreOnlySpaces } from "@utils/text-are-only-spaces";
 import { emitter, EVENTS } from "@app/events";
+import { cn } from "@/src/lib/utils";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const { issue, projectId } = data as LoaderData;
@@ -194,14 +194,14 @@ export function CatchBoundary() {
     <Dialog.Root open={true}>
       <Dialog.Portal>
         <Dialog.Overlay
-          className={cx(
+          className={cn(
             "absolute top-0 left-0 z-50 box-border grid h-full w-full place-items-center overflow-y-auto bg-black bg-opacity-50 py-[40px] px-[40px]",
             "radix-state-open:animate-fade-in duration-300"
           )}
         >
           <Dialog.Content
             onPointerDownOutside={handleProgrammaticNavigation}
-            className={cx(
+            className={cn(
               "relative z-50 flex rounded-md bg-white py-12 px-20 shadow-lg flex-center dark:bg-dark-300",
               "duration-300 radix-state-open:animate-slide-up"
             )}

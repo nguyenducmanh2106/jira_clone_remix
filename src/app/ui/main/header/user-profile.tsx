@@ -1,9 +1,9 @@
 import { Form } from "@remix-run/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 // import { FaPowerOff } from "react-icons/fa";
-import cx from "classix";
 import { useUserStore } from "@app/store/user.store";
 import { UserAvatar } from "@app/components/user-avatar";
+import { cn } from "@/src/lib/utils";
 
 export const UserProfile = (): JSX.Element => {
   const { user } = useUserStore();
@@ -17,7 +17,7 @@ export const UserProfile = (): JSX.Element => {
         <DropdownMenu.Content
           align="end"
           sideOffset={5}
-          className={cx(
+          className={cn(
             "z-50 rounded bg-white shadow-md-dark dark:bg-dark-400",
             "radix-side-bottom:animate-slide-down radix-side-top:animate-slide-up"
           )}

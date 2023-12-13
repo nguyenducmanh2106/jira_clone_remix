@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useFetcher } from "@remix-run/react";
-import cx from "classix";
 import { Comment, CommentId } from "@domain/comment";
 import { useUserStore } from "@app/store/user.store";
 import { UserAvatar } from "@app/components/user-avatar";
 import { EditBox } from "./edit-box";
 import { formatDateTime } from "@utils/formatDateTime";
+import { cn } from "@/src/lib/utils";
 
 export const ViewComment = ({
   comment,
@@ -40,7 +40,7 @@ export const ViewComment = ({
     <div className="font-primary-light">
       <p>{comment.message}</p>
       <div
-        className={cx(
+        className={cn(
           "mt-3 text-font-light dark:text-font-light-dark",
           isNotSelfComment ? "hidden" : "visible"
         )}

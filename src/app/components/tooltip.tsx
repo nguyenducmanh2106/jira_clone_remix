@@ -1,5 +1,5 @@
+import { cn } from "@/src/lib/utils";
 import { useState } from "react";
-import cx from "classix";
 
 export const Tooltip = ({
   title,
@@ -19,7 +19,7 @@ export const Tooltip = ({
         {children}
       </div>
       <div
-        className={cx(
+        className={cn(
           "z-80 absolute top-full left-1/2 mt-1.5 -translate-x-1/2 transform justify-center break-words",
           isVisible ? "flex" : "hidden"
         )}

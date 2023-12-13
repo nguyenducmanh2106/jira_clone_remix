@@ -1,5 +1,5 @@
+import { cn } from "@/src/lib/utils";
 import { useNavigation } from "@remix-run/react";
-import cx from "classix";
 function GlobalLoading() {
     const transition = useNavigation();
     const active = transition.state !== "idle";
@@ -9,7 +9,7 @@ function GlobalLoading() {
             role="progressbar"
             aria-valuetext={active ? "Loading" : undefined}
             aria-hidden={!active}
-            className={cx(
+            className={cn(
                 "pointer-events-none fixed left-0 bottom-0 z-50 p-4 transition-all duration-500 ease-out",
                 active ? "translate-y-0" : "translate-y-full"
             )}

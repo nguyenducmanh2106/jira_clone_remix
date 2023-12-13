@@ -185,7 +185,7 @@ export function CatchBoundary() {
   const location = useLocation();
   const navigate = useNavigate();
   const boardUrl = location.pathname.split("/issue")[0];
-
+  console.log(boardUrl)
   const handleProgrammaticNavigation = () => {
     navigate(boardUrl);
   };

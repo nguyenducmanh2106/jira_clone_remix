@@ -1,10 +1,11 @@
 import { Form, Link, useLocation } from "@remix-run/react";
 import * as AlertDialog from "@app/components/alert-dialog";
 import cx from "classix";
-import { MdDeleteOutline } from "react-icons/md";
-import { IoCloseOutline } from "react-icons/io5";
+// import { MdDeleteOutline } from "react-icons/md";
+// import { IoCloseOutline } from "react-icons/io5";
 import { IssueId } from "@domain/issue";
 import { TaskIcon } from "@app/components/icons";
+import { Trash2, X } from "lucide-react";
 
 export const PanelHeaderIssue = ({
   id,
@@ -29,7 +30,7 @@ export const PanelHeaderIssue = ({
         className="ml-3 flex cursor-pointer rounded border-none p-0.5 text-icon hover:bg-grey-300 dark:text-font-light-dark dark:hover:bg-dark-100"
         aria-label="Close issue panel"
       >
-        <IoCloseOutline size={32} />
+        <X size={32} />
       </Link>
     </div>
   );
@@ -56,7 +57,7 @@ const DeleteIssueModalDialog = ({
         disabled={disabled}
         title={disabled ? "This user cannot delete the issue" : "Delete issue"}
       >
-        <MdDeleteOutline size={26} />
+        <Trash2 size={26} />
       </AlertDialog.Trigger>
 
       <AlertDialog.Portal>

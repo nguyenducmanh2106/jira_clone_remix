@@ -94,40 +94,42 @@ export const ListColumnDrag = ({ columns, toggleDisplayColumns }: Column): JSX.E
                     {/* Xóa tất cả */}
                 </div>
             </div>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable
-                    droppableId="droppable"
-                    mode="virtual"
-                    renderClone={(
-                        provided: DraggableProvided,
-                        snapshot: DraggableStateSnapshot,
-                        rubric: DraggableRubric,
-                    ) => (
-                        <QuoteItem
-                            provided={provided}
-                            isDragging={snapshot.isDragging}
-                            quote={quotes[rubric.source.index]}
-                            style={{ marginBottom: '8px', borderRadius: '4px', userSelect: 'none', padding: '4px 6px', background: '#f0f2f4' }}
-                            index={rubric.source.index}
-                            toggleDisplayColumns={toggleDisplayColumns}
-                        />
-                    )}
-                >
-                    {(droppableProvided: DroppableProvided) => (
-                        <List
-                            height={500}
-                            itemCount={quotes.length as number}
-                            itemSize={40}
-                            width={'auto'}
-                            // you will want to use List.outerRef rather than List.innerRef as it has the correct height when the list is unpopulated
-                            outerRef={droppableProvided.innerRef}
-                            itemData={quotes}
-                        >
-                            {Row}
-                        </List>
-                    )}
-                </Droppable>
-            </DragDropContext>
+            <div style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '8px' }}>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable
+                        droppableId="droppable"
+                        mode="virtual"
+                        renderClone={(
+                            provided: DraggableProvided,
+                            snapshot: DraggableStateSnapshot,
+                            rubric: DraggableRubric,
+                        ) => (
+                            <QuoteItem
+                                provided={provided}
+                                isDragging={snapshot.isDragging}
+                                quote={quotes[rubric.source.index]}
+                                style={{ marginBottom: '8px', borderRadius: '4px', userSelect: 'none', padding: '4px 6px', background: '#f0f2f4' }}
+                                index={rubric.source.index}
+                                toggleDisplayColumns={toggleDisplayColumns}
+                            />
+                        )}
+                    >
+                        {(droppableProvided: DroppableProvided) => (
+                            <List
+                                height={400}
+                                itemCount={quotes.length as number}
+                                itemSize={40}
+                                width={'auto'}
+                                // you will want to use List.outerRef rather than List.innerRef as it has the correct height when the list is unpopulated
+                                outerRef={droppableProvided.innerRef}
+                                itemData={quotes}
+                            >
+                                {Row}
+                            </List>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
         </div>
     )
 }

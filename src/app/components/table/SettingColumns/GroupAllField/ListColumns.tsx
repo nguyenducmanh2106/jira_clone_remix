@@ -18,7 +18,7 @@ export const GroupAllField: FC<Column> = memo(function Card({ columns, toggleDis
     return (
         <div className='group-all-field'>
             <Input className='ml-[8px] mb-[8px] mt-[8px] max-h-[32px]' onChange={handleChange} />
-            <div className='group-all-field__columns'>
+            <div className='group-all-field__columns h-[400px] overflow-y-auto'>
                 <Columns columns={columns} toggleDisplayColumns={toggleDisplayColumns} isChange={isChange} keywordFilter={keywordFilter} />
             </div>
         </div>

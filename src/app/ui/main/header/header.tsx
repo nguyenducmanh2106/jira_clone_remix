@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import cx from "classix";
-import { HiQuestionMarkCircle } from "react-icons/hi";
-import { AiFillGithub } from "react-icons/ai";
+// import { HiQuestionMarkCircle } from "react-icons/hi";
+// import { AiFillGithub } from "react-icons/ai";
 import { Tooltip } from "@app/components/tooltip";
 import { SelctTheme } from "./select-theme";
 import { UserProfile } from "./user-profile";
@@ -28,7 +28,7 @@ export const Header = (): JSX.Element => {
             disabled
             className={cx(iconBaseClass, "cursor-not-allowed")}
           >
-            <HiQuestionMarkCircle size={24} />
+            {/* <HiQuestionMarkCircle size={24} /> */}
           </button>
         </Tooltip>
         <Tooltip title="Github">
@@ -37,7 +37,7 @@ export const Header = (): JSX.Element => {
             className={iconBaseClass}
             aria-label="Go to my Github"
           >
-            <AiFillGithub size={24} />
+            {/* <AiFillGithub size={24} /> */}
           </a>
         </Tooltip>
         <SelctTheme />

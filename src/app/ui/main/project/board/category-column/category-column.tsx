@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
 import { Link, useFetcher } from "@remix-run/react";
-import { AiOutlinePlus } from "react-icons/ai";
-import { RxValueNone } from "react-icons/rx";
+// import { AiOutlinePlus } from "react-icons/ai";
+// import { RxValueNone } from "react-icons/rx";
 import cx from "classix";
 import { useDrop } from "react-dnd";
 import { Category } from "@domain/category";
@@ -119,7 +119,7 @@ export const CategoryColumn = (props: CategoryColumnProps): JSX.Element => {
           className="flex cursor-pointer rounded border-none p-1 text-font-light/60 hover:bg-grey-400 dark:text-font-light-dark dark:hover:bg-dark-100"
           aria-label={`Add new ${category.name} issue`}
         >
-          <AiOutlinePlus size={24} />
+          {/* <AiOutlinePlus size={24} /> */}
         </Link>
       </div>
       {/* Column body items */}
@@ -159,7 +159,7 @@ interface CategoryColumnProps {
 
 const EmptyCategory = (): JSX.Element => (
   <li className="mt-4 flex flex-col items-center text-font-light dark:text-font-light-dark">
-    <RxValueNone size={36} />
+    {/* <RxValueNone size={36} /> */}
     <p className="mt-4 font-primary-light text-xs uppercase">No issues found</p>
   </li>
 );

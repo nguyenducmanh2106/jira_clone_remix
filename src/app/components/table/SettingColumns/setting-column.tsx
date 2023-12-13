@@ -14,8 +14,6 @@ import { ListColumnDrag } from './GroupSelectedField/ListColumDrag';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@app/components/ui/sheet';
 import { Button } from '@app/components/ui/button';
 export interface ICustomHeaderParams extends IHeaderParams {
-  menuIcon: string;
-  checkboxSelection: boolean,
   columnGrids: ColDef[]
 }
 

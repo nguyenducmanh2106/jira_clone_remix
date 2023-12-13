@@ -1,6 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { MdLightMode } from "react-icons/md";
-import { MdDarkMode } from "react-icons/md";
+// import { MdLightMode } from "react-icons/md";
+// import { MdDarkMode } from "react-icons/md";
 import cx from "classix";
 import {
   Theme,
@@ -12,6 +12,7 @@ import {
   DEFAULT_THEME,
 } from "@app/store/theme.store";
 import { Tooltip } from "@app/components/tooltip";
+import { SunIcon, SunMoon } from "lucide-react";
 
 export const SelctTheme = (): JSX.Element => {
   const { theme, setTheme, preference } = useTheme();
@@ -21,22 +22,22 @@ export const SelctTheme = (): JSX.Element => {
     label: string;
     image: string;
   }[] = [
-    {
-      value: Theme.LIGHT,
-      label: "Light",
-      image: "/images/select-theme-light.png",
-    },
-    {
-      value: Theme.DARK,
-      label: "Dark",
-      image: "/images/select-theme-dark.png",
-    },
-    {
-      value: Preference.SYSTEM,
-      label: "System",
-      image: "/images/select-theme-system.png",
-    },
-  ];
+      {
+        value: Theme.LIGHT,
+        label: "Light",
+        image: "/images/select-theme-light.png",
+      },
+      {
+        value: Theme.DARK,
+        label: "Dark",
+        image: "/images/select-theme-dark.png",
+      },
+      {
+        value: Preference.SYSTEM,
+        label: "System",
+        image: "/images/select-theme-system.png",
+      },
+    ];
   const currentValue = preference === Preference.SYSTEM ? preference : theme;
   const triggerIconClass = cx(
     "fill-icon group-hover:fill-primary-main dark:fill-grey-500 dark:group-hover:fill-white"
@@ -60,9 +61,9 @@ export const SelctTheme = (): JSX.Element => {
           className="group flex h-[30px] w-[30px] rounded-full outline outline-2 outline-icon flex-center hover:bg-primary-light hover:outline-primary-main dark:outline-grey-500 dark:hover:bg-dark-100 dark:hover:outline-white"
         >
           {theme === Theme.LIGHT ? (
-            <MdLightMode className={triggerIconClass} />
+            <SunIcon className={triggerIconClass} />
           ) : (
-            <MdDarkMode className={triggerIconClass} />
+            <SunMoon className={triggerIconClass} />
           )}
         </DropdownMenu.Trigger>
       </Tooltip>
@@ -87,7 +88,7 @@ export const SelctTheme = (): JSX.Element => {
                 className={cx(
                   "group flex gap-4 rounded px-2 pt-1 pb-2 outline outline-2 outline-transparent hover:outline-primary-main dark:hover:text-primary-main-dark dark:hover:outline-primary-main-dark",
                   value === currentValue &&
-                    "bg-primary-light text-primary-main outline-primary-main dark:bg-primary-light-dark dark:text-primary-main-dark dark:outline-primary-main-dark"
+                  "bg-primary-light text-primary-main outline-primary-main dark:bg-primary-light-dark dark:text-primary-main-dark dark:outline-primary-main-dark"
                 )}
               >
                 <span

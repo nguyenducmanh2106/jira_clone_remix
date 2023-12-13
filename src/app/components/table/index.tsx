@@ -23,6 +23,7 @@ import {
 import { SettingColumn } from "./SettingColumns/setting-column";
 import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
 import { PaginationTableLeft } from "./pagination-table-left";
+import { CustomColumn } from "./action/columns";
 
 export const TableView = ({
   show = true,
@@ -163,6 +164,72 @@ export const TableView = ({
     {
       colId: 'description',
       field: 'description',
+      headerName: 'Mô tả',
+      hide: true,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      colId: 'description1',
+      field: 'description1',
+      headerName: 'Mô tả',
+      hide: true,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      colId: 'description2',
+      field: 'description2',
+      headerName: 'Mô tả',
+      hide: true,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      colId: 'description3',
+      field: 'description3',
+      headerName: 'Mô tả',
+      hide: true,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      colId: 'description4',
+      field: 'description4',
+      headerName: 'Mô tả',
+      hide: true,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      colId: 'description5',
+      field: 'description5',
+      headerName: 'Mô tả',
+      hide: true,
+      headerComponent: HeaderTableView,
+      cellRendererParams: {
+        inputType: 'text',
+      },
+      cellRenderer: CellComponentTableView,
+    },
+    {
+      colId: 'description6',
+      field: 'description6',
       headerName: 'Mô tả',
       hide: true,
       headerComponent: HeaderTableView,
@@ -365,9 +432,9 @@ export const TableView = ({
           "block"
         )}
       >
-        {/* <div ref={"eMenu"} className="panel-table whitespace-nowrap rounded bg-font-main py-0.5 px-1.5 text-2xs text-white dark:bg-dark-500">
-          <GearIcon />
-        </div> */}
+        <div className="panel-table whitespace-nowrap border border-solid border-gray-400 py-0.5 px-1.5 text-2xs">
+          <CustomColumn columns={colDefsMedalsExcluded} />
+        </div>
         <div className="tableViewContainer" ref={gridContainerRef}>
           <div style={containerStyle}>
             <div style={gridStyle} className="ag-theme-balham">

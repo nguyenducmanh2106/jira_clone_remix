@@ -1,6 +1,7 @@
 import cx from "classix";
-import { HiFlag } from "react-icons/hi";
+// import { HiFlag } from "react-icons/hi";
 import { PriorityId } from "@domain/priority";
+import { FlagIcon } from "lucide-react";
 
 export const PriorityIcon = ({
   priority,
@@ -14,7 +15,7 @@ export const PriorityIcon = ({
       priority === "high" && "text-error-main"
     )}
   >
-    <HiFlag size={size} />
+    <FlagIcon size={size} />
   </span>
 );
 

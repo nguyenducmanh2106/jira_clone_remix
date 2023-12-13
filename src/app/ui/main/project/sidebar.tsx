@@ -2,6 +2,8 @@ import { useState } from "react";
 import { NavLink } from "@remix-run/react";
 // import { HiOutlineViewBoards } from "react-icons/hi";
 import cx from "classix";
+import { LayoutIcon } from "@radix-ui/react-icons";
+import { BookTemplateIcon, ChevronLeftIcon, CircleOff, CloudOff, LayoutDashboard, LineChartIcon } from "lucide-react";
 // import { RiArrowDropLeftLine } from "react-icons/ri";
 // import { ImStatsDots } from "react-icons/im";
 // import { BsListNested } from "react-icons/bs";
@@ -55,7 +57,7 @@ export const Sidebar = (props: Props): JSX.Element => {
         </section>
       </div>
       <div
-        className={cx("r-0 relative z-10 ml-7 h-full w-3", isOpen && "ml-0")}
+        className={cx("r-0 relative z-10 h-full w-3", isOpen ? "ml-0" : "ml-[24px]")}
       >
         <div className="absolute -left-[3px] h-full w-[3px] bg-gradient-to-l from-[rgba(0,0,0,0.2)] to-[rgba(0,0,0,0.0)] opacity-50" />
         <button
@@ -67,6 +69,7 @@ export const Sidebar = (props: Props): JSX.Element => {
           aria-label="Toggle sidebar"
         >
           {/* <RiArrowDropLeftLine size={24} /> */}
+          <ChevronLeftIcon size={20} />
         </button>
       </div>
     </aside>
@@ -83,19 +86,19 @@ const navItems: NavItemProps[] = [
   {
     href: "board",
     // icon: <HiOutlineViewBoards size={24} />,
-    icon: <>abc</>,
+    icon: <LayoutDashboard size={24} />,
     name: "Board",
   },
   {
     href: "analytics",
     // icon: <ImStatsDots size={20} />,
-    icon: <>abc</>,
+    icon: <LineChartIcon size={24} />,
     name: "Analytics",
   },
   {
     href: "backlog",
     // icon: <BsListNested size={24} />,
-    icon: <>abc</>,
+    icon: <BookTemplateIcon />,
     name: "Backlog",
     disabled: true,
   },
@@ -114,13 +117,13 @@ const navItems: NavItemProps[] = [
   {
     href: "server-error",
     // icon: <BsCloudSlash size={24} />,
-    icon: <>abc</>,
+    icon: <CloudOff size={24} />,
     name: "Server error",
   },
   {
     href: "not-found",
     // icon: <TbError404 size={24} />,
-    icon: <>abc</>,
+    icon: <CircleOff size={24} />,
     name: "Not found",
   },
 ];

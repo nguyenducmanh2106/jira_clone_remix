@@ -4,7 +4,7 @@ import {
   useActionData,
   useSubmit,
   useSearchParams,
-  useTransition,
+  useNavigation,
   useLocation,
   useNavigate,
 } from "@remix-run/react";
@@ -14,7 +14,7 @@ import { CategoryType } from "@domain/category";
 import { Issue, defaultIssuesIds } from "@domain/issue";
 import { Comment, CommentId } from "@domain/comment";
 import { useUserStore } from "@app/store/user.store";
-import { ActionData as IssueActionData } from "@app/routes/__main/projects.$projectId/board/issue/$issueId";
+import { ActionData as IssueActionData } from "@app/routes/_main+/projects+/$projectId+/board+/issue+/$issueId";
 import { UserAvatar } from "@app/components/user-avatar";
 import { Title } from "@app/components/title";
 import { Description } from "@app/components/description";
@@ -39,7 +39,7 @@ export const IssuePanel = ({ issue }: Props): JSX.Element => {
   const actionData = useActionData() as IssueActionData;
   const submit = useSubmit();
   const params = useSearchParams();
-  const transition = useTransition();
+  const transition = useNavigation();
   const location = useLocation();
   const navigate = useNavigate();
   const initStatus = (params[0].get("category") as CategoryType) || "TODO";

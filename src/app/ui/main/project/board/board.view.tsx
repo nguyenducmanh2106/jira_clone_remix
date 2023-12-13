@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Outlet, useNavigate, useRevalidator } from "@remix-run/react";
-import { useEventSource } from "remix-utils";
+// import { useEventSource } from "remix-utils";
+import { useEventSource } from "remix-utils/sse/react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Project } from "@domain/project";
@@ -15,6 +16,7 @@ import { ProjectContextProvider } from "../project.store";
 import { EVENTS } from "@app/events";
 
 export const BoardView = ({ project }: Props): JSX.Element => {
+  console.log(project);
   return (
     <ProjectContextProvider project={project}>
       <div className="box-border flex h-full flex-col">

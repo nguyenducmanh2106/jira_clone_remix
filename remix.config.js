@@ -39,6 +39,9 @@ export default {
     "@react-dnd/shallowequal",
     "@react-dnd/asap",
   ],
+  browserNodeBuiltinsPolyfill: {
+    modules: { events: true },
+  },
   routes: async (defineRoutes) => {
     return flatRoutes("routes", defineRoutes, {
       ignoredRouteFiles: ["**/*.test.{js,jsx,ts,tsx}", "**/__*.*"],

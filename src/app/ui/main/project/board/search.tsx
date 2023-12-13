@@ -1,7 +1,7 @@
 import React from "react";
 import cx from "classix";
-import { BiSearch } from "react-icons/bi";
-import { IoCloseOutline } from "react-icons/io5";
+// import { BiSearch } from "react-icons/bi";
+// import { IoCloseOutline } from "react-icons/io5";
 import { useProjectStore } from "@app/ui/main/project";
 
 export const Search = (): JSX.Element => {
@@ -51,7 +51,7 @@ const iconBaseClass = cx(
 
 const SearchIcon = (): JSX.Element => (
   <span className={cx(iconBaseClass, "dark:text-font-light-dark")}>
-    <BiSearch size={16} />
+    {/* <BiSearch size={16} /> */}
   </span>
 );
 
@@ -66,7 +66,7 @@ const ClearIcon = ({ onClick }: ClearIconProps): JSX.Element => (
     )}
     aria-label="Clear search"
   >
-    <IoCloseOutline size={16} />
+    {/* <IoCloseOutline size={16} /> */}
   </button>
 );
 

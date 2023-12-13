@@ -14,7 +14,7 @@ import {
   DrawingPinIcon,
   CircleBackslashIcon,
 } from '@radix-ui/react-icons';
-import { RiFilterLine, RiCloseLine } from "react-icons/ri";
+// import { RiFilterLine, RiCloseLine } from "react-icons/ri";
 import { CheckedState } from '@radix-ui/react-checkbox';
 import { Button } from '../ui/button';
 
@@ -75,7 +75,7 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
               className="rounded-full w-[24px] h-[24px] inline-flex items-center justify-center text-black bg-transparent shadow-blackA7 hover:bg-grey-600  cursor-pointer outline-none"
               aria-label="Update dimensions"
             >
-              <RiFilterLine />
+              {/* <RiFilterLine /> */}
             </button>
           </Popover.Trigger>
           <Popover.Portal>
@@ -112,7 +112,7 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
                 className="rounded-full cursor-pointer h-[25px] w-[25px] inline-flex items-center justify-center text-black absolute top-[5px] right-[5px] hover:bg-grey-600 focus:shadow-[0_0_0_2px] focus:bg-grey-600 outline-none"
                 aria-label="Close"
               >
-                <RiCloseLine />
+                {/* <RiCloseLine /> */}
               </Popover.Close>
               <Popover.Arrow className="fill-white" />
             </Popover.Content>

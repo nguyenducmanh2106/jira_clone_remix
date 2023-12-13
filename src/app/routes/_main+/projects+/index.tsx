@@ -17,29 +17,6 @@ export const meta: MetaFunction = () => {
   const image = "https://jira-clone.fly.dev/static/images/readme/projects.png";
   const url = "https://jira-clone.fly.dev/projects";
 
-  // return {
-  //   charset: "utf-8",
-  //   viewport: "width=device-width,initial-scale=1",
-  //   title: title,
-  //   description: description,
-  //   "og:url": url,
-  //   "og:type": "website",
-  //   "og:site_name": title,
-  //   "og:title": title,
-  //   "og:description": description,
-  //   "og:image": image,
-  //   "twitter:card": "summary_large_image",
-  //   "twitter:site": url,
-  //   "twitter:domain": "jira-clone.fly.dev",
-  //   "twitter:title": title,
-  //   "twitter:description": description,
-  //   "twitter:image": image,
-  //   "twitter:image:width": "1297",
-  //   "twitter:image:height": "635",
-  //   "twitter:image:alt": title,
-  //   "twitter:creator": "@Jack_DanielSG",
-  //   "twitter:creator:id": "Jack_DanielSG",
-  // };
   return [
     {
       charset: "utf-8",

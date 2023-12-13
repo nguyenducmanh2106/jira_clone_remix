@@ -1,8 +1,8 @@
 import { Form, useSubmit } from "@remix-run/react";
 import * as Select from "@radix-ui/react-select";
-import { FaSortAmountDownAlt } from "react-icons/fa";
-import { HiFlag } from "react-icons/hi";
-import { BsClockHistory } from "react-icons/bs";
+// import { FaSortAmountDownAlt } from "react-icons/fa";
+// import { HiFlag } from "react-icons/hi";
+// import { BsClockHistory } from "react-icons/bs";
 import { Sort, sortList, DEFAULT_SORT } from "@domain/filter";
 import { useSortBy } from "@app/hooks/useSortBy";
 
@@ -12,9 +12,10 @@ export const SelectSort = (): JSX.Element => {
 
   const SortIcon = ({ sort }: { sort: Sort }): JSX.Element =>
     // prettier-ignore
-    sort === "priority" 
-      ? <HiFlag size={16} /> 
-      : <BsClockHistory size={16} />;
+    // sort === "priority" 
+    //   ? <HiFlag size={16} /> 
+    //   : <BsClockHistory size={16} />;
+      <>abc</>
 
   const handleSubmit = (value: string): void => {
     submit({ sortBy: value });
@@ -28,7 +29,7 @@ export const SelectSort = (): JSX.Element => {
           aria-label="Open sort issues select"
         >
           <div className="mr-2 flex items-center">
-            <FaSortAmountDownAlt size={14} />
+            {/* <FaSortAmountDownAlt size={14} /> */}
           </div>
           <Select.Value>Sort by {sortBy}</Select.Value>
         </Select.Trigger>

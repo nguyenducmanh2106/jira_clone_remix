@@ -1,6 +1,6 @@
 import { Form } from "@remix-run/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { FaPowerOff } from "react-icons/fa";
+// import { FaPowerOff } from "react-icons/fa";
 import cx from "classix";
 import { useUserStore } from "@app/store/user.store";
 import { UserAvatar } from "@app/components/user-avatar";
@@ -35,7 +35,7 @@ export const UserProfile = (): JSX.Element => {
                 className="flex w-full items-center gap-2 rounded p-2 text-sm text-error-main hover:bg-error-light dark:text-error-main-dark dark:hover:bg-dark-100"
                 aria-label="Log out"
               >
-                <FaPowerOff />
+                {/* <FaPowerOff /> */}
                 <span>Log out</span>
               </button>
             </Form>

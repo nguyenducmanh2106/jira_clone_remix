@@ -33,6 +33,7 @@ export const ProjectContextProvider = ({
 
 export const useProjectStore = (): ProjectStore => {
   const projectStore = useContext(ProjectContext);
+  console.log(projectStore)
   if (!projectStore) {
     throw new Error("Project context not found");
   }

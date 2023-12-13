@@ -1,7 +1,7 @@
-import { useTransition } from "@remix-run/react";
+import { useNavigation } from "@remix-run/react";
 import cx from "classix";
 function GlobalLoading() {
-    const transition = useTransition();
+    const transition = useNavigation();
     const active = transition.state !== "idle";
 
     return (

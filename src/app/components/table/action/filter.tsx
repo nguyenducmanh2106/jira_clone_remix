@@ -13,12 +13,14 @@ import { cn } from '@/src/lib/utils';
 import { Checkbox } from '@app/components/ui/checkbox';
 import { GroupAllField } from '../SettingColumns/GroupAllField/ListColumns';
 import { ListColumnDrag } from '../SettingColumns/GroupSelectedField/ListColumDrag';
+import { Label } from '@app/components/ui/label';
+import { Input } from '@app/components/ui/input';
 // import { SelectContent, SelectItemIndicator, SelectTrigger } from '@radix-ui/react-select';
 
-export interface CustomColumnProps {
+export interface FilterProps {
     columns: ColDef[]
 }
-export const CustomColumn = ({ columns, ...props }: CustomColumnProps): JSX.Element => {
+export const FilterComponent = ({ columns, ...props }: FilterProps): JSX.Element => {
 
     const [open, setOpen] = React.useState(false)
     const [selectedPreset, setSelectedPreset] = React.useState<ColDef>()
@@ -67,53 +69,52 @@ export const CustomColumn = ({ columns, ...props }: CustomColumnProps): JSX.Elem
                     aria-expanded={open}
                     className="flex-1 justify-between md:max-w-[200px] lg:max-w-[300px]"
                 >
-                    {/* {selectedPreset ? selectedPreset.headerName : "Load a preset..."} */}
                     <ColumnsIcon className="mr-2 h-4 w-4 shrink-0" />
-                    Columns
-                    {/* <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
+                    Filters
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[400px] p-0 h-[520px]">
-                {/* <Command>
-                    <CommandInput placeholder="Search presets..."
-                    />
-                    <CommandEmpty>No presets found.</CommandEmpty>
-                    <CommandGroup heading="Examples">
-                        {columnsComputed.map((preset) => (
-                            <CommandItem
-                                key={preset.colId}
-                                // onSelect={() => {
-                                //     setSelectedPreset(preset)
-                                //     setOpen(false)
-                                // }}
-                            >
-                                <div className="flex items-center space-x-2">
-                                    <Checkbox id={preset.colId} />
-                                    <label
-                                        htmlFor={preset.colId}
-                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                    >
-                                        {preset.headerName}
-                                    </label>
-                                </div>
-                            </CommandItem>
-                        ))}
-                    </CommandGroup>
-                </Command> */}
-                <div className={cn(
-                    "grid grid-cols-2 gap-4 border-b overflow-y-auto my-[8px]",
-
-                )} >
-                    <GroupAllField columns={allColumns} toggleDisplayColumns={toggleDisplayColumns} isChange={isChange} />
-                    <ListColumnDrag columns={columnDisplayings} toggleDisplayColumns={toggleDisplayColumns} />
-                </div>
-                <div className='flex justify-end p-[8px] gap-[8px]'>
-                    <PopoverClose>
-                        <Button variant="outline" size="sm">Đóng</Button>
-                    </PopoverClose>
-                    <PopoverClose>
-                        <Button size="sm">Lưu</Button>
-                    </PopoverClose>
+            <PopoverContent className="w-80">
+                <div className="grid gap-4">
+                    <div className="space-y-2">
+                        <h4 className="font-medium leading-none">Dimensions</h4>
+                        <p className="text-sm text-muted-foreground">
+                            Set the dimensions for the layer.
+                        </p>
+                    </div>
+                    <div className="grid gap-2">
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <Label htmlFor="width">Width</Label>
+                            <Input
+                                id="width"
+                                defaultValue="100%"
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <Label htmlFor="maxWidth">Max. width</Label>
+                            <Input
+                                id="maxWidth"
+                                defaultValue="300px"
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <Label htmlFor="height">Height</Label>
+                            <Input
+                                id="height"
+                                defaultValue="25px"
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <Label htmlFor="maxHeight">Max. height</Label>
+                            <Input
+                                id="maxHeight"
+                                defaultValue="none"
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                    </div>
                 </div>
             </PopoverContent>
         </Popover>

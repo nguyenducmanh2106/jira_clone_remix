@@ -24,6 +24,9 @@ import { AG_GRID_LOCALE } from "@/src/app/localization/locale"
 import { PaginationTableLeft } from "./pagination-table-left";
 import { CustomColumn } from "./action/columns";
 import { cn } from "@/src/lib/utils";
+import CurrencyRenderer from "./cell-render/currency-renderer";
+import NumericRenderer from "./cell-render/numeric-renderer";
+import { FilterComponent } from "./action/filter";
 
 export const TableView = ({
   show = true,
@@ -101,10 +104,7 @@ export const TableView = ({
       headerName: 'Giá',
       suppressMenu: true,
       sortable: true,
-      cellRendererParams: {
-        inputType: 'number',
-      },
-      cellRenderer: CellComponentTableView,
+      cellRenderer: 'agCurrencyCellRenderer',
     },
     {
       colId: 'brand',
@@ -134,10 +134,7 @@ export const TableView = ({
       headerName: 'Giảm giá',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
+      cellRenderer: 'agCurrencyCellRenderer',
     },
     {
       colId: 'rating',
@@ -145,10 +142,7 @@ export const TableView = ({
       headerName: 'Đánh giá',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
+      cellRenderer: 'agCurrencyCellRenderer',
     },
     {
       colId: 'stock',
@@ -156,10 +150,7 @@ export const TableView = ({
       headerName: 'Tồn kho',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
+      cellRenderer: 'agCurrencyCellRenderer',
     },
     {
       colId: 'description',
@@ -225,6 +216,8 @@ export const TableView = ({
   }>(() => {
     return {
       // agColumnHeader: HeaderTableView,
+      agNumberCellRenderer: NumericRenderer,
+      agCurrencyCellRenderer: CurrencyRenderer,
     };
   }, []);
 
@@ -368,6 +361,7 @@ export const TableView = ({
       >
         <div className="panel-table whitespace-nowrap border border-solid border-gray-400 py-0.5 px-1.5 text-2xs">
           <CustomColumn columns={colDefsMedalsExcluded} />
+          <FilterComponent columns={colDefsMedalsExcluded} />
         </div>
         <div className="tableViewContainer" ref={gridContainerRef}>
           <div style={containerStyle}>

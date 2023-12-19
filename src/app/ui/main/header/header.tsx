@@ -5,6 +5,7 @@ import { Tooltip } from "@app/components/tooltip";
 import { SelctTheme } from "./select-theme";
 import { UserProfile } from "./user-profile";
 import { cn } from "@/src/lib/utils";
+import { GithubIcon } from "lucide-react";
 
 export const Header = (): JSX.Element => {
   const iconBaseClass =
@@ -38,6 +39,7 @@ export const Header = (): JSX.Element => {
             aria-label="Go to my Github"
           >
             {/* <AiFillGithub size={24} /> */}
+            <GithubIcon size={24} />
           </a>
         </Tooltip>
         <SelctTheme />

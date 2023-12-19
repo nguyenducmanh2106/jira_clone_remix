@@ -227,7 +227,7 @@ export const HeaderTableView = (props: ICustomHeaderParams): JSX.Element => {
             {ascSort === 'active' ? <ArrowUpIcon /> : descSort === 'active' ? <ArrowDownIcon /> : <></>}
           </div>
         </div>
-        {menu}
+        {/* {menu} */}
       </div >
     )
   }

@@ -25,6 +25,14 @@ export const getUserSession = async (request: Request) => {
       const userId = session.get(USER_SESSION_KEY) as UserId | undefined;
       return isValidUserId(userId) ? userId : null;
     },
+    getLayout: (): UserId | null => {
+      const userId = session.get(USER_SESSION_KEY) as UserId | undefined;
+      return isValidUserId(userId) ? userId : null;
+    },
+    getLayoutCollapsed: (): boolean | undefined => {
+      const collapsed = session.get('react-resizable-panels:collapsed') as boolean | undefined;
+      return collapsed;
+    },
     setUser: (userId: UserId) => {
       if (isValidUserId(userId)) session.set(USER_SESSION_KEY, userId);
     },

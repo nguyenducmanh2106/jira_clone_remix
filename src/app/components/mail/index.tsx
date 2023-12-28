@@ -7,7 +7,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@app/compo
 import { Separator } from "@app/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@app/components/ui/tabs"
 import { TooltipProvider } from "@app/components/ui/tooltip"
-import { Inbox, Send, Trash2, Archive, Users2, AlertCircle, MessagesSquare, File, ShoppingCart, Search } from "lucide-react"
+import { Inbox, Send, Trash2, Archive, Users2, AlertCircle, MessagesSquare, File, ShoppingCart, Search, ChevronLeftIcon } from "lucide-react"
 import { useState } from "react"
 
 interface MailProps {
@@ -30,8 +30,14 @@ export function MailView({
     navCollapsedSize,
 }: MailProps) {
     const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
+    const [sizeNav, setSizeNav] = useState<number>(defaultLayout[0])
     // const [mail] = useMail()
-
+    const toggleSidebar = () => {
+        setIsCollapsed(!isCollapsed)
+        setSizeNav((pre) => {
+            return isCollapsed ? 0 : defaultLayout[0]
+        })
+    }
     return (
         <TooltipProvider delayDuration={0}>
             <ResizablePanelGroup
@@ -41,25 +47,35 @@ export function MailView({
                         sizes
                     )}`
                 }}
-                className="h-full max-h-[800px] items-stretch"
+                className="h-full max-h-[100%] items-stretch"
             >
                 <ResizablePanel
-                    defaultSize={defaultLayout[0]}
+                    defaultSize={sizeNav}
                     collapsedSize={navCollapsedSize}
                     collapsible={true}
                     minSize={15}
                     maxSize={20}
                     onCollapse={() => {
-                        let collapsed = true
-                        setIsCollapsed(collapsed)
-                        document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-                            collapsed
-                        )}`
+                        // let collapsed = true
+                        // setIsCollapsed(collapsed)
+                        // document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+                        //     collapsed
+                        // )}`
                     }}
                     className={cn(isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
                 >
                     <div className={cn("flex h-[52px] items-center justify-center", isCollapsed ? 'h-[52px]' : 'px-2')}>
                         <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
+                        <button
+                            onClick={toggleSidebar}
+                            className={cn(
+                                "h-[24px] w-[24px] cursor-pointer rounded-full border-none bg-white shadow-[0_1px_5px_-1px_rgba(0,0,0,0.3)] transition-transform delay-150 duration-200 ease-in hover:bg-primary-main hover:text-white dark:bg-dark-200 dark:hover:bg-dark-100",
+                                isCollapsed && "rotate-180"
+                            )}
+                            aria-label="Toggle sidebar"
+                        >
+                            <ChevronLeftIcon size={20} />
+                        </button>
                     </div>
                     <Separator />
                     <Nav
@@ -84,12 +100,6 @@ export function MailView({
                                 variant: "ghost",
                             },
                             {
-                                title: "Junk",
-                                label: "23",
-                                icon: Trash2,
-                                variant: "ghost",
-                            },
-                            {
                                 title: "Trash",
                                 label: "",
                                 icon: Trash2,
@@ -101,12 +111,6 @@ export function MailView({
                                 icon: Archive,
                                 variant: "ghost",
                             },
-                        ]}
-                    />
-                    <Separator />
-                    <Nav
-                        isCollapsed={isCollapsed}
-                        links={[
                             {
                                 title: "Social",
                                 label: "972",
@@ -139,9 +143,25 @@ export function MailView({
                             },
                         ]}
                     />
+
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+                {/* <div
+                    className={cn("r-0 relative z-10 h-full w-3", isCollapsed ? "ml-0" : "ml-[24px]")}
+                >
+                    <div className="absolute -left-[3px] h-full w-[3px] bg-gradient-to-l from-[rgba(0,0,0,0.2)] to-[rgba(0,0,0,0.0)] opacity-50" />
+                    <button
+                        onClick={toggleSidebar}
+                        className={cn(
+                            "absolute -left-[12px] mt-6 flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full border-none bg-white shadow-[0_1px_5px_-1px_rgba(0,0,0,0.3)] transition-transform delay-150 duration-200 ease-in hover:bg-primary-main hover:text-white dark:bg-dark-200 dark:hover:bg-dark-100",
+                            !isCollapsed && "rotate-180"
+                        )}
+                        aria-label="Toggle sidebar"
+                    >
+                        <ChevronLeftIcon size={20} />
+                    </button>
+                </div> */}
+                <ResizablePanel defaultSize={defaultLayout[1]}>
                     <Tabs defaultValue="all">
                         <div className="flex items-center px-4 py-2">
                             <h1 className="text-xl font-bold">Inbox</h1>

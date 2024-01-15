@@ -112,10 +112,10 @@ export const TableView = ({
       headerName: 'Hãng',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
+      // cellRendererParams: {
+      //   inputType: 'text',
+      // },
+      cellRenderer: 'agTextBoxCellRenderer',
     },
     {
       colId: 'category',
@@ -123,10 +123,10 @@ export const TableView = ({
       headerName: 'Danh mục',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
+      // cellRendererParams: {
+      //   inputType: 'text',
+      // },
+      cellRenderer: 'agTextBoxCellRenderer',
     },
     {
       colId: 'discountPercentage',
@@ -158,10 +158,10 @@ export const TableView = ({
       headerName: 'Mô tả',
       hide: true,
       headerComponent: HeaderTableView,
-      cellRendererParams: {
-        inputType: 'text',
-      },
-      cellRenderer: CellComponentTableView,
+      // cellRendererParams: {
+      //   inputType: 'text',
+      // },
+      cellRenderer: 'agTextBoxCellRenderer',
     },
 
   ];

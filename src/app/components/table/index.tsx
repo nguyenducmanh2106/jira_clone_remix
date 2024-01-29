@@ -35,7 +35,7 @@ export const TableView = ({
   const gridRef = useRef<AgGridReact<IOlympicData>>(null);
 
   const gridContainerRef = useRef(null);
-  const containerStyle = useMemo(() => ({ width: '100%', height: '500px' }), []);
+  const containerStyle = useMemo(() => ({ width: '100%', height: 'calc(100vh - 200px)' }), []);
   // let [containerStyle, setContainerStyle] = useState({ width: '100%', height: '500px' });
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
@@ -90,26 +90,26 @@ export const TableView = ({
   const colDefsMedalsExcluded: (ColDef | ColGroupDef)[] = [
 
     {
-      colId: 'title',
-      field: 'title',
+      colId: 'code',
+      field: 'code',
       minWidth: 190,
-      headerName: 'Tiêu đề',
-      headerTooltip: 'Tiêu đề Tooltip',
+      headerName: 'Mã khách hàng',
+      headerTooltip: 'Mã khách hàng',
       headerComponent: HeaderTableView,
       sortable: true,
     },
     {
-      colId: 'price',
-      field: 'price',
-      headerName: 'Giá',
+      colId: 'name',
+      field: 'name',
+      headerName: 'Tên khách hàng',
       suppressMenu: true,
       sortable: true,
-      cellRenderer: 'agCurrencyCellRenderer',
+      cellRenderer: 'agTextBoxCellRenderer',
     },
     {
-      colId: 'brand',
-      field: 'brand',
-      headerName: 'Hãng',
+      colId: 'taxCode',
+      field: 'taxCode',
+      headerName: 'Mã số thuế',
       hide: false,
       headerComponent: HeaderTableView,
       // cellRendererParams: {
@@ -118,9 +118,9 @@ export const TableView = ({
       cellRenderer: 'agTextBoxCellRenderer',
     },
     {
-      colId: 'category',
-      field: 'category',
-      headerName: 'Danh mục',
+      colId: 'address',
+      field: 'address',
+      headerName: 'Địa chỉ',
       hide: false,
       headerComponent: HeaderTableView,
       // cellRendererParams: {
@@ -129,38 +129,27 @@ export const TableView = ({
       cellRenderer: 'agTextBoxCellRenderer',
     },
     {
-      colId: 'discountPercentage',
-      field: 'discountPercentage',
-      headerName: 'Giảm giá',
+      colId: 'districtName',
+      field: 'districtName',
+      headerName: 'Quận/huyện',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRenderer: 'agCurrencyCellRenderer',
+      cellRenderer: 'agTextBoxCellRenderer',
     },
     {
-      colId: 'rating',
-      field: 'rating',
-      headerName: 'Đánh giá',
+      colId: 'provinceName',
+      field: 'provinceName',
+      headerName: 'Tỉnh/TP',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRenderer: 'agCurrencyCellRenderer',
+      cellRenderer: 'agTextBoxCellRenderer',
     },
     {
-      colId: 'stock',
-      field: 'stock',
-      headerName: 'Tồn kho',
+      colId: 'departmentName',
+      field: 'departmentName',
+      headerName: 'Phòng ban phụ trách',
       hide: false,
       headerComponent: HeaderTableView,
-      cellRenderer: 'agCurrencyCellRenderer',
-    },
-    {
-      colId: 'description',
-      field: 'description',
-      headerName: 'Mô tả',
-      hide: true,
-      headerComponent: HeaderTableView,
-      // cellRendererParams: {
-      //   inputType: 'text',
-      // },
       cellRenderer: 'agTextBoxCellRenderer',
     },
 
@@ -237,22 +226,20 @@ export const TableView = ({
   ) => {
     return {
       getRows: async (params) => {
-        console.log('[Datasource] - rows requested by grid: ', params.request);
+        // console.log('[Datasource] - rows requested by grid: ', params.request);
         const skip = params.request.startRow ?? 0;
         const take = (params.request.endRow ?? 0) - (params.request.startRow ?? 0);
         const response = await server(skip, take);
-        // console.log(response);
         // adding delay to simulate real server call
         setTimeout(function () {
           // if (response.success) {
           // eslint-disable-next-line no-constant-condition
-          if (response && response.total) {
-            setTotalRecords(response.total)
-
+          if (response && response.code === 200) {
+            // setTotalRecords(response.totalCount)
             // call the success callback
             params.success({
-              rowData: response.products,
-              rowCount: response.total,
+              rowData: response.data,
+              rowCount: response.totalCount,
               // rowData: [],
               // rowCount: 0
             });
@@ -274,7 +261,17 @@ export const TableView = ({
   const getData = async (skip: number, limit: number) => {
 
     // const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}&select=title,price`)
-    const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`)
+    const url = `https://icomapi.iigvietnam.com`
+    let pageCal = (skip / limit) + 1
+    const params = {
+      page: pageCal,
+      size: limit,
+      TextSearch: '',
+      // departmentId: filter.DepartmentId,
+      // customerId: filter.CustomerId,
+      // DataAccessLevel: '@dataAccessLevel'.split(",")
+    };
+    const response = await fetch(`${url}/Customer?filter=${JSON.stringify(params)}`)
     const data = await response.json()
     return data;
   }
@@ -352,6 +349,28 @@ export const TableView = ({
     };
   }, []);
 
+  const onPaginationChanged = (event: any) => {
+    let gridApi = gridRef.current
+    console.log(event);
+
+    //khi chuyển sang page mới
+    if (event.newPage) {
+      // const currentPage = gridApi?.paginationGetCurrentPage();
+      // console.log(currentPage)
+      //if (this.data.rowData.length <= (currentPage * 10)) {
+
+      //}
+    }
+
+    //khi chọn page size mới
+    if (event.newPageSize) {
+      const currentPageSize = gridApi?.api.paginationGetPageSize();
+      console.log(currentPageSize)
+
+      // gridApi?.setGridOption('paginationPageSize', currentPageSize);
+      gridApi?.api.setCacheBlockSize(currentPageSize ?? 0);
+    }
+  }
   return (
     <div className="relative">
       <div
@@ -368,7 +387,7 @@ export const TableView = ({
             <div style={gridStyle} className="ag-theme-balham">
               <AgGridReact<IOlympicData>
                 ref={gridRef}
-                rowHeight={32}
+                rowHeight={34}
                 columnDefs={columnDefs}
                 components={components}
                 defaultColDef={defaultColDef}
@@ -386,11 +405,13 @@ export const TableView = ({
                 suppressRowClickSelection={true}
                 onSelectionChanged={onSelectionChanged}
                 onFirstDataRendered={onFirstDataRendered}
-                // noRowsOverlayComponent={noRowsOverlayComponent}
-                // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
+                noRowsOverlayComponent={noRowsOverlayComponent}
+                noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                 onGridReady={onGridReady}
+                onPaginationChanged={onPaginationChanged}
                 onDragStarted={(e) => console.log(e)}
                 onDragStopped={(e) => console.log(e)}
+              // onCellMouseOver={(e) => console.log(e)}
               ></AgGridReact>
               {/* <PaginationTable totalRecord={totalRecords} hasNextPage={hasNextPage}
                 hasPrevPage={hasPrevPage}

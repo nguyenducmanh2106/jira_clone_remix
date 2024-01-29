@@ -5,7 +5,7 @@ import { Tooltip } from "@app/components/tooltip";
 import { SelctTheme } from "./select-theme";
 import { UserProfile } from "./user-profile";
 import { cn } from "@/src/lib/utils";
-import { GithubIcon } from "lucide-react";
+import { Bell, GithubIcon, HelpCircle } from "lucide-react";
 
 export const Header = (): JSX.Element => {
   const iconBaseClass =
@@ -30,6 +30,7 @@ export const Header = (): JSX.Element => {
             className={cn(iconBaseClass, "cursor-not-allowed")}
           >
             {/* <HiQuestionMarkCircle size={24} /> */}
+            <HelpCircle size={24} />
           </button>
         </Tooltip>
         <Tooltip title="Github">
@@ -41,6 +42,15 @@ export const Header = (): JSX.Element => {
             {/* <AiFillGithub size={24} /> */}
             <GithubIcon size={24} />
           </a>
+        </Tooltip>
+        <Tooltip title="Thông báo">
+          <button
+            aria-label="Thông báo"
+            disabled
+            className={cn(iconBaseClass)}
+          >
+            <Bell size={24} />
+          </button>
         </Tooltip>
         <SelctTheme />
         <UserProfile />

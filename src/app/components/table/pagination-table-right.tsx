@@ -1,17 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
-  ChevronLeftIcon,
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
-import classnames from 'classix'
+import React, { useEffect, useState } from 'react';
 
-import { AgGridReact } from 'ag-grid-react';
-import { RiArrowLeftSLine, RiArrowRightSLine, RiSkipBackLine, RiSkipForwardLine } from 'react-icons/ri';
 import { GridApi, IStatusPanelParams } from 'ag-grid-enterprise';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { AgGridReact } from 'ag-grid-react';
 import { Button } from '../ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 // import { SelectContent, SelectItemIndicator, SelectTrigger } from '@radix-ui/react-select';
 
 export interface INoRowsOverlay {
@@ -27,26 +25,21 @@ export const PaginationTableRight = (props: IStatusPanelParams): JSX.Element => 
   useEffect(() => {
     setTimeout(() => {
       checkNextOrPreviousPage(props.api)
-    }, 300)
+    }, 2000);
   }, []);
   const [hasNextPage, setHasNextPage] = useState<boolean>(false)
   const [hasPreviousPage, setHasPreviousPage] = useState<boolean>(false)
-  const [firstRecord, setFirstRecord] = useState<number>(0)
-  const [lastRecord, setLastRecord] = useState<number>(0)
+  // const [firstRecord, setFirstRecord] = useState<number>(0)
+  // const [lastRecord, setLastRecord] = useState<number>(0)
 
-  // const firstRecord = useMemo<number>(() => {
-  //   return ((props.api.paginationGetCurrentPage() ?? 0)) * props.api.paginationGetPageSize() + 1
-  // }, [props.api.paginationGetCurrentPage()])
   const onChangePageSize = (value: string) => {
     // console.log(props.gridRef.current?.api.paginationGetRowCount())
-
     props.api.paginationSetPageSize(+value);
+    // props.api.setCacheBlockSize(+value);
+    // props.api.refreshServerSide({ route: undefined, purge: true });
     checkNextOrPreviousPage(props.api)
-    // props.gridRef.current!.api.setCacheBlockSize(+value);
-    // props.gridRef.current!.api.paginationGoToPage(4);
   }
   const onChangePageIndex = (value: "first-page" | "prev-page" | "next-page" | "last-page") => {
-
     switch (value) {
       case "first-page":
         props.api.paginationGoToFirstPage()
@@ -62,14 +55,13 @@ export const PaginationTableRight = (props: IStatusPanelParams): JSX.Element => 
         break;
     }
     checkNextOrPreviousPage(props.api)
-
   }
 
   const checkNextOrPreviousPage = (gridApi: GridApi<any> | undefined) => {
     const currentPage = gridApi?.paginationGetCurrentPage() ?? 0
     const totalPages = gridApi?.paginationGetTotalPages() ?? 0;
-    setFirstRecord((currentPage) * props.api.paginationGetPageSize() + 1)
-    setLastRecord((currentPage + 1) * props.api.paginationGetPageSize())
+    // setFirstRecord((currentPage) * props.api.paginationGetPageSize() + 1)
+    // setLastRecord((currentPage + 1) * props.api.paginationGetPageSize())
     setHasPreviousPage(currentPage > 0);
     console.log(currentPage, totalPages, currentPage < totalPages - 1)
     setHasNextPage(currentPage < totalPages - 1)
@@ -124,9 +116,9 @@ export const PaginationTableRight = (props: IStatusPanelParams): JSX.Element => 
                   <ChevronLeftIcon className="h-4 w-4" />
                 </Button>
                 <div className="current-page self-center flex mx-[4px]">
-                  <b className="count-to">{firstRecord}</b>
+                  <b className="count-to">{(props.api?.paginationGetCurrentPage() ?? 0) * props.api.paginationGetPageSize() + 1}</b>
                   <span className="px-[8px]">đến</span>
-                  <b className="count-from">{lastRecord}</b>
+                  <b className="count-from">{((props.api?.paginationGetCurrentPage() ?? 0) + 1) * props.api.paginationGetPageSize()}</b>
                 </div>
                 <Button
                   variant="outline"

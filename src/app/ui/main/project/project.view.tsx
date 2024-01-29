@@ -26,7 +26,7 @@ export const ProjectView = ({
         projectDescription={description || "Description undefined"}
         projectImage={image || "/images/default-project.png"}
       />
-      <div className="z-10 flex h-full w-full flex-grow flex-col py-6 px-5">
+      <div className="z-10 flex h-full w-full flex-grow flex-col">
         <section>
           <Link to="/projects" className="underline underline-offset-[3px]">
             Projects

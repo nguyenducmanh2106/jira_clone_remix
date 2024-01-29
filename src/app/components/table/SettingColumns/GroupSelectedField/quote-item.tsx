@@ -83,7 +83,9 @@ function QuoteItem(props: Props) {
           <div className='cursor-move mx-[4px]'>
             <div className='dragable-icon'></div>
           </div>
-          <div>{quote?.headerName ?? 'N/A'}</div>
+          <div title={quote?.headerName ?? 'N/A'} style={{ width: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {quote?.headerName ?? 'N/A'}
+          </div>
         </div>
         <div className='icon-close16-red' onClick={() => hideColumn(quote)}></div>
       </div>
